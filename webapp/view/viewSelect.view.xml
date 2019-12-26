@@ -1,0 +1,21 @@
+ <mvc:View controllerName="com.ivancio.zal30-ui5.controller.viewSelect"
+	displayBlock="true"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc">
+	<Panel headerText="Select view" height="auto" width="100%">	
+		<content>
+	<Input
+		description="View name"
+		type="Text"
+		valueHelpOnly="false"
+		valueLiveUpdate="false"
+		placeholder="Enter view.."
+		required="true"
+		showValueStateMessage="true"		
+		value=""
+		valueState="None"
+		valueStateText=""
+		width="60%"/>			
+		</content>	
+	</Panel>
+</mvc:View> 

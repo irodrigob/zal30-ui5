@@ -1,0 +1,11 @@
+{
+  "generator-easy-ui5": {
+    "platform": "Static webserver",
+    "ui5libs": "Content delivery network (SAPUI5)",
+    "newdir": false,
+    "projectname": "zal30-ui5",
+    "namespace": "com.ivancio",
+    "viewtype": "XML",
+    "viewname": "MainView"
+  }
+}
