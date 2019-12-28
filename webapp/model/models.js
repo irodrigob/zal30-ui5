@@ -66,6 +66,36 @@ sap.ui.define([
 
 		setBaseDir: function (sDir) {
 			_baseDir = sDir;
+		},
+
+		setMockMode: function (sMock) {
+			var bMock;
+			switch (sMock) {
+				case "true":
+					sap.m.MessageToast.show("Running on MOCK");
+					bMock = true;
+					break;
+				case "mix":
+					sap.m.MessageToast.show("Running on MIX mock");
+					bMock = undefined;
+					break;
+				default:
+					bMock = false;
+			}
+			_bMock = bMock;
+		},
+
+		loadMockData: function (oServiceConfig, oParam) {
+			_oMockDataModel.loadData(jQuery.sap.getModulePath(_baseDir) + oServiceConfig.mockFile, undefined, false);
+			if (oParam.success) {
+				oParam.success(_oMockDataModel.getData());
+			}
+		},
+		//////////////////////////////////	
+		//        Services              //	
+		//////////////////////////////////		  
+		getViews: function (oParameters, successHandler, errorHandler) {
+
 		}
 	};
 
