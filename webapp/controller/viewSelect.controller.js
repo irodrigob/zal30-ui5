@@ -69,10 +69,14 @@ sap.ui.define([
       if (oSelectedItem) {
         // Se recupera el objeto input en base al ID guardado al inicio
         var ViewInput = this.byId(this.inputViewID);
-        // Se guarda el nombre de la vista seleccionado
-        debugger;
-        var value = oSelectedItem.getTitle();
-        ViewInput.setValue(value);
+debugger;
+
+        var sDescription = oSelectedItem.getTitle();
+        ViewInput.setSelectedKey(sDescription);
+
+        // Se guarda el nombre de la vista seleccionado        
+        //var value = oSelectedItem.getTitle();
+        //ViewInput.setValue(value);
       }
       // se elimina los filtros
       oEvent.getSource().getBinding("items").filter([]);

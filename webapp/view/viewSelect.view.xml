@@ -15,6 +15,7 @@
 					<Input id="viewInput" 
 						description="" 
 						type="Text" 
+						textFormatMode="ValueKey"
 						placeholder="{i18n>ViewSelect.laceHolderInput}" 
 						required="true" 
 						width="60%" 
@@ -27,7 +28,7 @@
 							Es lo mismo poner: {model: 'appData', path: 'VIEWDESC'}
 							que: {appData>VIEWDESC}
 						-->
-							<core:Item text="{model: 'appData', path: 'VIEWDESC'}" />
+							<core:ListItem key="{appData>VIEWNAME}" text="{model: 'appData', path: 'VIEWDESC'}" additionalText="{appData>VIEWNAME}" />
 						</suggestionItems>
 					</Input>
 				</l:content>
