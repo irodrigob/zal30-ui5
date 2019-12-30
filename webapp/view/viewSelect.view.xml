@@ -1,21 +1,37 @@
- <mvc:View controllerName="com.ivancio.zal30-ui5.controller.viewSelect"
-	displayBlock="true"
-	xmlns="sap.m"
+<mvc:View controllerName="com.ivancio.zal30-ui5.controller.viewSelect" 
+	displayBlock="true" 
+	xmlns="sap.m" 
+	xmlns:l="sap.ui.layout" 
+	xmlns:core="sap.ui.core" 
 	xmlns:mvc="sap.ui.core.mvc">
-	<Panel headerText="Select view" height="auto" width="100%">	
+	<Panel height="auto" 
+		width="100%">
 		<content>
-	<Input
-		description="View name"
-		type="Text"
-		valueHelpOnly="false"
-		valueLiveUpdate="false"
-		placeholder="Enter view.."
-		required="true"
-		showValueStateMessage="true"		
-		value=""
-		valueState="None"
-		valueStateText=""
-		width="60%"/>			
-		</content>	
+			<l:VerticalLayout class="sapUiContentPadding" 
+				width="100%">
+				<l:content>
+					<Label text="{i18n>ViewSelect.labelView}" 
+						labelFor="viewInput" />
+					<Input id="viewInput" 
+						description="" 
+						type="Text" 
+						placeholder="{i18n>ViewSelect.laceHolderInput}" 
+						required="true" 
+						width="60%" 
+						showValueHelp="true"
+						valueHelpRequest="handleViewHelp"
+						showSuggestion="true"
+						suggestionItems="{model: 'appData', path: '/views'}">
+						<suggestionItems>
+						<!-- 
+							Es lo mismo poner: {model: 'appData', path: 'VIEWDESC'}
+							que: {appData>VIEWDESC}
+						-->
+							<core:Item text="{model: 'appData', path: 'VIEWDESC'}" />
+						</suggestionItems>
+					</Input>
+				</l:content>
+			</l:VerticalLayout>
+		</content>
 	</Panel>
 </mvc:View> 

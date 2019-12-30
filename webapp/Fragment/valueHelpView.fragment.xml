@@ -1,0 +1,15 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		title="{i18n>viewHelp.title}"
+		class="sapUiPopupWithPadding"
+		items="{model: 'appData', path: '/views'}"
+		search="_handleViewHelpSearch"
+		confirm="_handleViewHelpClose"
+		cancel="_handleViewHelpClose">
+		<StandardListItem						
+			title="{appData>VIEWNAME}"
+			description="{appData>VIEWDESC}" />
+	</SelectDialog>
+</core:FragmentDefinition>

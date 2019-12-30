@@ -1,0 +1,24 @@
+{
+    "results": [
+        {            
+            "LANGU": "E",
+            "VIEWNAME": "ZSAT_T_111",
+            "VIEWDESC": "View of reports"
+        },
+        {
+            "LANGU": "E",
+            "VIEWNAME": "ZRTN_T_2222",
+            "VIEWDESC": "User of applications"
+        },
+        {
+            "LANGU": "E",
+            "VIEWNAME": "ZSAT_T_3333",
+            "VIEWDESC": "Stores"
+        },
+        {
+            "LANGU": "E",
+            "VIEWNAME": "USR01",
+            "VIEWDESC": "Users of system"
+        }
+    ]
+}

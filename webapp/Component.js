@@ -25,6 +25,7 @@ sap.ui.define([
 
 			// Se inicializa el modelo de datos
 			this._initModelData();
+
 		},
 		_initModelData: function () {
 			// Se inicializa la variable con el modelo de la aplicación. Este AppData esta
@@ -63,12 +64,14 @@ sap.ui.define([
 
 			// El contexto actual se pasa a una variable para que no se pierda en las llamadas que se harán al modelo
 			var that = this;
-			
+
 			// El modelo tiene tres parámetros: parámetros del servicio, funcion cuando el servicio va bien, función cuando el servicio no va bien
 			models.getViews(null,
-				function (oViews) {
-					oAppDataModel.setProperty("/views", oViews);
+				function (oViews) {					
+					// El nodo result que siempre devuelve el Gateway no lo queremos en este caso
+					oAppDataModel.setProperty("/views", oViews.results);
 				},
+				// funcion sin nombre se llama a si misma sin necesidad de hacerlo manualmente
 				function () {
 
 				});
