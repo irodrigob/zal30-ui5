@@ -1,36 +1,51 @@
-<mvc:View controllerName="com.ivancio.zal30-ui5.controller.viewSelect" 
+<mvc:View controllerName="com.ivancio.zal30-ui5.controller.ViewSelect" 
 	displayBlock="true" 
 	xmlns="sap.m" 
 	xmlns:l="sap.ui.layout" 
 	xmlns:core="sap.ui.core" 
 	xmlns:mvc="sap.ui.core.mvc">
-	<Panel height="auto" 
-		width="100%">
+	<Panel height="auto" 		
+		width="auto">
 		<content>
-			<l:VerticalLayout class="sapUiContentPadding" 
-				width="100%">
+			<l:VerticalLayout class="sapUiContentPadding" width="100%">
 				<l:content>
 					<Label text="{i18n>ViewSelect.labelView}" 
 						labelFor="viewInput" />
-					<Input id="viewInput" 
-						description="" 
-						type="Text" 
-						textFormatMode="ValueKey"
-						placeholder="{i18n>ViewSelect.laceHolderInput}" 
-						required="true" 
-						width="60%" 
-						showValueHelp="true"
-						valueHelpRequest="handleViewHelp"
-						showSuggestion="true"
-						suggestionItems="{model: 'appData', path: '/views'}">
-						<suggestionItems>
-						<!-- 
-							Es lo mismo poner: {model: 'appData', path: 'VIEWDESC'}
-							que: {appData>VIEWDESC}
-						-->
-							<core:ListItem key="{appData>VIEWNAME}" text="{model: 'appData', path: 'VIEWDESC'}" additionalText="{appData>VIEWNAME}" />
-						</suggestionItems>
-					</Input>
+					<FlexBox alignItems="Start" 
+						justifyContent="Start">
+						<items>
+							<Input id="viewInput" 
+								description="" 
+								type="Text" 
+								textFormatMode="KeyValue" 
+								placeholder="{i18n>ViewSelect.laceHolderInput}" 
+								required="true" 
+								showValueHelp="true" 
+								valueHelpRequest="onHandleViewHelp" 
+								showSuggestion="true" 
+								suggestionItems="{model: 'appData', path: '/views'}" 	
+								suggestionItemSelected="suggestionViewSelected"							
+								width="95%">
+								<suggestionItems>
+									<!-- Es lo mismo poner: {model: 'appData', path: 'VIEWDESC'}
+										 que: {appData>VIEWDESC} -->
+									<core:ListItem key="{appData>VIEWNAME}" 
+										text="{model: 'appData', path: 'VIEWDESC'}" 
+										additionalText="{appData>VIEWNAME}" />
+								</suggestionItems>
+								<layoutData>
+									<FlexItemData growFactor="1" />
+								</layoutData>
+							</Input>
+							<Button press="onGoViewData" 
+								icon="sap-icon://navigation-right-arrow" 
+								text="{i18n>ViewSelect.GoView}">
+								<layoutData>
+									<FlexItemData growFactor="2" />
+								</layoutData>
+							</Button>
+						</items>
+					</FlexBox>
 				</l:content>
 			</l:VerticalLayout>
 		</content>

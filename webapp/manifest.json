@@ -98,7 +98,7 @@
 				},
 				{
 					"name": "viewData",
-					"pattern": "viewData",
+					"pattern": "viewData/{view}",
 					"target": [
 						"viewData"
 					]
@@ -107,12 +107,12 @@
 			"targets": {
 				"viewSelect": {
 					"viewType": "XML",
-					"viewLevel": 1,
+					"viewId": "viewSelect",					
 					"viewName": "viewSelect"
 				},
 				"viewData": {
 					"viewType": "XML",
-					"viewLevel": 1,
+					"viewId": "viewData",
 					"viewName": "viewData"
 				}
 			}
