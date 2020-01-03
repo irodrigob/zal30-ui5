@@ -1,16 +1,15 @@
 sap.ui.define([
-  "sap/ui/core/mvc/Controller",
+  "com/ivancio/zal30-ui5/controller/Base.controller",
   "sap/m/MessageToast",
   'sap/ui/model/Filter',
   'sap/ui/core/Fragment',
-  "com/ivancio/zal30-ui5/controller/Base.controller",
   "sap/base/Log"
-], function (Controller, MessageToast, Filter, Fragment, BaseController, Log) {
+], function (BaseController, MessageToast, Filter, Fragment, Log) {
   "use strict";
 
   var _inputViewID = ''; // Guarda el ID del control input para introducir la vista  
 
-  return Controller.extend("com.ivancio.zal30-ui5.controller.ViewSelect", {
+  return BaseController.extend("com.ivancio.zal30-ui5.controller.ViewSelect", {
 
     //////////////////////////////////
     //                              //
@@ -51,8 +50,6 @@ sap.ui.define([
     // Navega a la vista introducida
     onGoViewData: function (oEvent) {
 
-      Log.info("hola");
-
       // Se recupera la vista seleccionada
       var viewName = this._oViewSelectModel.getProperty("/viewName");
 
@@ -60,8 +57,12 @@ sap.ui.define([
 
       // Se valida que la vista introducida sea valida
       if (this._checkValidViewName(viewName)) {
-        oViewInput.setValueState(sap.ui.core.ValueState.None);
-        MessageToast.show(viewName);
+
+        oViewInput.setValueState(sap.ui.core.ValueState.None); // Se quita el posible estado que tenga
+       
+        // Se navega hacía la página con la vista
+        this.navRoute(this._mSections.viewSelect, { view: viewName });
+
       }
       else {
 
@@ -123,10 +124,8 @@ sap.ui.define([
       // Los datos de las vistas válidas se han recuperado previamente para poder hacer las sugerencias y ayudas
       // para búsqueda. Por lo tanto la validación es tan simple como validar que exista la vista pasada por parámetro en el array
 
-      var aViews = this._oAppDataModel.getProperty("/views");
-
-      // Si no existe el find devuelve un "undefined"
-      if (aViews.find(view => view.VIEWNAME === sViewName))
+      // Si no existe el método devuelve un "undefined"            
+      if (this.getViewInfo(sViewName))
         return true;
       else
         return false;

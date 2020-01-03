@@ -1,0 +1,45 @@
+<mvc:View controllerName="com.ivancio.zal30-ui5.controller.ViewData" 
+	displayBlock="true" 
+	xmlns="sap.m" 
+	xmlns:l="sap.ui.layout" 
+	xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc">
+<Page
+    backgroundDesign="Standard"
+    contentOnlyBusy="false"
+    enableScrolling="true"
+    floatingFooter="false"
+    navButtonTooltip=""
+    showFooter="true"
+    showHeader="true"
+    showNavButton="false"
+    showSubHeader="true"
+    title="datos"
+    titleAlignment="Auto"
+    titleLevel="Auto"
+    busy="false"
+    busyIndicatorDelay="1000"
+    busyIndicatorSize="Medium"
+    fieldGroupIds="[]"
+    visible="true"
+>
+    <content>
+        <!--sap.ui.core.Control-->
+    </content>
+    <customHeader>
+        <!--sap.m.IBar-->
+    </customHeader>
+    <footer>
+        <!--sap.m.IBar-->
+    </footer>
+    <headerContent>
+        <!--sap.ui.core.Control-->
+    </headerContent>
+    <landmarkInfo>
+        <!--sap.m.PageAccessibleLandmarkInfo-->
+    </landmarkInfo>
+    <subHeader>
+        <!--sap.m.IBar-->
+    </subHeader>
+</Page>    
+</mvc:View>     
