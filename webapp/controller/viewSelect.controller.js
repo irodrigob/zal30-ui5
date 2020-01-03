@@ -22,6 +22,8 @@ sap.ui.define([
       this._oI18nResource = this._oOwnerComponent.getModel("i18n").getResourceBundle();
       this._initModel();
 
+      // Se asocia el método que se ejecutará cada vez que se navegue a este método por el routing
+      this._oOwnerComponent.getRouter().getRoute(this._mSections.viewSelect).attachPatternMatched(this._onRouteMatched, this);
     },
 
     // MC)todo que gestiona la ayuda para bC:squeda de las vistas
@@ -59,9 +61,9 @@ sap.ui.define([
       if (this._checkValidViewName(viewName)) {
 
         oViewInput.setValueState(sap.ui.core.ValueState.None); // Se quita el posible estado que tenga
-       
+
         // Se navega hacía la página con la vista
-        this.navRoute(this._mSections.viewSelect, { view: viewName });
+        this.navRoute(this._mSections.viewData, { view: viewName });
 
       }
       else {
@@ -112,10 +114,7 @@ sap.ui.define([
     // Modelo interno de la vista
     _initModel: function () {
       this._oViewSelectModel = new sap.ui.model.json.JSONModel();
-      this._oViewSelectModel.setData({
-        viewSelected: false,
-        viewName: ''
-      });
+      this._resetModel(); // Reset del modelo de datos
 
       this.getView().setModel(this._oViewSelectModel, "ViewSelectModel");
     },
@@ -154,6 +153,28 @@ sap.ui.define([
       }
       // se elimina los filtros
       oEvent.getSource().getBinding("items").filter([]);
+    },
+    // Método que entra cuando se hace a la página desde la routing
+    _onRouteMatched: function (oEvent) {
+
+      // Se recupera el valor anterior de la sección donde se esta  
+      var sPreviousSection = this._oAppDataModel.getProperty("/section");
+
+      // Guardo la sección actual
+      this._oAppDataModel.setProperty("/section", this._mSections.viewSelect);
+
+      // Si la sección anterior y la actual difiere hay que resetear el modelo
+      if (sPreviousSection !== this._mSections.viewSelect) {
+        this._resetModel();
+      }
+    },
+    // Reset del modelo de datos
+    _resetModel: function () {
+      this._oViewSelectModel.setData({
+        viewSelected: false,
+        viewName: ''
+      });
     }
+
   });
 });

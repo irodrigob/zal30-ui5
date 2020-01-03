@@ -32,6 +32,8 @@ sap.ui.define([
 			// definido en el manifest con la etiqueta "appData". 
 			var oAppDataModel = this.getModel("appData");
 
+			oAppDataModel.setProperty("/section", '');
+
 
 			// Se recupera los parámetros de la URL. 
 			// En los parámetros habrá uno que será el MOCK que indica de donde se obtienen los valores: true todo vendrá de los ficheros o mix que dependerá

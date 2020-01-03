@@ -24,8 +24,6 @@ sap.ui.define([
         },
         // Navega a la rutina especificada con los parámetros indicados
         navRoute: function (sRoute, oParameters) {
-
-            debugger;
             var oRouter = this._oOwnerComponent.getRouter();
 
             oRouter.navTo(sRoute, oParameters || {});
