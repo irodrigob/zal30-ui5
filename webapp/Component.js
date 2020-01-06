@@ -78,6 +78,9 @@ sap.ui.define([
 
 				});
 
+		},
+		_getViewData:function(){
+			
 		}
 	});
 });

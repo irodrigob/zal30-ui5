@@ -11,7 +11,7 @@
 		"description": "{{appDescription}}",
 		"dataSources": {
 			"MASTER_DATA_SRV": {
-				"uri": "/sap/opu/odata/sap/ZAL30_MASTER_DATA_SRV",
+				"uri": "/sap/opu/odata/sap/ZAL30_DATA_SRV",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0"
