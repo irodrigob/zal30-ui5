@@ -2,8 +2,9 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/ui/Device",
 	"sap/ui/model/Filter",
-	"sap/m/MessageToast"
-], function (JSONModel, Device, MessageToast, Filter) {
+	"sap/m/MessageToast",
+	"sap/base/util/merge"
+], function (JSONModel, Device, Filter, MessageToast, merge) {
 	"use strict";
 	//////////////////////////////////
 	//                              //
@@ -11,7 +12,7 @@ sap.ui.define([
 	//                              //
 	//////////////////////////////////
 	var _sLanguage,
-		_bMock = true,
+		_bMock = false,
 		_aoModel = [],
 		_oMockDataModel = new JSONModel(),
 		_baseDir;
@@ -23,9 +24,15 @@ sap.ui.define([
 	//////////////////////////////////
 	var _mService = {
 		getViews: {
-			serviceName: "/getViews",
-			bUseMock: true,
+			serviceName: "/getViewsSet",
+			bUseMock: false,
 			mockFile: "/getViews.json",
+			oDataModel: "masterData"
+		},
+		checkAuthView: {
+			serviceName: "/checkAuthViewSet",
+			bUseMock: false,
+			mockFile: "/checkAuthView.json",
 			oDataModel: "masterData"
 		}
 	};
@@ -189,7 +196,7 @@ sap.ui.define([
 			return oRequest;
 		},
 		/* Obtención de los parámetros de la URL
-		*/
+		 */
 		getUrlParameters: function (mUrlParameters) {
 			return jQuery.sap.extend({}, mUrlParameters);
 		},
@@ -199,54 +206,44 @@ sap.ui.define([
 		getViews: function (oParameters, successHandler, errorHandler) {
 
 			// Variable local que indica si el Gateway esta disponible
-			var gwAvailable = false;
+			var bgwAvailable = false;
 			// Guardo el contexto actual en una variable local
 			var that = this;
 			// Se recupera el modelo donde se guardará la información
 			var oModel = this.getModel(_mService.getViews.oDataModel);
-			
+
 			// Cuando se llama a un servicio en el gateway lo habitual es lanzar el $metadata del servicio para que se refresque
 			// internamente el modelo de datos. Con el "attachMetadataLoaded" lo que se hace es añadir una función para que cuando se termine de cargar
 			// el metadatos se ejecute el código pasado. De esta manera queda garantizado la carga del metadata antes de llamar al servicio.
 			// Este servicio se usan dos parámetros: el primer es la función que se ejecuta cuando se produzca el evento, en este caso, es
 			// llamar al sericio. El segundo es el "listener" que en este caso se pasa el propio contexto
 			oModel.attachMetadataLoaded(function () {
-				
-				// Si entra aquí es que hay gateway por lo tanto cambio a true la variable local desde donde se llama
-				that.gwAvailable = true;
 
-				// Lo que hace el extend, reemplazado por el merge, es concatenar varios objetos en uno solo.
-				/*var mLocalService = jQuery.sap.extend(true, {}, _mService.getViews, {
-					serviceName: oModel.createKey(_mService.getViews.serviceName, {
-						LANGU: _sLanguage
-					})
-				}); */
-				var mLocalService = merge({}, _mService.getViews, {
-					serviceName: oModel.createKey(_mService.getViews.serviceName, {
-						LANGU: _sLanguage
-					})
-				});
+					// Si entra aquí es que hay gateway por lo tanto cambio a true la variable local desde donde se llama
+					bgwAvailable = true;
 
-				// Se llama al servicio para obtener los datos de Gateway o del mock
-				this.callSapService(mLocalService, {
-					success: function (oData) {
-						if (successHandler) {
-							if (oData) {
-								successHandler(oData);
-							} else {
-								if (errorHandler) {
-									errorHandler();
+					// Se llama al servicio para obtener los datos de Gateway o del mock				
+					this.callSapService(_mService.getViews, {
+						filters: [new Filter("LANGU", sap.ui.model.FilterOperator.EQ, _sLanguage)],
+						success: function (oData) {
+							if (successHandler) {
+								if (oData) {
+									successHandler(oData);
+								} else {
+									if (errorHandler) {
+										errorHandler();
+									}
 								}
 							}
-						}
-					},
-					error: errorHandler
-				});
-			},
+						},
+						error: errorHandler
+					});
+				},
 				this);
 
-			// Se llama al servicio para obtener los datos del mock si no hay Gateway
-			if (!gwAvailable) {
+			/*
+				// Se llama al servicio para obtener los datos del mock si no hay Gateway
+			if (!bgwAvailable) {
 				_bMock = true; // Sin gateway todo tiene que por mock
 				this.callSapService(_mService.getViews, {
 					success: function (oData) {
@@ -262,7 +259,36 @@ sap.ui.define([
 					},
 					error: errorHandler
 				});
-			}
+			} */
+
+		},
+		// Obtiene la autorización para la vista
+		checkAuthView: function (oParameters, successHandler, errorHandler) {
+			// Se recupera el modelo donde se guardará la información
+			var oModel = this.getModel(_mService.checkAuthView.oDataModel);
+
+			var mLocalService = merge({}, _mService.checkAuthView, {
+				serviceName: oModel.createKey(_mService.checkAuthView.serviceName, {
+					VIEWNAME: oParameters.viewname
+				})
+			});
+			
+			// Se llama al servicio  	
+			this.callSapService(mLocalService, {
+				bSynchronous: true, // Tiene que ser sincrono para saber la respuesta inmediata
+				success: function (oData) {
+					if (successHandler) {
+						if (oData) {
+							successHandler(oData);
+						} else {
+							if (errorHandler) {
+								errorHandler();
+							}
+						}
+					}
+				},
+				error: errorHandler
+			});
 
 		}
 	};

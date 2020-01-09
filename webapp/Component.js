@@ -70,7 +70,7 @@ sap.ui.define([
 			// El modelo tiene tres parámetros: parámetros del servicio, funcion cuando el servicio va bien, función cuando el servicio no va bien
 			models.getViews(null,
 				function (oViews) {					
-					// El nodo result que siempre devuelve el Gateway no lo queremos en este caso
+					// El nodo result que siempre devuelve el Gateway no lo queremos en este caso					
 					oAppDataModel.setProperty("/views", oViews.results);
 				},
 				// funcion sin nombre se llama a si misma sin necesidad de hacerlo manualmente
@@ -79,6 +79,7 @@ sap.ui.define([
 				});
 
 		},
+		// Proceso para la obtención de los datos de la vista
 		_getViewData:function(){
 			
 		}
