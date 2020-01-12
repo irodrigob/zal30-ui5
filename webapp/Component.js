@@ -1,8 +1,9 @@
 sap.ui.define([
 	"sap/ui/core/UIComponent",
 	"sap/ui/Device",
-	"com/ivancio/zal30-ui5/model/models"
-], function (UIComponent, Device, models) {
+	"com/ivancio/zal30-ui5/model/models",
+	"sap/m/BusyDialog"
+], function (UIComponent, Device, models, BusyDialog) {
 	"use strict";
 
 	return UIComponent.extend("com.ivancio.zal30-ui5.Component", {
@@ -10,7 +11,13 @@ sap.ui.define([
 		metadata: {
 			manifest: "json"
 		},
+		
 
+		//////////////////////////////////
+		//                              //
+		//        Public methods        //
+		//                              //
+		//////////////////////////////////
 		/**
 		 * The component is initialized by UI5 automatically during the startup of the app and calls the init method once.
 		 * @public
@@ -26,14 +33,37 @@ sap.ui.define([
 			// Se inicializa el modelo de datos
 			this._initModelData();
 
+			// Se instancia la ventana de proceso ocupado
+			this._oBusyDialog = new BusyDialog();
+
 		},
+		// Muestra el indicador de procesando..
+		showBusyDialog: function () {
+			this._oBusyDialog.open();
+
+		},
+		// Cierra el indicador de procesado
+		closeBusyDialog: function () {
+			this._oBusyDialog.close();
+		},
+		//////////////////////////////////
+		//                              //
+		//        Private methods       //
+		//                              //
+		//////////////////////////////////
 		_initModelData: function () {
 			// Se inicializa la variable con el modelo de la aplicación. Este AppData esta
 			// definido en el manifest con la etiqueta "appData". 
 			var oAppDataModel = this.getModel("appData");
 
-			oAppDataModel.setProperty("/section", '');
+			oAppDataModel.setProperty("/section", ''); // En que página o seccion de la aplicación se esta
 
+			// Se indica que se tiene que hacer el control de autorización de la vista
+			oAppDataModel.setProperty("/checkAuthView", true);
+
+			// Se indica que NO se accede por la vista de selección de vistas. Esto cambiará al acceder
+			// a la página de selección de vistas
+			oAppDataModel.setProperty("/viewSelect", false);
 
 			// Se recupera los parámetros de la URL. 
 			// En los parámetros habrá uno que será el MOCK que indica de donde se obtienen los valores: true todo vendrá de los ficheros o mix que dependerá
@@ -49,8 +79,7 @@ sap.ui.define([
 			models.setConfig([{
 				name: "masterData",
 				model: this.getModel("masterData")
-			}
-			], "EN", oUrlParams.mock && oUrlParams.mock[0]);
+			}], "EN", oUrlParams.mock && oUrlParams.mock[0]);
 
 			// Directorio donde estarán los archivos mock
 			models.setBaseDir("com.ivancio.zal30-ui5.model.mock");
@@ -69,7 +98,7 @@ sap.ui.define([
 
 			// El modelo tiene tres parámetros: parámetros del servicio, funcion cuando el servicio va bien, función cuando el servicio no va bien
 			models.getViews(null,
-				function (oViews) {					
+				function (oViews) {
 					// El nodo result que siempre devuelve el Gateway no lo queremos en este caso					
 					oAppDataModel.setProperty("/views", oViews.results);
 				},
@@ -80,8 +109,8 @@ sap.ui.define([
 
 		},
 		// Proceso para la obtención de los datos de la vista
-		_getViewData:function(){
-			
+		_getViewData: function () {
+
 		}
 	});
 });

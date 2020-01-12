@@ -4,8 +4,9 @@ sap.ui.define([
 	'sap/ui/model/Filter',
 	'sap/ui/core/Fragment',
 	"sap/base/Log",
-	"com/ivancio/zal30-ui5/model/models"
-], function (BaseController, MessageToast, Filter, Fragment, Log, models) {
+	"com/ivancio/zal30-ui5/model/models",	
+	"com/ivancio/zal30-ui5/constants/constants"
+], function (BaseController, MessageToast, Filter, Fragment, Log, models, constants) {
 	"use strict";
 
 	var _inputViewID = ''; // Guarda el ID del control input para introducir la vista  
@@ -25,6 +26,9 @@ sap.ui.define([
 
 			// Se asocia el método que se ejecutará cada vez que se navegue a este método por el routing
 			this._oOwnerComponent.getRouter().getRoute(this._mSections.viewSelect).attachPatternMatched(this._onRouteMatched, this);
+
+			// Se indica que se accede por la vista de selección de vistas
+			this._oAppDataModel.setProperty("/viewSelect", true);
 		},
 
 		// MC)todo que gestiona la ayuda para bC:squeda de las vistas
@@ -61,23 +65,9 @@ sap.ui.define([
 			// Se valida que la vista introducida sea valida
 			if (this._checkValidViewName(viewName)) {
 
-				// Se valida que se tenga autorización
-				if (this._checkAuthView(viewName)) {
-
-					oViewInput.setValueState(sap.ui.core.ValueState.None); // Se quita el posible estado que tenga
-
-					// Se navega hacía la página con la vista
-					this.navRoute(this._mSections.viewData, {
-						view: viewName
-					});
-
-				} else {
-					oViewInput.setValueState(sap.ui.core.ValueState.Error);
-					oViewInput.setValueStateText(this._oI18nResource.getText("ViewSelect.viewNotAuth"));
-					MessageToast.show(this._oI18nResource.getText("ViewSelect.viewNotAuth"));
-				}
-
-
+				// Se valida que se tenga autorización. Si la tiene se irá a ver los datos, en caso contrario se volverá al
+				// proceso
+				this._checkAuthView(viewName);
 
 			} else {
 
@@ -175,6 +165,9 @@ sap.ui.define([
 			// Guardo la sección actual
 			this._oAppDataModel.setProperty("/section", this._mSections.viewSelect);
 
+			// Se tiene que hacer el control de autorización de la vista
+			this._oAppDataModel.setProperty("/checkAuthView", true);
+
 			// Si la sección anterior y la actual difiere hay que resetear el modelo
 			if (sPreviousSection !== this._mSections.viewSelect) {
 				this._resetModel();
@@ -189,27 +182,38 @@ sap.ui.define([
 		},
 		// Control de autorización en la vista
 		_checkAuthView: function (sViewName) {
-			var bAuth = false;
-			
+
+			// Se muestra que el proceso esta ocupado
+			this._oOwnerComponent.showBusyDialog();
 			var that = this; // Se pasa el contexto a otra variable para poder acceder al contexto actual en las siguiente llamadas
 
-			models.checkAuthView({
-					viewname: sViewName
-				},
-				function (oViews) {
-					debugger;
-					that._oAppDataModel.setProperty("/levelAuth", oViews.results.LEVELAUTH);
-					if (oViews.results.LEVELAUTH == 'N') // Valor 'N' es que no tiene acceso
-						bAuth = false;
-					else
-						bAuth = true;
-				},
-				// funcion sin nombre se llama a si misma sin necesidad de hacerlo manualmente
-				function () {
+			this.checkAuthView(sViewName,{
+				success:function(oAuth){
+					that._oOwnerComponent.closeBusyDialog();
+					var oViewInput = that.byId("viewInput");
+					
+					if (oAuth.LEVELAUTH == constants.mLevelAuth.non) {
+						oViewInput.setValueState(sap.ui.core.ValueState.Error);
+						oViewInput.setValueStateText(that._oI18nResource.getText("ViewSelect.viewNotAuth"));
+						MessageToast.show(that._oI18nResource.getText("ViewSelect.viewNotAuth"));
 
-				});
+					} else {
+						oViewInput.setValueState(sap.ui.core.ValueState.None); // Se quita el posible estado que tenga
 
-			return bAuth;
+						// No se tiene que hacer el control de autorización porque ya se ha hecho	
+							
+
+						// Se navega hacía la página con la vista
+						that.navRoute(that._mSections.viewData, {
+							view: sViewName
+						});
+					}
+				},
+				error:function(){
+					that._oOwnerComponent.closeBusyDialog();
+				}
+			});
+
 		},
 
 	});
