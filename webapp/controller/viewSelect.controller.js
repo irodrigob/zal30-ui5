@@ -44,7 +44,7 @@ sap.ui.define([
 			if (!this._valueHelpDialog) {
 				// Se inicializa una variable local con el fragmento creado
 				this._valueHelpDialog = sap.ui.xmlfragment(
-					"com.ivancio.zal30-ui5.Fragment.valueHelpView", // Nombre del fragment
+					"com.ivancio.zal30-ui5.fragment.valueHelpView", // Nombre del fragment
 					this // Controlador
 				);
 				// Se asocia el fragmento a la vista para que pueda usar modelo, controlador, etc..

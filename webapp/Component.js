@@ -2,8 +2,10 @@ sap.ui.define([
 	"sap/ui/core/UIComponent",
 	"sap/ui/Device",
 	"com/ivancio/zal30-ui5/model/models",
-	"sap/m/BusyDialog"
-], function (UIComponent, Device, models, BusyDialog) {
+	"sap/m/BusyDialog",
+	"com/ivancio/zal30-ui5/service/ViewConfService",
+	"com/ivancio/zal30-ui5/model/ViewConfModel",
+], function (UIComponent, Device, models, BusyDialog, ViewConfService, ViewConfModel) {
 	"use strict";
 
 	return UIComponent.extend("com.ivancio.zal30-ui5.Component", {
@@ -11,8 +13,10 @@ sap.ui.define([
 		metadata: {
 			manifest: "json"
 		},
-		
-
+		services: {
+			confView: "ViewConf",
+			dataView:"ViewData"
+		},
 		//////////////////////////////////
 		//                              //
 		//        Public methods        //
@@ -30,8 +34,13 @@ sap.ui.define([
 			// enable routing
 			this.getRouter().initialize();
 
+			// Se inicializa los servicios
+			//this._initServices();
+
 			// Se inicializa el modelo de datos
 			this._initModelData();
+
+
 
 			// Se instancia la ventana de proceso ocupado
 			this._oBusyDialog = new BusyDialog();
@@ -46,57 +55,77 @@ sap.ui.define([
 		closeBusyDialog: function () {
 			this._oBusyDialog.close();
 		},
+		// Devuelve la variable con el servicio
+		getService: function (sService) {
+			return this["_o" + sService + "Service"];
+		},
 		//////////////////////////////////
 		//                              //
 		//        Private methods       //
 		//                              //
 		//////////////////////////////////
 		_initModelData: function () {
-			// Se inicializa la variable con el modelo de la aplicación. Este AppData esta
+
+			// Se inicializa la variable con el modelo de la aplicaciC3n. Este AppData esta
 			// definido en el manifest con la etiqueta "appData". 
 			var oAppDataModel = this.getModel("appData");
 
-			oAppDataModel.setProperty("/section", ''); // En que página o seccion de la aplicación se esta
+			oAppDataModel.setProperty("/section", ''); // En que pC!gina o seccion de la aplicaciC3n se esta
 
-			// Se indica que se tiene que hacer el control de autorización de la vista
+			// Se indica que se tiene que hacer el control de autorizaciC3n de la vista
 			oAppDataModel.setProperty("/checkAuthView", true);
 
-			// Se indica que NO se accede por la vista de selección de vistas. Esto cambiará al acceder
-			// a la página de selección de vistas
+			// Se indica que NO se accede por la vista de selección de vistas. Esto cambiara al acceder
+			// a la pagina de seleccion de vistas
 			oAppDataModel.setProperty("/viewSelect", false);
 
-			// Se recupera los parámetros de la URL. 
-			// En los parámetros habrá uno que será el MOCK que indica de donde se obtienen los valores: true todo vendrá de los ficheros o mix que dependerá
-			// del atributo "bUseMock" del array de servicios en el fichero models.js.
-			var oUrlParams = jQuery.sap.getUriParameters().mParams;
+			// Se instancia el modelo para la configuración de las vistas
+			debugger;
+			this._oViewConfModel = new ViewConfModel(this);
 
-			// Se indica la configuración de donde se recuperarán los datos en SAP.
-			// El primer parámetro es el modelo donde se obtendrán los datos que contendrá dos campos:
-			// 1) Nombre /npm stardonde esta definido los datos en el manifest para recuperarlos. 2) Modelo de datos donde se guardará
-			// El segundo parámetro es el idioma
-			// El tercer parámetro es si los datos se recuperarán del mock de dos maneras: siempre del mock o dependiendo si el servicio ya esta implementado
-			//debugger;
-			models.setConfig([{
+			// Se indica la configuraciC3n de donde se recuperarC!n los datos en SAP.
+			// El primer parC!metro es el modelo donde se obtendrC!n los datos que contendrC! dos campos:
+			// 1) Nombre /npm stardonde esta definido los datos en el manifest para recuperarlos. 2) Modelo de datos donde se guardarC!
+			// El segundo parC!metro es el idioma
+			// El tercer parC!metro es si los datos se recuperarC!n del mock de dos maneras: siempre del mock o dependiendo si el servicio ya esta implementado
+
+			/*models.setConfig([{
 				name: "masterData",
 				model: this.getModel("masterData")
-			}], "EN", oUrlParams.mock && oUrlParams.mock[0]);
+			}], "EN", oUrlParams.mock && oUrlParams.mock[0]);*/
 
-			// Directorio donde estarán los archivos mock
-			models.setBaseDir("com.ivancio.zal30-ui5.model.mock");
+			// Directorio donde estarC!n los archivos mock
+			//models.setBaseDir("com.ivancio.zal30-ui5.model.mock");
 
 			// A nivel interno de UI5 se fuerza el uso del ingles
 			sap.ui.getCore().getConfiguration().setLanguage("en");
 
 			// Carga de las vistas para poder ser seleccionadas
-			this._getViews();
+			//this._getViews();
+		},
+		// Inicialización de los servicios de la aplicación
+		_initServices: function () {
+			// Se recupera los parametros de la URL. 
+			// En los parametros habria uno que sera el MOCK que indica de donde se obtienen los valores: true todo vendra de los ficheros o mix que dependera
+			// del atributo "bUseMock" del array de servicios en el fichero models.js.
+			var oUrlParams = jQuery.sap.getUriParameters().mParams;
+
+			// Se instancia el servicio de configuración de la vista pasandole: contexto del component necesario para poder acceder
+			// al modelo de la aplicación definido en el manifest y los parámetros generales de como ha de funcionar los servicios.
+			//
+			this._oViewConfService = new ViewConfService(this, {
+				language: "EN",				
+				mockDataDir: "com.ivancio.zal30-ui5.localService"
+			});
+
 		},
 		_getViews: function () {
 			var oAppDataModel = this.getModel("appData");
 
-			// El contexto actual se pasa a una variable para que no se pierda en las llamadas que se harán al modelo
+			// El contexto actual se pasa a una variable para que no se pierda en las llamadas que se harC!n al modelo
 			var that = this;
 
-			// El modelo tiene tres parámetros: parámetros del servicio, funcion cuando el servicio va bien, función cuando el servicio no va bien
+			// El modelo tiene tres parC!metros: parC!metros del servicio, funcion cuando el servicio va bien, funciC3n cuando el servicio no va bien
 			models.getViews(null,
 				function (oViews) {
 					// El nodo result que siempre devuelve el Gateway no lo queremos en este caso					
@@ -108,7 +137,7 @@ sap.ui.define([
 				});
 
 		},
-		// Proceso para la obtención de los datos de la vista
+		// Proceso para la obtenciC3n de los datos de la vista
 		_getViewData: function () {
 
 		}
