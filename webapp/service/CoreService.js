@@ -2,8 +2,9 @@ sap.ui.define([
 	"sap/ui/base/Object",
 	"sap/ui/model/json/JSONModel",
 	"sap/base/util/merge",
-	"sap/ui/model/Filter"
-], function (Object, JSONModel, merge, Filter) {
+	"sap/ui/model/Filter",
+	"com/ivancio/zal30-ui5/constants/constants"
+], function (Object, JSONModel, merge, Filter, constants) {
 	"use strict";
 
 	return Object.extend("com.ivancio.zal30-ui5.service.CoreService", {
@@ -43,10 +44,10 @@ sap.ui.define([
 		getBaseServices: function () {
 			return _mService;
 		},
-		
+
 		setConfig: function (aoModels, sLang, sMock) {
 			this._aoModel = aoModels,
-			this._sLanguage = sLang;
+				this._sLanguage = sLang;
 			this.setMockMode(sMock);
 		},
 
@@ -201,7 +202,7 @@ sap.ui.define([
 			this._bMock = (mConf.mock) ? mConf.mock : oUrlParams.mock && oUrlParams.mock[0];
 			this._aoModel = (mConf.aoModels) ? mConf.aoModels : [];
 			this._oMockDataModel = new JSONModel();
-			this._baseDir = (mConf.mockDataDir) ? mConf.mockDataDir : "hola";
+			this._MockbaseDir = (mConf.mockDataDir) ? mConf.mockDataDir : '';
 		}
 	});
 });

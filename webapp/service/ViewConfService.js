@@ -32,9 +32,13 @@ sap.ui.define([
 		//        Public methods        //	
 		//////////////////////////////////		  
 		constructor: function (oComponent, mConf) {
+			// A la configuración pasada se le añade el directorio donde estarán los ficheros mock
+			var mExtConf = merge({}, mConf, {
+				mockDataDir: "com.ivancio.zal30-ui5.localService"
+			});
 
 			// Se llama el core de los servicios pasandole los parámetros recibidos
-			CoreService.call(this, oComponent, mConf);
+			CoreService.call(this, oComponent, mExtConf);
 			
 			// Se añade la configuración propia para acceder a los servicios
 			this._addOwnConfig();
@@ -137,6 +141,7 @@ sap.ui.define([
 		//////////////////////////////////
 		_addOwnConfig: function (mConf) {
 
+			// Se informan los modelos oData donde se obtendrán los datos	
 			this.setConfig({
 				aoModels: [{
 					name: "masterData",

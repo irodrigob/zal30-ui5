@@ -64,6 +64,9 @@
 			"appData": {
 				"type": "sap.ui.model.json.JSONModel"
 			},
+			"ConfView": {
+				"type": "sap.ui.model.json.JSONModel"
+			},
 			"masterData": {
 				"dataSource": "MASTER_DATA_SRV",
 				"settings": {

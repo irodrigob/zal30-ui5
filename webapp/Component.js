@@ -4,8 +4,8 @@ sap.ui.define([
 	"com/ivancio/zal30-ui5/model/models",
 	"sap/m/BusyDialog",
 	"com/ivancio/zal30-ui5/service/ViewConfService",
-	"com/ivancio/zal30-ui5/model/ViewConfModel",
-], function (UIComponent, Device, models, BusyDialog, ViewConfService, ViewConfModel) {
+	"com/ivancio/zal30-ui5/state/ViewConfState",
+], function (UIComponent, Device, models, BusyDialog, ViewConfService, ViewConfState) {
 	"use strict";
 
 	return UIComponent.extend("com.ivancio.zal30-ui5.Component", {
@@ -13,7 +13,7 @@ sap.ui.define([
 		metadata: {
 			manifest: "json"
 		},
-		services: {
+		state: {
 			confView: "ViewConf",
 			dataView:"ViewData"
 		},
@@ -56,8 +56,8 @@ sap.ui.define([
 			this._oBusyDialog.close();
 		},
 		// Devuelve la variable con el servicio
-		getService: function (sService) {
-			return this["_o" + sService + "Service"];
+		getState: function (sState) {
+			return this["_o" + sState + "State"];
 		},
 		//////////////////////////////////
 		//                              //
@@ -75,13 +75,12 @@ sap.ui.define([
 			// Se indica que se tiene que hacer el control de autorizaciC3n de la vista
 			oAppDataModel.setProperty("/checkAuthView", true);
 
-			// Se indica que NO se accede por la vista de selección de vistas. Esto cambiara al acceder
+			// Se indica que NO se accede por la vista de selecciC3n de vistas. Esto cambiara al acceder
 			// a la pagina de seleccion de vistas
 			oAppDataModel.setProperty("/viewSelect", false);
 
-			// Se instancia el modelo para la configuración de las vistas
-			debugger;
-			this._oViewConfModel = new ViewConfModel(this);
+			// Se instancian las clase que gestiona los distintos estados de las vistas			
+			this._oViewConfState = new ViewConfState(this);
 
 			// Se indica la configuraciC3n de donde se recuperarC!n los datos en SAP.
 			// El primer parC!metro es el modelo donde se obtendrC!n los datos que contendrC! dos campos:
@@ -103,15 +102,15 @@ sap.ui.define([
 			// Carga de las vistas para poder ser seleccionadas
 			//this._getViews();
 		},
-		// Inicialización de los servicios de la aplicación
+		// InicializaciC3n de los servicios de la aplicaciC3n
 		_initServices: function () {
 			// Se recupera los parametros de la URL. 
 			// En los parametros habria uno que sera el MOCK que indica de donde se obtienen los valores: true todo vendra de los ficheros o mix que dependera
 			// del atributo "bUseMock" del array de servicios en el fichero models.js.
 			var oUrlParams = jQuery.sap.getUriParameters().mParams;
 
-			// Se instancia el servicio de configuración de la vista pasandole: contexto del component necesario para poder acceder
-			// al modelo de la aplicación definido en el manifest y los parámetros generales de como ha de funcionar los servicios.
+			// Se instancia el servicio de configuraciC3n de la vista pasandole: contexto del component necesario para poder acceder
+			// al modelo de la aplicaciC3n definido en el manifest y los parC!metros generales de como ha de funcionar los servicios.
 			//
 			this._oViewConfService = new ViewConfService(this, {
 				language: "EN",				

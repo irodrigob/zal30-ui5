@@ -1,11 +1,13 @@
 sap.ui.define([
-	"sap/ui/base/Object"
+	"sap/ui/base/Object",
+	"com/ivancio/zal30-ui5/constants/constants"
 ], function (
-	Object
+	Object,
+	constants
 ) {
 	"use strict";
 
-	return Object.extend("com.ivancio.zal30-ui5.model.ViewBaseModel", {
+	return Object.extend("com.ivancio.zal30-ui5.state.ViewBaseState", {
 		constructor: function (oComponent) {
 			Object.call(this);
 
