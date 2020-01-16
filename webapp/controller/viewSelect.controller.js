@@ -10,7 +10,6 @@ sap.ui.define([
 ], function (BaseController, MessageToast, Filter, Fragment, Log, models, constants, ViewConfState) {
 	"use strict";
 
-	var _inputViewID = ''; // Guarda el ID del control input para introducir la vista  
 
 	return BaseController.extend("com.ivancio.zal30-ui5.controller.ViewSelect", {
 
@@ -32,14 +31,10 @@ sap.ui.define([
 			this._initModelData();
 		},
 
-		// Método que gestiona la ayuda para bC:squeda de las vistas
+		// Método que gestiona la ayuda para busqueda de las vistas
 		onHandleViewHelp: function (oEvent) {
 			// Se recupera el valor actual para aplicar al filtro de la ventana de vistas
 			var sInputValue = oEvent.getSource().getValue();
-
-			// Se guarda en una variable global el ID del input de vistas. Este servirC! para posteriormente
-			// saber donde guardar el valor
-			this._inputViewID = oEvent.getSource().getId();
 
 			// se crea la ayuda para bC:squeda si no esta creada previamente
 			if (!this._valueHelpDialog) {
@@ -147,7 +142,7 @@ sap.ui.define([
 			// Si realmente hay algo seleccionado
 			if (oSelectedItem) {
 				// Se recupera el objeto input en base al ID guardado al inicio
-				var oViewInput = this.byId(this._inputViewID);
+				var oViewInput = this.byId(oEvent.getSource().getId());
 
 				// En el título se ha puesto el nombre técnico de la vista, que se aprovecha para guardarlo en la variable         
 				oViewInput.setSelectedKey(oSelectedItem.getTitle());
@@ -191,7 +186,7 @@ sap.ui.define([
 			this.checkAuthView(sViewName, {
 				success: function (oAuth) {
 					that._oOwnerComponent.closeBusyDialog();
-					var oViewInput = that.byId("viewInput");
+					var oViewInput = that.byId(constants.objectsId.viewSelect, viewInput);
 
 					if (oAuth.LEVELAUTH == constants.mLevelAuth.non) {
 						oViewInput.setValueState(sap.ui.core.ValueState.Error);
@@ -221,9 +216,28 @@ sap.ui.define([
 			// Se indica que se accede por la vista de selección de vistas
 			this._oAppDataModel.setProperty("/viewSelect", true);
 
-			// Se recupera la clase que gestiona los estado de la configuración de las vistas
-			debugger;
+			// Se recupera la clase que gestiona los estado de la configuración de las vistas			
 			this._viewConfState = this._oOwnerComponent.getState(this._oOwnerComponent.state.confView);
+
+			// Lectura de las vistas que se pueden seleccionar
+			this._getViewList();
+
+		},
+		// Lectura de las vistas que se pueden seleccionar
+		_getViewList: function () {
+			// Se pone el loader en el campo antes de hacer la lectura de las vistas						
+			var oViewInput = this.byId(constants.objectsId.viewSelect.viewInput);
+			oViewInput.setBusy(true);
+						
+			this._viewConfState.getViewList({
+				success: function (mList) {
+					oViewInput.setBusy(false); // Se quita el indicador de ocupado
+				},
+				error: function () {
+					oViewInput.setBusy(false); // Se quita el indicador de ocupado
+				}
+			})
+
 		}
 
 	});

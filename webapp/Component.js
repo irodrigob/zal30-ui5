@@ -15,7 +15,7 @@ sap.ui.define([
 		},
 		state: {
 			confView: "ViewConf",
-			dataView:"ViewData"
+			dataView: "ViewData"
 		},
 		//////////////////////////////////
 		//                              //
@@ -88,19 +88,21 @@ sap.ui.define([
 			// El segundo parC!metro es el idioma
 			// El tercer parC!metro es si los datos se recuperarC!n del mock de dos maneras: siempre del mock o dependiendo si el servicio ya esta implementado
 
-			/*models.setConfig([{
-				name: "masterData",
-				model: this.getModel("masterData")
-			}], "EN", oUrlParams.mock && oUrlParams.mock[0]);*/
 
-			// Directorio donde estarC!n los archivos mock
-			//models.setBaseDir("com.ivancio.zal30-ui5.model.mock");
 
 			// A nivel interno de UI5 se fuerza el uso del ingles
 			sap.ui.getCore().getConfiguration().setLanguage("en");
 
+			/*models.setConfig([{
+				name: "masterData",
+				model: this.getModel("masterData")
+			}], "EN", ""); // oUrlParams.mock && oUrlParams.mock[0]
+
+			// Directorio donde estarC!n los archivos mock
+			models.setBaseDir("com.ivancio.zal30-ui5.model.mock");
+
 			// Carga de las vistas para poder ser seleccionadas
-			//this._getViews();
+			//this._getViews();*/
 		},
 		// InicializaciC3n de los servicios de la aplicaciC3n
 		_initServices: function () {
@@ -113,7 +115,7 @@ sap.ui.define([
 			// al modelo de la aplicaciC3n definido en el manifest y los parC!metros generales de como ha de funcionar los servicios.
 			//
 			this._oViewConfService = new ViewConfService(this, {
-				language: "EN",				
+				language: "EN",
 				mockDataDir: "com.ivancio.zal30-ui5.localService"
 			});
 
@@ -124,6 +126,7 @@ sap.ui.define([
 			// El contexto actual se pasa a una variable para que no se pierda en las llamadas que se harC!n al modelo
 			var that = this;
 
+			debugger;
 			// El modelo tiene tres parC!metros: parC!metros del servicio, funcion cuando el servicio va bien, funciC3n cuando el servicio no va bien
 			models.getViews(null,
 				function (oViews) {

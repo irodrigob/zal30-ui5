@@ -64,7 +64,7 @@
 			"appData": {
 				"type": "sap.ui.model.json.JSONModel"
 			},
-			"ConfView": {
+			"ViewConf": {
 				"type": "sap.ui.model.json.JSONModel"
 			},
 			"masterData": {

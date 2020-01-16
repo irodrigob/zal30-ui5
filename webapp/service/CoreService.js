@@ -139,8 +139,8 @@ sap.ui.define([
 			};
 			// Si el parámetro "mock" de la URL esta informado, o si no lo esta, a nivel de servicio si que se indica se leen los datos
 			// del mock
-			if (_bMock === true || (_bMock === undefined && oServiceConfig.bUseMock)) { // use mock data
-				that.loadMockData(oServiceConfig, oParam);
+			if (this._bMock === true || (this._bMock === undefined && oServiceConfig.bUseMock)) { // use mock data
+				this.loadMockData(oServiceConfig, oParam);
 			} else {
 				// Use real backend ODATA CRUD functions
 

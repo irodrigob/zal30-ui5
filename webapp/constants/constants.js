@@ -11,6 +11,11 @@ sap.ui.define([], function () {
 			error: "E",
 			success: "S",
 			warning: "W"
+		},
+		objectsId:{
+			viewSelect:{
+				viewInput:"viewInput"	
+			}
 		}
 	};
 	return oConstants

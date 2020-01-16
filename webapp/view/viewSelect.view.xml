@@ -25,16 +25,16 @@
 								valueHelpRequest="onHandleViewHelp" 
 								change="onChangeView"
 								showSuggestion="true" 
-								suggestionItems="{model: 'appData', path: '/views'}" 
+								suggestionItems="{model: 'ViewConf', path: '/viewList'}" 
 								suggestionItemSelected="suggestionViewSelected" 
 								width="60%"
 								value="{model:'ViewSelectModel', path:'/viewName'}">
 								<suggestionItems>
 									<!-- Es lo mismo poner: {model: 'appData', path: 'VIEWDESC'}
 										 que: {appData>VIEWDESC} -->
-									<core:ListItem key="{appData>VIEWNAME}" 
-										text="{model: 'appData', path: 'VIEWDESC'}" 
-										additionalText="{appData>VIEWNAME}" />
+									<core:ListItem key="{ViewConf>VIEWNAME}" 
+										text="{model: 'ViewConf', path: 'VIEWDESC'}" 
+										additionalText="{ViewConf>VIEWNAME}" />
 								</suggestionItems>
 								<layoutData>
 									<FlexItemData growFactor="1" />

@@ -4,12 +4,12 @@
 	<SelectDialog
 		title="{i18n>viewHelp.title}"
 		class="sapUiPopupWithPadding"
-		items="{model: 'appData', path: '/views'}"
+		items="{model: 'ViewConf', path: '/viewList'}"
 		search="_handleViewHelpSearch"
 		confirm="_handleViewHelpClose"
 		cancel="_handleViewHelpClose">
 		<StandardListItem						
-			title="{appData>VIEWNAME}"
-			description="{appData>VIEWDESC}" />
+			title="{ViewConf>VIEWNAME}"
+			description="{ViewConf>VIEWDESC}" />
 	</SelectDialog>
 </core:FragmentDefinition>
