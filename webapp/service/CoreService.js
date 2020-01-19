@@ -45,10 +45,13 @@ sap.ui.define([
 			return _mService;
 		},
 
-		setConfig: function (aoModels, sLang, sMock) {
-			this._aoModel = aoModels,
-				this._sLanguage = sLang;
-			this.setMockMode(sMock);
+		// Establece el modelo oData para la obtención de los datos
+		setModelOdata: function (aoModels) {
+			this._aoModel = aoModels;
+		},
+		// Establece la ruta base donde se buscarán los ficheros
+		setMockBaseDir: function (sBaseDir) {
+			this._MockbaseDir = sBaseDir;
 		},
 
 		getMock: function () {
@@ -77,7 +80,7 @@ sap.ui.define([
 		},
 
 		loadMockData: function (oServiceConfig, oParam) {
-			this._oMockDataModel.loadData(jQuery.sap.getModulePath(_baseDir) + oServiceConfig.mockFile, undefined, false);
+			this._oMockDataModel.loadData(jQuery.sap.getModulePath(this._MockbaseDir) + oServiceConfig.mockFile, undefined, false);
 			if (oParam.success) {
 				oParam.success(this._oMockDataModel.getData());
 			}
@@ -137,6 +140,7 @@ sap.ui.define([
 				urlParameters: this.getUrlParameters(oParam.urlParameters),
 				async: oParam.bSynchronous === true ? false : true
 			};
+
 			// Si el parámetro "mock" de la URL esta informado, o si no lo esta, a nivel de servicio si que se indica se leen los datos
 			// del mock
 			if (this._bMock === true || (this._bMock === undefined && oServiceConfig.bUseMock)) { // use mock data
@@ -199,10 +203,10 @@ sap.ui.define([
 			// del atributo "bUseMock" del array de servicios en el fichero models.js.
 			var oUrlParams = jQuery.sap.getUriParameters().mParams;
 
-			this._bMock = (mConf.mock) ? mConf.mock : oUrlParams.mock && oUrlParams.mock[0];
-			this._aoModel = (mConf.aoModels) ? mConf.aoModels : [];
+			// Si el modo mock viene por parámetro tiene prioridad sobre el de la URL
+			this.setMockMode((mConf.mock) ? mConf.mock : oUrlParams.mock && oUrlParams.mock[0]);
+
 			this._oMockDataModel = new JSONModel();
-			this._MockbaseDir = (mConf.mockDataDir) ? mConf.mockDataDir : '';
 		}
 	});
 });

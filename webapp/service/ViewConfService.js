@@ -1,8 +1,9 @@
 sap.ui.define([
 	"com/ivancio/zal30-ui5/service/CoreService",
 	"sap/base/util/merge",
-	"sap/ui/model/Filter"
-], function (CoreService, merge, Filter) {
+	"sap/ui/model/Filter",
+	"com/ivancio/zal30-ui5/constants/constants"
+], function (CoreService, merge, Filter,constants) {
 	"use strict";
 
 	//////////////////////////////////
@@ -31,26 +32,29 @@ sap.ui.define([
 		//        Public methods        //	
 		//////////////////////////////////		  
 		constructor: function (oComponent, mConf) {
-			// A la configuración pasada se le añade el directorio donde estarán los ficheros mock
-			var mExtConf = merge({}, mConf, {
-				mockDataDir: "com.ivancio.zal30-ui5.localService"
-			});
 
 			// Se llama el core de los servicios pasandole los parámetros recibidos
-			CoreService.call(this, oComponent, mExtConf);
+			CoreService.call(this, oComponent, mConf);
 
 			// Se añade la configuración propia para acceder a los servicios
-			this._addOwnConfig();
+
+			// Se informan los modelos oData donde se obtendrán los datos	
+			this.setModelOdata([{
+				name: "masterData",
+				model: this._oOwnerComponent.getModel("masterData")
+			}]);
+
+			// Se informa el directorio donde están los datos del mock
+			this.setMockBaseDir("com.ivancio.zal30-ui5.localService");
 		},
 		//////////////////////////////////	
 		//        Services              //	
 		//////////////////////////////////		  
-		getViews: function (oParameters, successHandler, errorHandler) {
+		getViews: function (oParameters, oSuccessHandler, oErrorHandler) {
 
 			// Variable local que indica si el Gateway esta disponible
 			var bgwAvailable = false;
-			// Guardo el contexto actual en una variable local
-			var that = this;
+
 			// Se recupera el modelo donde se guardarC! la informaciC3n
 			var oModel = this.getModel(_mService.getViews.oDataModel);
 
@@ -67,29 +71,36 @@ sap.ui.define([
 		    //},
 			this);*/
 			oModel.metadataLoaded().then(() => {
-				debugger;
 				// Si entra aqui es que hay gateway por lo tanto cambio a true la variable local desde donde se llama
 				bgwAvailable = true;
 
-				// Se llama al servicio para obtener los datos de Gateway o del mock				
+
+				// Se le pasa el filtro de idioma
+				var oFilters = [new Filter(constants.services.filter.langu, sap.ui.model.FilterOperator.EQ, this._sLanguage)];
+				// Si el parámetro existe entonces se añade un segundo filtro
+				if (oParameters && oParameters.view)
+					oFilters.push(new Filter(constants.services.filter.viewName, sap.ui.model.FilterOperator.EQ, oParameters, view));
+
+
+				// Se llama al servicio para obtener los datos de Gateway o del mock
 				this.callSapService(_mService.getViews, {
-					filters: [new Filter("LANGU", sap.ui.model.FilterOperator.EQ, this._sLanguage)],
+					filters: oFilters,
 					success: function (oData) {
-						if (successHandler) {
+						if (oSuccessHandler) {
 							if (oData) {
-								successHandler(oData);
+								oSuccessHandler(oData);
 							} else {
-								if (errorHandler) {
-									errorHandler();
+								if (oErrorHandler) {
+									oErrorHandler();
 								}
 							}
 						}
 					},
-					error: errorHandler
+					error: oErrorHandler
 				});
 			});
 
-	
+
 
 			/*
 				// Se llama al servicio para obtener los datos del mock si no hay Gateway
@@ -112,7 +123,7 @@ sap.ui.define([
 			} */
 
 		},
-		// Obtiene la autorizaciC3n para la vista
+		// Obtiene la autorización para la vista
 		checkAuthView: function (oParameters, successHandler, errorHandler) {
 			// Se recupera el modelo donde se guardarC! la informaciC3n
 			var oModel = this.getModel(_mService.checkAuthView.oDataModel);
@@ -140,20 +151,13 @@ sap.ui.define([
 				error: errorHandler
 			});
 
-		},
+		}
 		//////////////////////////////////
 		//                              //
 		//        Private methods       //
 		//                              //
 		//////////////////////////////////
-		_addOwnConfig: function (mConf) {
 
-			// Se informan los modelos oData donde se obtendrán los datos	
-			this.setConfig([{
-				name: "masterData",
-				model: this._oOwnerComponent.getModel("masterData")
-			}]);
-		}
 
 	});
 	return oViewConfService;

@@ -1,10 +1,8 @@
 sap.ui.define([
 	"com/ivancio/zal30-ui5/state/ViewBaseState",
-	"com/ivancio/zal30-ui5/service/ViewConfService"
-], function (
-	ViewBaseState,
-	ViewConfService
-) {
+	"com/ivancio/zal30-ui5/service/ViewConfService",
+	"com/ivancio/zal30-ui5/constants/constants"
+], function (ViewBaseState, ViewConfService, constants) {
 	"use strict";
 
 
@@ -21,12 +19,12 @@ sap.ui.define([
 		},
 		// Obtiene la lista de vistas 
 		getViewList: function (oParams) {
-			var oViewConfModel = this._oOwnerComponent.getModel("ViewConf");
-			
+			var oViewConfModel = this._oOwnerComponent.getModel(constants.jsonModel.viewConf);
+
 			// El modelo tiene tres parametros: parC!metros del servicio, funcion cuando el servicio va bien, funcion cuando el servicio no va bien
 			this._oViewConfService.getViews(null,
 				function (oViews) {
-					// El nodo result que siempre devuelve el Gateway no lo queremos en este caso					
+					// El nodo result que siempre devuelve el Gateway no lo queremos en este caso							
 					oViewConfModel.setProperty("/viewList", oViews.results);
 
 					// Si se le pasado parámetros para el success se ejecuta
@@ -41,6 +39,46 @@ sap.ui.define([
 						oParams.error(oViews.results);
 					}
 				});
+		},
+		// Obtención de los datos de una vista individual. Se usa para la vista de selección de datos
+		// cuando se accede directamente de dicha vista por parámetro.
+		// El servicio en SAP es el mismo que el obtener la lista de vistas, pero se le pasa la vista
+		// por parámetro
+		getSingleView: function (oParams) {
+			var oViewConfModel = this._oOwnerComponent.getModel(constants.jsonModel.viewConf);
+
+			this._oViewConfService.getViews({
+					view: oParams.view
+				},
+				function (oViews) {
+					// El nodo result que siempre devuelve el Gateway no lo queremos en este caso							
+					oViewConfModel.setProperty("/viewList", oViews.results);
+
+					// Si se le pasado parámetros para el success se ejecuta					
+					if (oParams.success) {
+						oParams.success(oViews.results);
+					}
+				},
+				// funcion sin nombre se llama a si misma sin necesidad de hacerlo manualmente
+				function () {
+					// Si se le pasado parámetros para el error se ejecuta
+					if (oParams.error) {
+						oParams.error(oViews.results);
+					}
+				});
+
+
+		},
+		// Verifica si una vista esta en el listado de vistas
+		getViewInfo: function (sViewName) {
+			var oViewConfModel = this._oOwnerComponent.getModel(constants.jsonModel.viewConf);			
+
+			// Se recuperan las vista que estC!n en el modelo de datos
+			var aViews = oViewConfModel.getProperty("/viewList");
+
+			// Si no existe el find devuelve un "undefined"
+			return aViews.find(view => view.VIEWNAME === sViewName)
+
 		},
 		//////////////////////////////////	
 		//        Private methods       //	

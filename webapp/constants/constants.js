@@ -12,10 +12,22 @@ sap.ui.define([], function () {
 			success: "S",
 			warning: "W"
 		},
-		objectsId:{
-			viewSelect:{
-				viewInput:"viewInput"	
+		objectsId: {
+			viewSelect: {
+				viewInput: "viewInput"
 			}
+		},
+		services: {
+			filter: {
+				langu: "LANGU",
+				viewName: "VIEW_NAME"
+			}
+		},
+		jsonModel: {			
+			viewConf: "ViewConf",
+			ViewSelect: "ViewSelectModel",
+			viewData: "ViewData",
+			viewXMLData: "ViewXMLDataModel"
 		}
 	};
 	return oConstants

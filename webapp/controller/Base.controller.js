@@ -27,15 +27,6 @@ sap.ui.define([
 
 			oRouter.navTo(sRoute, oParameters || {});
 		},
-		// Devuelve la info de una vista
-		getViewInfo: function (sViewName) {
-
-			// Se recuperan las vista que estC!n en el modelo de datos
-			var aViews = this._oAppDataModel.getProperty("/views");
-
-			// Si no existe el find devuelve un "undefined"
-			return aViews.find(view => view.VIEWNAME === sViewName)
-        },
         // Realiza la validación génerica de chequeo de autorizacion
         // Esta función permite pasarle que código se quiere que se ejecute si el servicio
         // termina bien o mal

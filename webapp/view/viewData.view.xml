@@ -14,7 +14,7 @@
         showNavButton="true" 
         navButtonPress="onNavBack"
         showSubHeader="true" 
-        title="{ model: 'ViewDataModel', path:'/viewName' } - { model: 'ViewDataModel', path:'/viewDesc' }" 
+        title="{ model: 'ViewXMLDataModel', path:'/viewName' } - { model: 'ViewXMLDataModel', path:'/viewDesc' }" 
         titleAlignment="Auto" 
         titleLevel="Auto" 
         busy="false" 

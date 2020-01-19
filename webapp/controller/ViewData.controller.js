@@ -2,10 +2,10 @@ sap.ui.define([
 	"com/ivancio/zal30-ui5/controller/Base.controller",
 	"sap/m/MessageToast",
 	"sap/m/MessageBox",
-	"com/ivancio/zal30-ui5/model/models",
 	"com/ivancio/zal30-ui5/constants/constants",
 	"com/ivancio/zal30-ui5/component/general/LogDialog/logDialog",
-], function (BaseController, MessageToast, MessageBox, models, constants, logDialog) {
+	"com/ivancio/zal30-ui5/state/ViewConfState"
+], function (BaseController, MessageToast, MessageBox, constants, logDialog, ViewConfState) {
 	"use strict";
 
 	return BaseController.extend("com.ivancio.zal30-ui5.controller.ViewData", {
@@ -19,7 +19,9 @@ sap.ui.define([
 			this._oOwnerComponent = this.getOwnerComponent();
 			this._oAppDataModel = this._oOwnerComponent.getModel("appData");
 			this._oI18nResource = this._oOwnerComponent.getModel("i18n").getResourceBundle();
-			this._initModel(); // Llamada al método 
+
+			// Inicialización del modelo de datos	
+			this._initModelData();
 
 			// para la página actual del router se le indica que llame al método _onRouteMatched de la propia clase. Esto hará que cada
 			// vez que se entre al detalle se llamará a dicho método
@@ -43,9 +45,8 @@ sap.ui.define([
 		// Método que entra cuando se hace a la página desde la routing
 		_onRouteMatched: function (oEvent) {
 
-			// Se recupera si se ha entrado por la vista de selección de vistas
-			// Se indica que se accede por la vista de selección de vistas
-			this._oAppDataModel.setProperty("/viewSelect", true);
+			// Se recupera si se ha entrado por la vista de selección de vistas			
+			var viewSelect = this._oAppDataModel.getProperty("/viewSelect");
 
 			this._oAppDataModel.setProperty("/section", this._mSections.viewData);
 
@@ -55,8 +56,41 @@ sap.ui.define([
 			// Se guarda en el modelo
 			this._oViewDataModel.setProperty("/viewName", sViewName);
 
+			debugger;	
+			// Si la página viene de la selección de vista se valida que la vista pasada por parametro es valida y no se ha
+			// modificado
+			if (viewSelect) {
+				var mViewInfo = this._viewConfState.getViewInfo(sViewName);
+
+				if (mViewInfo) {
+					this._oViewDataModel.setProperty("/viewDesc", mViewInfo.VIEWDESC);
+				} else {
+					// Si no existe se devuelve el mensaje error que no es valida o no tiene autorizacion y se vuelve a la pantalla de seleccion
+					// Mensaje de vista 
+					MessageToast.show(this._oI18nResource.getText("ViewSelect.viewNotValid"));
+
+					// Si se ha accedido por la vista de selección se redirige a dicha página si no es valida
+					this.navRoute(this._mSections.viewSelect);
+
+				}
+
+			} else {
+				this._oOwnerComponent.showBusyDialog();
+				debugger;
+				this._viewConfState.getViewList({
+					view: sViewName,
+					success: function (mList) {
+
+					},
+					error: function () {
+
+					}
+				})
+
+			}
+
 			// Se recupera los datos de la vista para saber la descripcion			
-			var mViewInfo = this.getViewInfo(sViewName);
+			/*var mViewInfo = this.getViewInfo(sViewName);
 			if (mViewInfo) {
 
 				this._oViewDataModel.setProperty("/viewDesc", mViewInfo.VIEWDESC);
@@ -70,18 +104,26 @@ sap.ui.define([
 
 
 			} else {
-				// Si la vista no es valida se vuelve a la selección de vistas
+				
+				// Mensaje de vista 
+				MessageToast.show(this._oI18nResource.getText("ViewSelect.viewNotValid"));
+
+				// Si se ha accedido por la vista de selección se redirige a dicha página si no es valida
 				this.navRoute(this._mSections.viewSelect);
-			}
+			}*/
 
 
 		},
 		// Inicialización del modelo de datos
-		_initModel: function () {
+		_initModelData: function () {
 			this._oViewDataModel = new sap.ui.model.json.JSONModel();
+
 			this._resetModel(); // Reset, en este caso, creación del modelo de datos
 
-			this.getView().setModel(this._oViewDataModel, "ViewDataModel");
+			this.getView().setModel(this._oViewDataModel, constants.jsonModel.viewXMLData);
+
+			// Se recupera la clase que gestiona los estado de la configuración de las vistas			
+			this._viewConfState = this._oOwnerComponent.getState(this._oOwnerComponent.state.confView);
 		},
 		// Reset del modelo de datos
 		_resetModel: function () {

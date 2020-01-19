@@ -3,22 +3,26 @@
         {            
             "LANGU": "E",
             "VIEWNAME": "ZSAT_T_111",
-            "VIEWDESC": "View of reports"
+            "VIEWDESC": "View of reports",
+            "LEVELAUTH":"F"
         },
         {
             "LANGU": "E",
             "VIEWNAME": "ZRTN_T_2222",
-            "VIEWDESC": "User of applications"
+            "VIEWDESC": "User of applications",
+            "LEVELAUTH":"F"
         },
         {
             "LANGU": "E",
             "VIEWNAME": "ZSAT_T_3333",
-            "VIEWDESC": "Stores"
+            "VIEWDESC": "Stores",
+            "LEVELAUTH":"F"
         },
         {
             "LANGU": "E",
             "VIEWNAME": "USR01",
-            "VIEWDESC": "Users of system"
+            "VIEWDESC": "Users of system",
+            "LEVELAUTH":"R"
         }
     ]
 }

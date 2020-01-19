@@ -22,13 +22,13 @@ sap.ui.define([
 			this._oOwnerComponent = this.getOwnerComponent();
 			this._oAppDataModel = this._oOwnerComponent.getModel("appData");
 			this._oI18nResource = this._oOwnerComponent.getModel("i18n").getResourceBundle();
-			this._initModel();
+
+			// Inicialización del modelo de datos
+			this._initModelData();
 
 			// Se asocia el método que se ejecutará cada vez que se navegue a este método por el routing
 			this._oOwnerComponent.getRouter().getRoute(this._mSections.viewSelect).attachPatternMatched(this._onRouteMatched, this);
 
-			// Inicialización del modelo de datos
-			this._initModelData();
 		},
 
 		// Método que gestiona la ayuda para busqueda de las vistas
@@ -52,6 +52,7 @@ sap.ui.define([
 		},
 		// Navega a la vista introducida
 		onGoViewData: function (oEvent) {
+			var that = this;
 
 			// Se recupera la vista seleccionada
 			var viewName = this._oViewSelectModel.getProperty("/viewName");
@@ -61,10 +62,12 @@ sap.ui.define([
 			// Se valida que la vista introducida sea valida
 			if (this._checkValidViewName(viewName)) {
 
-				// Se valida que se tenga autorización. Si la tiene se irá a ver los datos, en caso contrario se volverá al
-				// proceso
-				this._checkAuthView(viewName);
+				oViewInput.setValueState(sap.ui.core.ValueState.None); // Se quita el posible estado que tenga
 
+				// Se navega hacía la página con la vista
+				that.navRoute(that._mSections.viewData, {
+					view: viewName
+				});
 			} else {
 
 				oViewInput.setValueState(sap.ui.core.ValueState.Error);
@@ -101,6 +104,7 @@ sap.ui.define([
 				// que el campo es erróneo
 				this._oViewSelectModel.setProperty("/viewSelected", true);
 				oViewInput.setValueState(sap.ui.core.ValueState.None);
+				this._oViewSelectModel.setProperty("/viewName", oEvent.getParameter("value"))
 
 			}
 		},
@@ -109,20 +113,14 @@ sap.ui.define([
 		//        Private methods       //
 		//                              //
 		//////////////////////////////////
-		// Modelo interno de la vista
-		_initModel: function () {
-			this._oViewSelectModel = new sap.ui.model.json.JSONModel();
-			this._resetModel(); // Reset del modelo de datos
 
-			this.getView().setModel(this._oViewSelectModel, "ViewSelectModel");
-		},
 		// Validación que la vista exista
 		_checkValidViewName: function (sViewName) {
 			// Los datos de las vistas válidas se han recuperado previamente para poder hacer las sugerencias y ayudas
 			// para búsqueda. Por lo tanto la validación es tan simple como validar que exista la vista pasada por parámetro en el array
 
 			// Si no existe el método devuelve un "undefined"            
-			if (this.getViewInfo(sViewName))
+			if (this._viewConfState.getViewInfo(sViewName))
 				return true;
 			else
 				return false;
@@ -142,7 +140,7 @@ sap.ui.define([
 			// Si realmente hay algo seleccionado
 			if (oSelectedItem) {
 				// Se recupera el objeto input en base al ID guardado al inicio
-				var oViewInput = this.byId(oEvent.getSource().getId());
+				var oViewInput = this.byId(constants.objectsId.viewSelect.viewInput);
 
 				// En el título se ha puesto el nombre técnico de la vista, que se aprovecha para guardarlo en la variable         
 				oViewInput.setSelectedKey(oSelectedItem.getTitle());
@@ -161,8 +159,8 @@ sap.ui.define([
 			// Guardo la sección actual
 			this._oAppDataModel.setProperty("/section", this._mSections.viewSelect);
 
-			// Se tiene que hacer el control de autorización de la vista
-			this._oAppDataModel.setProperty("/checkAuthView", true);
+			// Se indica que se accede por la vista de selección de vistas
+			this._oAppDataModel.setProperty("/viewSelect", true);
 
 			// Si la sección anterior y la actual difiere hay que resetear el modelo
 			if (sPreviousSection !== this._mSections.viewSelect) {
@@ -196,9 +194,6 @@ sap.ui.define([
 					} else {
 						oViewInput.setValueState(sap.ui.core.ValueState.None); // Se quita el posible estado que tenga
 
-						// No se tiene que hacer el control de autorización porque ya se ha hecho	
-
-
 						// Se navega hacía la página con la vista
 						that.navRoute(that._mSections.viewData, {
 							view: sViewName
@@ -213,8 +208,10 @@ sap.ui.define([
 		},
 		// Inicialización del modelo de datos y carga inicial de datos
 		_initModelData: function () {
-			// Se indica que se accede por la vista de selección de vistas
-			this._oAppDataModel.setProperty("/viewSelect", true);
+			this._oViewSelectModel = new sap.ui.model.json.JSONModel();
+			this._resetModel(); // Reset del modelo de datos
+
+			this.getView().setModel(this._oViewSelectModel, constants.jsonModel.viewSelect);
 
 			// Se recupera la clase que gestiona los estado de la configuración de las vistas			
 			this._viewConfState = this._oOwnerComponent.getState(this._oOwnerComponent.state.confView);
@@ -228,7 +225,7 @@ sap.ui.define([
 			// Se pone el loader en el campo antes de hacer la lectura de las vistas						
 			var oViewInput = this.byId(constants.objectsId.viewSelect.viewInput);
 			oViewInput.setBusy(true);
-						
+
 			this._viewConfState.getViewList({
 				success: function (mList) {
 					oViewInput.setBusy(false); // Se quita el indicador de ocupado
