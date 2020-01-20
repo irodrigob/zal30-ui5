@@ -55,8 +55,13 @@ sap.ui.define([
 
 			// Se guarda en el modelo
 			this._oViewDataModel.setProperty("/viewName", sViewName);
+			this._oViewDataModel.setProperty("/viewDesc", "");
 
-			debugger;	
+			// Se muestra el loader para toda la aplicación porque se van a empezar a llamar servicios y puede demorarse un poco
+			this._oOwnerComponent.showBusyDialog();
+
+			var that = this;
+
 			// Si la página viene de la selección de vista se valida que la vista pasada por parametro es valida y no se ha
 			// modificado
 			if (viewSelect) {
@@ -70,22 +75,28 @@ sap.ui.define([
 					MessageToast.show(this._oI18nResource.getText("ViewSelect.viewNotValid"));
 
 					// Si se ha accedido por la vista de selección se redirige a dicha página si no es valida
-					this.navRoute(this._mSections.viewSelect);
+					that.navRoute(this._mSections.viewSelect);
 
 				}
 
 			} else {
-				this._oOwnerComponent.showBusyDialog();
-				debugger;
+
+				// Se llama al mismo método que devuelve la lista de vista pero pasandole la vista concreta que se quiere recuperar.
 				this._viewConfState.getViewList({
-					view: sViewName,
-					success: function (mList) {
+						viewName: sViewName
+					},
+					function (mList) {
+						that._oOwnerComponent.closeBusyDialog();
+						// Solo si devuelve datos se informa la descripción de la vista y se comenzará a buscar los datos
+						if (mList[0] && mList[0].VIEWDESC) {
+							that._oViewDataModel.setProperty("/viewDesc", mList[0].VIEWDESC);
+						} else {
+							MessageToast.show(that._oI18nResource.getText("ViewSelect.viewNotValid"));
+						}
 
 					},
-					error: function () {
-
-					}
-				})
+					function () {}
+				)
 
 			}
 

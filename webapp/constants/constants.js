@@ -20,7 +20,7 @@ sap.ui.define([], function () {
 		services: {
 			filter: {
 				langu: "LANGU",
-				viewName: "VIEW_NAME"
+				viewName: "VIEWNAME"
 			}
 		},
 		jsonModel: {			

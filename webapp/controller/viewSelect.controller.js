@@ -226,14 +226,14 @@ sap.ui.define([
 			var oViewInput = this.byId(constants.objectsId.viewSelect.viewInput);
 			oViewInput.setBusy(true);
 
-			this._viewConfState.getViewList({
-				success: function (mList) {
+			this._viewConfState.getViewList(null,
+				function (mList) {
 					oViewInput.setBusy(false); // Se quita el indicador de ocupado
 				},
-				error: function () {
+				function () {
 					oViewInput.setBusy(false); // Se quita el indicador de ocupado
 				}
-			})
+			);
 
 		}
 

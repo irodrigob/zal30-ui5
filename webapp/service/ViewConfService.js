@@ -3,7 +3,7 @@ sap.ui.define([
 	"sap/base/util/merge",
 	"sap/ui/model/Filter",
 	"com/ivancio/zal30-ui5/constants/constants"
-], function (CoreService, merge, Filter,constants) {
+], function (CoreService, merge, Filter, constants) {
 	"use strict";
 
 	//////////////////////////////////
@@ -74,12 +74,11 @@ sap.ui.define([
 				// Si entra aqui es que hay gateway por lo tanto cambio a true la variable local desde donde se llama
 				bgwAvailable = true;
 
-
 				// Se le pasa el filtro de idioma
 				var oFilters = [new Filter(constants.services.filter.langu, sap.ui.model.FilterOperator.EQ, this._sLanguage)];
 				// Si el parámetro existe entonces se añade un segundo filtro
-				if (oParameters && oParameters.view)
-					oFilters.push(new Filter(constants.services.filter.viewName, sap.ui.model.FilterOperator.EQ, oParameters, view));
+				if (oParameters && oParameters.viewName)
+					oFilters.push(new Filter(constants.services.filter.viewName, sap.ui.model.FilterOperator.EQ, oParameters.viewName));
 
 
 				// Se llama al servicio para obtener los datos de Gateway o del mock

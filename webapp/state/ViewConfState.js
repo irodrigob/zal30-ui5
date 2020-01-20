@@ -18,58 +18,29 @@ sap.ui.define([
 
 		},
 		// Obtiene la lista de vistas 
-		getViewList: function (oParams) {
+		getViewList: function (oParams, oSuccessHandler, oErrorHandler) {
 			var oViewConfModel = this._oOwnerComponent.getModel(constants.jsonModel.viewConf);
 
 			// El modelo tiene tres parametros: parC!metros del servicio, funcion cuando el servicio va bien, funcion cuando el servicio no va bien
-			this._oViewConfService.getViews(null,
+			this._oViewConfService.getViews(oParams,
 				function (oViews) {
 					// El nodo result que siempre devuelve el Gateway no lo queremos en este caso							
 					oViewConfModel.setProperty("/viewList", oViews.results);
 
 					// Si se le pasado parámetros para el success se ejecuta
-					if (oParams.success) {
-						oParams.success(oViews.results);
+					if (oSuccessHandler) {
+						oSuccessHandler(oViews.results);
 					}
 				},
 				// funcion sin nombre se llama a si misma sin necesidad de hacerlo manualmente
 				function () {
 					// Si se le pasado parámetros para el error se ejecuta
-					if (oParams.error) {
-						oParams.error(oViews.results);
+					if (oErrorHandler) {
+						oErrorHandler();
 					}
 				});
 		},
-		// Obtención de los datos de una vista individual. Se usa para la vista de selección de datos
-		// cuando se accede directamente de dicha vista por parámetro.
-		// El servicio en SAP es el mismo que el obtener la lista de vistas, pero se le pasa la vista
-		// por parámetro
-		getSingleView: function (oParams) {
-			var oViewConfModel = this._oOwnerComponent.getModel(constants.jsonModel.viewConf);
-
-			this._oViewConfService.getViews({
-					view: oParams.view
-				},
-				function (oViews) {
-					// El nodo result que siempre devuelve el Gateway no lo queremos en este caso							
-					oViewConfModel.setProperty("/viewList", oViews.results);
-
-					// Si se le pasado parámetros para el success se ejecuta					
-					if (oParams.success) {
-						oParams.success(oViews.results);
-					}
-				},
-				// funcion sin nombre se llama a si misma sin necesidad de hacerlo manualmente
-				function () {
-					// Si se le pasado parámetros para el error se ejecuta
-					if (oParams.error) {
-						oParams.error(oViews.results);
-					}
-				});
-
-
-		},
-		// Verifica si una vista esta en el listado de vistas
+				// Verifica si una vista esta en el listado de vistas
 		getViewInfo: function (sViewName) {
 			var oViewConfModel = this._oOwnerComponent.getModel(constants.jsonModel.viewConf);			
 

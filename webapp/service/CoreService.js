@@ -3,8 +3,9 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/base/util/merge",
 	"sap/ui/model/Filter",
-	"com/ivancio/zal30-ui5/constants/constants"
-], function (Object, JSONModel, merge, Filter, constants) {
+	"com/ivancio/zal30-ui5/constants/constants",
+	"sap/m/MessageToast"
+], function (Object, JSONModel, merge, Filter, constants, MessageToast) {
 	"use strict";
 
 	return Object.extend("com.ivancio.zal30-ui5.service.CoreService", {
