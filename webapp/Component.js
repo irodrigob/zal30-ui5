@@ -40,15 +40,25 @@ sap.ui.define([
 			// Se instancia la ventana de proceso ocupado
 			this._oBusyDialog = new BusyDialog();
 
+			// Se inicializa la variable que controla si se esta mostrando el BusyDialog
+			this._showBusyDialog = false;
+
 		},
 		// Muestra el indicador de procesando..
 		showBusyDialog: function () {
 			this._oBusyDialog.open();
+			this._showBusyDialog = true; // Se guarda que se esta mostrando el dialogo de ocupado
 
 		},
+		// Devuelve si el 
 		// Cierra el indicador de procesado
 		closeBusyDialog: function () {
 			this._oBusyDialog.close();
+			this._showBusyDialog = false; // Se guarda que ya no se esta mostrando el dialogo de ocupado
+		},
+		// Devuelve si la ventana de ocupada se esta mostrando
+		isBusyDialogOpen() {
+			return this._showBusyDialog;
 		},
 		// Devuelve la variable con el servicio
 		getState: function (sState) {

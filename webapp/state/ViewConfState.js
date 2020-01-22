@@ -51,6 +51,10 @@ sap.ui.define([
 			return aViews.find(view => view.VIEWNAME === sViewName)
 
 		},
+		// lectura de de la vista: configuración y datos
+		readView:function(sViewName, oSuccessHandler, oErrorHandler){
+
+		},
 		//////////////////////////////////	
 		//        Private methods       //	
 		//////////////////////////////////	
