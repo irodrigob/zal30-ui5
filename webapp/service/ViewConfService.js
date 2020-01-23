@@ -23,6 +23,12 @@ sap.ui.define([
 			bUseMock: false,
 			mockFile: "/checkAuthView.json",
 			oDataModel: "masterData"
+		},
+		readView: {
+			serviceName: "/readViewSet",
+			bUseMock: false,
+			mockFile: "/readView.json",
+			oDataModel: "masterData"
 		}
 	};
 
@@ -135,6 +141,35 @@ sap.ui.define([
 
 			// Se llama al servicio  	
 			this.callSapService(mLocalService, {
+				bSynchronous: true, // Tiene que ser sincrono para saber la respuesta inmediata
+				success: function (oData) {
+					if (successHandler) {
+						if (oData) {
+							successHandler(oData);
+						} else {
+							if (errorHandler) {
+								errorHandler();
+							}
+						}
+					}
+				},
+				error: errorHandler
+			});
+
+		},
+		// Lectura de la vista
+		readView: function (oParameters, successHandler, errorHandler) {
+			// Se recupera el modelo donde se guardarC! la informaciC3n
+			var oModel = this.getModel(_mService.readView.oDataModel);
+
+			/*var mLocalService = merge({}, _mService.readView, {
+				serviceName: oModel.createKey(_mService.readView.serviceName, {
+					VIEWNAME: oParameters.viewname
+				})
+			});*/
+
+			// Se llama al servicio  	
+			this.callSapService(_mService.readView, {
 				bSynchronous: true, // Tiene que ser sincrono para saber la respuesta inmediata
 				success: function (oData) {
 					if (successHandler) {

@@ -53,6 +53,26 @@ sap.ui.define([
 		},
 		// lectura de de la vista: configuración y datos
 		readView:function(sViewName, oSuccessHandler, oErrorHandler){
+			var mParams={
+				viewname: sViewName	
+			};
+			// Se lee la configuración de la vista			
+			this._oViewConfService.readView(mParams,
+				function (oViews) {
+									
+					// Si se le pasado parámetros para el success se ejecuta
+					if (oSuccessHandler) {
+						oSuccessHandler(oViews.results);
+					}
+				},
+				// funcion sin nombre se llama a si misma sin necesidad de hacerlo manualmente
+				function () {
+					
+					// Si se le pasado parámetros para el error se ejecuta
+					if (oErrorHandler) {
+						oErrorHandler();
+					}
+				});
 
 		},
 		//////////////////////////////////	

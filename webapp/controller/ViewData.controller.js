@@ -95,7 +95,7 @@ sap.ui.define([
 							that._oViewDataModel.setProperty("/viewDesc", mList[0].VIEWDESC);
 
 							// Se inicia el proceso de lectura de la configuración de la vista y de sus datos.
-							this._readView(sViewName);
+							that._readView(sViewName);
 
 						} else {
 							MessageToast.show(that._oI18nResource.getText("ViewSelect.viewNotValid"));
@@ -175,14 +175,21 @@ sap.ui.define([
 		// Proceso en que se leen tanto la configuración de la vista como los datos
 		_readView: function (sViewName) {
 
+			var that = this;
+
 			// Como el servicio va a encadenar varios servicios se muestra el BusyDialog, si no lo esta ya.
 			if (!this._oOwnerComponent.isBusyDialogOpen())
 				this._oOwnerComponent.showBusyDialog();
 
 			// Se llama para que se inicie el proceso de lectura
-			this._viewConfState.readView(sViewName).then((oView) =>{
-				this._oOwnerComponent.CloseBusyDialog();
-			});
+			this._viewConfState.readView(sViewName, function () {
+				that._oOwnerComponent.closeBusyDialog();
+					
+				},
+				function () {
+					that._oOwnerComponent.closeBusyDialog();
+					
+				});
 
 
 
