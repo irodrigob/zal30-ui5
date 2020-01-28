@@ -173,39 +173,7 @@ sap.ui.define([
 				viewSelected: false,
 				viewName: ''
 			});
-		},
-		// Control de autorización en la vista
-		_checkAuthView: function (sViewName) {
-
-			// Se muestra que el proceso esta ocupado
-			this._oOwnerComponent.showBusyDialog();
-			var that = this; // Se pasa el contexto a otra variable para poder acceder al contexto actual en las siguiente llamadas
-
-			this.checkAuthView(sViewName, {
-				success: function (oAuth) {
-					that._oOwnerComponent.closeBusyDialog();
-					var oViewInput = that.byId(constants.objectsId.viewSelect, viewInput);
-
-					if (oAuth.LEVELAUTH == constants.mLevelAuth.non) {
-						oViewInput.setValueState(sap.ui.core.ValueState.Error);
-						oViewInput.setValueStateText(that._oI18nResource.getText("ViewSelect.viewNotAuth"));
-						MessageToast.show(that._oI18nResource.getText("ViewSelect.viewNotAuth"));
-
-					} else {
-						oViewInput.setValueState(sap.ui.core.ValueState.None); // Se quita el posible estado que tenga
-
-						// Se navega hacía la página con la vista
-						that.navRoute(that._mSections.viewData, {
-							view: sViewName
-						});
-					}
-				},
-				error: function () {
-					that._oOwnerComponent.closeBusyDialog();
-				}
-			});
-
-		},
+		},		
 		// Inicialización del modelo de datos y carga inicial de datos
 		_initModelData: function () {
 			this._oViewSelectModel = new sap.ui.model.json.JSONModel();

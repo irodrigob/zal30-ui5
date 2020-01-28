@@ -86,32 +86,11 @@ sap.ui.define([
 
 			// Se instancian las clase que gestiona los distintos estados de las vistas			
 			this._oViewConfState = new ViewConfState(this);
+			
 			// A nivel interno de UI5 se fuerza el uso del ingles
 			sap.ui.getCore().getConfiguration().setLanguage("en");
 
-		},
-		_getViews: function () {
-			var oAppDataModel = this.getModel("appData");
-
-			// El contexto actual se pasa a una variable para que no se pierda en las llamadas que se harC!n al modelo
-			var that = this;
-
-			debugger;
-			// El modelo tiene tres parC!metros: parC!metros del servicio, funcion cuando el servicio va bien, funciC3n cuando el servicio no va bien
-			models.getViews(null,
-				function (oViews) {
-					// El nodo result que siempre devuelve el Gateway no lo queremos en este caso					
-					oAppDataModel.setProperty("/views", oViews.results);
-				},
-				// funcion sin nombre se llama a si misma sin necesidad de hacerlo manualmente
-				function () {
-
-				});
-
-		},
-		// Proceso para la obtenciC3n de los datos de la vista
-		_getViewData: function () {
-
 		}
+		
 	});
 });

@@ -106,31 +106,6 @@ sap.ui.define([
 				)
 
 			}
-
-			// Se recupera los datos de la vista para saber la descripcion			
-			/*var mViewInfo = this.getViewInfo(sViewName);
-			if (mViewInfo) {
-
-				this._oViewDataModel.setProperty("/viewDesc", mViewInfo.VIEWDESC);
-
-				// Leo si se tiene que hacer la verificación, si es así se llama al método que la realizará
-				if (this._oAppDataModel.getProperty("/checkAuthView"))
-					this._checkAuthView(sViewName);
-
-				//this._oViewDataModel.updateBindings(true);
-				//this._oAppDataModel.updateBindings(true);
-
-
-			} else {
-				
-				// Mensaje de vista 
-				MessageToast.show(this._oI18nResource.getText("ViewSelect.viewNotValid"));
-
-				// Si se ha accedido por la vista de selección se redirige a dicha página si no es valida
-				this.navRoute(this._mSections.viewSelect);
-			}*/
-
-
 		},
 		// Inicialización del modelo de datos
 		_initModelData: function () {
@@ -150,28 +125,6 @@ sap.ui.define([
 				viewDesc: ''
 			});
 		},
-		// Chequeo autorización de la vista
-		_checkAuthView: function (sViewName) {
-			var that = this; // Se pasa el contexto a otra variable para poder acceder al contexto actual en las siguiente llamadas
-
-			this.checkAuthView(sViewName, {
-				success: function (oAuth) {
-
-					if (oAuth.LEVELAUTH == constants.mLevelAuth.non) {
-						debugger;
-						that._oLogDialog.resetModeData();
-						that._oLogDialog.addMessage(constants.mMessageType.error, that._oI18nResource.getText("ViewSelect.viewNotAuth"))
-						that._oLogDialog.addMessage(constants.mMessageType.error, that._oI18nResource.getText("ViewSelect.viewNotAuth"))
-
-					} else {
-
-					}
-				},
-				error: function () {
-					that._oOwnerComponent.closeBusyDialog();
-				}
-			});
-		},
 		// Proceso en que se leen tanto la configuración de la vista como los datos
 		_readView: function (sViewName) {
 
@@ -182,15 +135,14 @@ sap.ui.define([
 				this._oOwnerComponent.showBusyDialog();
 
 			// Se llama para que se inicie el proceso de lectura
-			this._viewConfState.readView(sViewName, function () {
-				that._oOwnerComponent.closeBusyDialog();
-					
+			this._viewConfState.readView(sViewName, function (oView) {
+					that._oOwnerComponent.closeBusyDialog();
+					debugger;
 				},
 				function () {
 					that._oOwnerComponent.closeBusyDialog();
-					
-				});
 
+				});			
 
 
 		}

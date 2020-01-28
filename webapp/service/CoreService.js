@@ -15,7 +15,7 @@ sap.ui.define([
 		//        Public methods        //
 		//                              //
 		//////////////////////////////////
-		constructor: function (oComponent, mConf) {
+		constructor: function (oComponent) {
 
 			// Se inicializan las variables locales que son necesarias para acceder al modelo de datos
 			this._oOwnerComponent = oComponent;
@@ -25,8 +25,8 @@ sap.ui.define([
 			// Llamada al metodo padre
 			Object.call(this);
 
-			// Se guarda la configuración pasada por parámetro
-			this._setConfiguration(mConf);
+			// Establece la configuración inicial para la llamada a los servicios
+			this._initConfiguration();
 
 		},
 
@@ -79,12 +79,97 @@ sap.ui.define([
 			}
 			this._bMock = bMock;
 		},
+		// Establece el lenguaje en la llamada a los servicios
+		setLanguage: function (sLang) {
+			this._sLanguage = sLang;
+		},
+		// Devuelve el idioma de los servicios
+		getLanguage: function () {
+			return this._sLanguage;
+		},
 
 		loadMockData: function (oServiceConfig, oParam) {
 			this._oMockDataModel.loadData(jQuery.sap.getModulePath(this._MockbaseDir) + oServiceConfig.mockFile, undefined, false);
 			if (oParam.success) {
 				oParam.success(this._oMockDataModel.getData());
 			}
+		},
+		loadMockDataPromise: function (oServiceConfig, oContext) {
+			oContext._oMockDataModel.loadData(jQuery.sap.getModulePath(oContext._MockbaseDir) + oServiceConfig.mockFile, undefined, false);
+			return oContext._oMockDataModel.getData();
+		},
+		callOData: function (oServiceConfig, oParam) {
+			var that = this;
+
+			var oPromise = new Promise(function (resolve, reject) {
+
+				oParam = oParam || {}; // Si no hay parámetros se inicializan
+				var sapUserModelOData = that.getModel(oServiceConfig.oDataModel); // Modelo para poder llamar al oData de SAP
+				var oRequestParams = {
+					success: function (oResponse) {
+						resolve(oResponse)
+					},
+					error: function (oResponse) {
+						/* GENERAL MESSAGE AT EVERY ERROR CALLBACK  */
+						if (oResponse.statusCode === 500) {
+							MessageToast.show("There was an error with SAP communication");
+						} else {
+							var oJsonResponse = oResponse && oResponse.responseText ? JSON.parse(oResponse.responseText) : undefined;
+	
+							if (oJsonResponse && oJsonResponse.error && oJsonResponse.error.message && oJsonResponse.error.message.value) {
+								MessageToast.show(oJsonResponse.error.message.value);
+							}
+						}
+						reject(oResponse);
+
+					}
+				};
+
+				// Si el parámetro "mock" de la URL esta informado, o si no lo esta, a nivel de servicio si que se indica se leen los datos
+				// del mock
+				if (that._bMock === true || (that._bMock === undefined && oServiceConfig.bUseMock)) { // use mock data
+					resolve(that.loadMockDataPromise(oServiceConfig, that));
+				} else {
+					// Use real backend ODATA CRUD functions
+
+					switch (oParam.operation) {
+						case "CREATE":
+							oRequest = sapUserModelOData.create(
+								oServiceConfig.serviceName,
+								oParam.oRequestData,
+								oRequestParams
+							);
+							break;
+						case "UPDATE":
+							sapUserModelOData.update(
+								oServiceConfig.serviceName,
+								oParam.oRequestData,
+								oRequestParams
+							);
+							break;
+						case "DELETE":
+							oRequest = sapUserModelOData.remove(
+								oServiceConfig.serviceName,
+								//  oParam.oRequestData,
+								oRequestParams
+							);
+							break;
+						default: // "READ":
+							if (oParam.filters) {
+								oRequestParams.filters = oParam.filters;
+							}
+							sapUserModelOData.read(
+								oServiceConfig.serviceName,
+								oRequestParams
+							);
+							break;
+
+					}
+				}
+
+			});
+			return oPromise;
+
 		},
 		/** @param {object} oServiceConfig: Contains the below properties
 		 * @param {object} oParam: Contains the below properties. The properties specified with ? are optional
@@ -114,12 +199,12 @@ sap.ui.define([
 					// pasada en los parámetros
 					if (oResponse && oResponse.EType === "E") {
 						jQuery.sap.log.error("Error at service call: " + oServiceConfig.serviceName);
-						if (oParam.error) {
+						if (oParam.error) {							
 							oParam.error.apply(this, arguments);
 						}
 					} else {
 						// Si no hay error se llama a la función succes pasada por parámetro
-						if (oParam.success) {
+						if (oParam.success) {							
 							oParam.success.apply(this, arguments);
 						}
 					}
@@ -196,16 +281,20 @@ sap.ui.define([
 		//        Private methods       //
 		//                              //
 		//////////////////////////////////
-		_setConfiguration(mConf) {
-			this._sLanguage = (mConf.language) ? mConf.language : "EN";
+
+		// Inicializa la configuración inicial de determinadas variables para la llamada de los servicios
+		_initConfiguration() {
 
 			// Se recupera los parametros de la URL. 
 			// En los parametros habria uno que sera el MOCK que indica de donde se obtienen los valores: true todo vendra de los ficheros o mix que dependera
 			// del atributo "bUseMock" del array de servicios en el fichero models.js.
 			var oUrlParams = jQuery.sap.getUriParameters().mParams;
 
-			// Si el modo mock viene por parámetro tiene prioridad sobre el de la URL
-			this.setMockMode((mConf.mock) ? mConf.mock : oUrlParams.mock && oUrlParams.mock[0]);
+			// Si el parámetro de mock no se pasa se asume que los datos serán reales
+			this.setMockMode((oUrlParams.mock && oUrlParams.mock[0]) ? oUrlParams.mock[0] : false);
+
+			// Si no se pasa idioma por parámetro se establece el idioma ingles
+			this.setLanguage((oUrlParams.langu && oUrlParams.langu[0]) ? oUrlParams.langu[0] : "EN");
 
 			this._oMockDataModel = new JSONModel();
 		}

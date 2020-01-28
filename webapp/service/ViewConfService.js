@@ -32,15 +32,14 @@ sap.ui.define([
 		}
 	};
 
-
-	var oViewConfService = CoreService.extend("com.ivancio.zal30-ui5.service.ViewConfService", {
+	return CoreService.extend("com.ivancio.zal30-ui5.service.ViewConfService", {
 		//////////////////////////////////	
 		//        Public methods        //	
 		//////////////////////////////////		  
-		constructor: function (oComponent, mConf) {
+		constructor: function (oComponent) {
 
 			// Se llama el core de los servicios pasandole los parámetros recibidos
-			CoreService.call(this, oComponent, mConf);
+			CoreService.call(this, oComponent);
 
 			// Se añade la configuración propia para acceder a los servicios
 
@@ -61,7 +60,7 @@ sap.ui.define([
 			// Variable local que indica si el Gateway esta disponible
 			var bgwAvailable = false;
 
-			// Se recupera el modelo donde se guardarC! la informaciC3n
+			// Se recupera el objeto oData para poder hacer las llamadas
 			var oModel = this.getModel(_mService.getViews.oDataModel);
 
 			/* Cuando se llama a un servicio en el gateway lo habitual es lanzar el $metadata del servicio para que se refresque
@@ -88,7 +87,7 @@ sap.ui.define([
 
 
 				// Se llama al servicio para obtener los datos de Gateway o del mock
-				this.callSapService(_mService.getViews, {
+				/*this.callSapService(_mService.getViews, {
 					filters: oFilters,
 					success: function (oData) {
 						if (oSuccessHandler) {
@@ -102,6 +101,17 @@ sap.ui.define([
 						}
 					},
 					error: oErrorHandler
+				});*/
+
+				// Debido a que el servicio oData se llama dentro de un promise no se puede hacer un return porque quien lo llama no recuperan bien el return y falla
+				// en el then. Por eso, se ejecuta el código de los handler
+				return this.callOData(_mService.getViews, {
+					filters: oFilters
+				}).then((result) => {					
+					oSuccessHandler(result);					
+				},
+				(error) =>{
+					oErrorHandler(error);
 				});
 			});
 
@@ -162,15 +172,15 @@ sap.ui.define([
 			// Se recupera el modelo donde se guardarC! la informaciC3n
 			var oModel = this.getModel(_mService.readView.oDataModel);
 
-			/*var mLocalService = merge({}, _mService.readView, {
-				serviceName: oModel.createKey(_mService.readView.serviceName, {
-					VIEWNAME: oParameters.viewname
-				})
-			});*/
+			// Se le pasa el filtro de idioma
+			var oFilters = [new Filter(constants.services.filter.langu, sap.ui.model.FilterOperator.EQ, this._sLanguage),
+				new Filter(constants.services.filter.viewName, sap.ui.model.FilterOperator.EQ, oParameters.viewName)
+			];
 
 			// Se llama al servicio  	
-			this.callSapService(_mService.readView, {
-				bSynchronous: true, // Tiene que ser sincrono para saber la respuesta inmediata
+			/*this.callSapService(_mService.readView, {
+				filters: oFilters,
+				bSynchronous: true,
 				success: function (oData) {
 					if (successHandler) {
 						if (oData) {
@@ -183,6 +193,9 @@ sap.ui.define([
 					}
 				},
 				error: errorHandler
+			});*/
+			return this.callOData(_mService.readView, {
+				filters: oFilters
 			});
 
 		}
@@ -194,5 +207,5 @@ sap.ui.define([
 
 
 	});
-	return oViewConfService;
+
 });
