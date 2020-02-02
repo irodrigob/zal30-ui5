@@ -3,9 +3,9 @@ sap.ui.define([
 	"sap/ui/Device",
 	"com/ivancio/zal30-ui5/model/models",
 	"sap/m/BusyDialog",
-	"com/ivancio/zal30-ui5/service/ViewConfService",
 	"com/ivancio/zal30-ui5/state/ViewConfState",
-], function (UIComponent, Device, models, BusyDialog, ViewConfService, ViewConfState) {
+	"com/ivancio/zal30-ui5/state/ViewDataState",
+], function (UIComponent, Device, models, BusyDialog, ViewConfState, ViewDataState) {
 	"use strict";
 
 	return UIComponent.extend("com.ivancio.zal30-ui5.Component", {
@@ -84,13 +84,16 @@ sap.ui.define([
 			// a la pagina de seleccion de vistas
 			oAppDataModel.setProperty("/viewSelect", false);
 
-			// Se instancian las clase que gestiona los distintos estados de las vistas			
+			// Se instancian la clase que gestiona los estados de la configuración de las vistas			
 			this._oViewConfState = new ViewConfState(this);
-			
+
+			// Se instancia la clase que gestiona los estados de los datos de la vista
+			this._oViewDataState = new ViewDataState(this);
+
 			// A nivel interno de UI5 se fuerza el uso del ingles
 			sap.ui.getCore().getConfiguration().setLanguage("en");
 
 		}
-		
+
 	});
 });

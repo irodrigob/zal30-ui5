@@ -67,9 +67,6 @@
 			"ViewConf": {
 				"type": "sap.ui.model.json.JSONModel"
 			},
-			"ViewData": {
-				"type": "sap.ui.model.json.JSONModel"
-			},
 			"masterData": {
 				"dataSource": "MASTER_DATA_SRV",
 				"settings": {

@@ -8,6 +8,10 @@ sap.ui.define([
 	"use strict";
 
 	return BaseModel.extend("com.ivancio.zal30-ui5.model.View", {
+		viewInfo: {
+			viewName: "",
+			viewDesc: ""
+		},
 		//////////////////////////////////	
 		//        Public methods        //	
 		//////////////////////////////////		  
@@ -23,6 +27,18 @@ sap.ui.define([
 		// Devuelve el catalogo de campos
 		getFieldCatalog: function () {
 			return this._fieldCatalog;
+		},
+		// Guarda información general de la vista
+		setViewInfo: function (mViewInfo) {
+			// Se guarda el nombre de la vista y su descripción para usarse directamente sin tener que recuperar toda la info
+			this.viewInfo.viewName = mViewInfo.VIEWNAME;
+			this.viewInfo.viewDesc = mViewInfo.VIEWDESC;
+
+			this._viewInfo = mViewInfo;
+		},
+		// Devuelve la información de la vista
+		getViewInfo: function () {
+			return this._viewInfo;
 		}
 	});
 });

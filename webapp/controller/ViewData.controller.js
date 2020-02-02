@@ -3,9 +3,8 @@ sap.ui.define([
 	"sap/m/MessageToast",
 	"sap/m/MessageBox",
 	"com/ivancio/zal30-ui5/constants/constants",
-	"com/ivancio/zal30-ui5/component/general/LogDialog/logDialog",
-	"com/ivancio/zal30-ui5/state/ViewConfState"
-], function (BaseController, MessageToast, MessageBox, constants, logDialog, ViewConfState) {
+	"com/ivancio/zal30-ui5/component/general/LogDialog/logDialog"
+], function (BaseController, MessageToast, MessageBox, constants, logDialog) {
 	"use strict";
 
 	return BaseController.extend("com.ivancio.zal30-ui5.controller.ViewData", {
@@ -113,10 +112,11 @@ sap.ui.define([
 
 			this._resetModel(); // Reset, en este caso, creación del modelo de datos
 
-			this.getView().setModel(this._oViewDataModel, constants.jsonModel.viewXMLData);
+			this.getView().setModel(this._oViewDataModel, constants.jsonModel.viewData);
 
-			// Se recupera la clase que gestiona los estado de la configuración de las vistas			
+			// Se recupera la clase que gestiona los estado de la configuración y datos de las vistas			
 			this._viewConfState = this._oOwnerComponent.getState(this._oOwnerComponent.state.confView);
+			this._viewDataState = this._oOwnerComponent.getState(this._oOwnerComponent.state.dataView);
 		},
 		// Reset del modelo de datos
 		_resetModel: function () {
@@ -135,15 +135,43 @@ sap.ui.define([
 				this._oOwnerComponent.showBusyDialog();
 
 			// Se llama para que se inicie el proceso de lectura
-			this._viewConfState.readView(sViewName, function (oView) {
+			/*this._viewConfState.readView(sViewName, function (oView) {
 					that._oOwnerComponent.closeBusyDialog();
 					debugger;
 				},
 				function () {
 					that._oOwnerComponent.closeBusyDialog();
 
-				});			
+				});	*/
+			/*	
+			this._viewConfState.readView({
+				viewName: sViewName,
+				fromViewData:true
+			}).then((oView) => {
+					debugger;
+			});*/
+			this._viewDataState.readConfDataView({
+					viewName: sViewName,
+					fromViewData: true
+				}, function (oView) {
+					that._oOwnerComponent.closeBusyDialog(); // Se cierra el dialogo
 
+					that._oView = oView; // Se guarda la vista 
+
+					// Se guarda en el modelo el nombre y descripción de la vista
+					that._oViewDataModel.setProperty("/viewName", oView.viewInfo.viewName);
+					that._oViewDataModel.setProperty("/viewDesc", oView.viewInfo.viewDesc);
+
+					// Se llama al método encargado de construir la tabla a mostrar
+					that._buildViewData();
+				},
+				function (oError) {
+					that._oOwnerComponent.closeBusyDialog();
+				});
+
+		},
+		// Construye la tabla para mostrar los datos
+		_buildViewData: function () {
 
 		}
 

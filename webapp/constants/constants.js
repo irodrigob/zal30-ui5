@@ -26,8 +26,7 @@ sap.ui.define([], function () {
 		jsonModel: {			
 			viewConf: "ViewConf",
 			ViewSelect: "ViewSelectModel",
-			viewData: "ViewData",
-			viewXMLData: "ViewXMLDataModel"
+			viewData: "ViewData"			
 		}
 	};
 	return oConstants
