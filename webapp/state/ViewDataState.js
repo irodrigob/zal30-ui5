@@ -23,22 +23,39 @@ sap.ui.define([
 		// Lectura de la configuración y datos
 		readConfDataView(mParams, oSuccessHandler, oErrorHandler) {
 			var that = this;
-			Promise.all([this._viewConfState.readView({
+
+			// Servicio de leer la configuración de la tabla.	
+			var oSrvReadConf = this._viewConfState.readView({
 				viewName: mParams.viewName,
 				fromViewData: true
-			})]).then((result) => {
+			});
+
+			// Servicio de leer los datos de la tabla			
+			var oSrvReadConf = this.readDataView({
+				viewName: mParams.viewName
+			});
+
+			Promise.all([oSrvReadConf, oSrvReadConf]).then((result) => {
 					// En el registro 0 esta el resultado de la primera llamada
 					that._oView = result[0];
 
+					debugger;
 					// Se ejecuta el código del Success
 					oSuccessHandler(that._oView);
-					
+
 				},
 				(error) => {
 					oErrorHandler(error);
 
 				});
 
+		},
+		// lectura de los datos de la vista
+		readDataView: function (mParams) {
+			return this._oViewDataService.readData({
+				viewName: mParams.viewName,
+				mode: constants.editMode.view
+			});
 		},
 		//////////////////////////////////	
 		//        Private methods       //	

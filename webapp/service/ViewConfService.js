@@ -41,8 +41,6 @@ sap.ui.define([
 			// Se llama el core de los servicios pasandole los parámetros recibidos
 			CoreService.call(this, oComponent);
 
-			// Se añade la configuración propia para acceder a los servicios
-
 			// Se informan los modelos oData donde se obtendrán los datos	
 			this.setModelOdata([{
 				name: "masterData",
@@ -169,9 +167,7 @@ sap.ui.define([
 		},
 		// Lectura de la vista
 		readView: function (oParameters, successHandler, errorHandler) {
-			// Se recupera el modelo donde se guardarC! la informaciC3n
-			var oModel = this.getModel(_mService.readView.oDataModel);
-
+			
 			// Se le pasa el filtro de idioma
 			var oFilters = [new Filter(constants.services.filter.langu, sap.ui.model.FilterOperator.EQ, this._sLanguage),
 				new Filter(constants.services.filter.viewName, sap.ui.model.FilterOperator.EQ, oParameters.viewName)

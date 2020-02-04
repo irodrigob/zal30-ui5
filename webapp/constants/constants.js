@@ -7,6 +7,10 @@ sap.ui.define([], function () {
 			read: "R",
 			non: "N"
 		},
+		editMode:{
+			edit:"U",
+			view:"V"
+		},
 		mMessageType: {
 			error: "E",
 			success: "S",

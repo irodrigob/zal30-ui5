@@ -1,3 +1,4 @@
 {
-    "ui5.plugin.src": "webapp"
+    "ui5.plugin.src": "webapp",
+    "ui5ts.manifestlocation": "webapp/manifest.json"
 }
