@@ -66,6 +66,7 @@ sap.ui.define([
 					that._oViewConfService.readView({
 						viewName: mParams.viewName
 					}).then((result) => {
+						
 							// Se llama al método que devuelve el objeto View con la información del catalogo + la general 
 							var oView = that._instanceViewObject({
 								viewName: mParams.viewName,

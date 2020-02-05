@@ -39,6 +39,21 @@ sap.ui.define([
 		// Devuelve la información de la vista
 		getViewInfo: function () {
 			return this._viewInfo;
+		},
+		// Guarda los datos de la vista
+		setViewData:function(oData){
+
+			// Datos en su formato original
+			this._oOriginalViewData = oData;
+
+			// Se guarda los datos en formato JSON
+			this._oViewData = new sap.ui.model.json.JSONModel();
+			this._oViewData.setData(oData);
+
+		},
+		// Devuelve los datos de la vista
+		getViewData:function(){
+			return this._oViewData;	
 		}
 	});
 });

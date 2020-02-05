@@ -25,21 +25,26 @@ sap.ui.define([
 			var that = this;
 
 			// Servicio de leer la configuración de la tabla.	
-			var oSrvReadConf = this._viewConfState.readView({
-				viewName: mParams.viewName,
-				fromViewData: true
-			});
 
 			// Servicio de leer los datos de la tabla			
-			var oSrvReadConf = this.readDataView({
+			/*var oSrvReadConf = this.readDataView({
 				viewName: mParams.viewName
-			});
+			});*/
 
-			Promise.all([oSrvReadConf, oSrvReadConf]).then((result) => {
+			Promise.all([this._viewConfState.readView({
+				viewName: mParams.viewName,
+				fromViewData: true
+			}), this.readDataView({
+				viewName: mParams.viewName
+			})]).then((result) => {
+					debugger;
+
 					// En el registro 0 esta el resultado de la primera llamada
 					that._oView = result[0];
 
-					debugger;
+					// En el registro 1 esta los datos
+					that._oView.setViewData(result[1].DATA);
+
 					// Se ejecuta el código del Success
 					oSuccessHandler(that._oView);
 
