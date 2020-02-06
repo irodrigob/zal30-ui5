@@ -105,35 +105,29 @@ sap.ui.define([
 				// en el then. Por eso, se ejecuta el código de los handler
 				return this.callOData(_mService.getViews, {
 					filters: oFilters
-				}).then((result) => {					
-					oSuccessHandler(result);					
-				},
-				(error) =>{
-					oErrorHandler(error);
-				});
+				}).then((result) => {
+						oSuccessHandler(result);
+					},
+					(error) => {
+						oErrorHandler(error);
+					});
 			});
 
 
 
-			/*
-				// Se llama al servicio para obtener los datos del mock si no hay Gateway
+
+			// Se llama al servicio para obtener los datos del mock si no hay Gateway
 			if (!bgwAvailable) {
-				_bMock = true; // Sin gateway todo tiene que por mock
-				this.callSapService(_mService.getViews, {
-					success: function (oData) {
-						if (successHandler) {
-							if (oData) {
-								successHandler(oData);
-							} else {
-								if (errorHandler) {
-									errorHandler();
-								}
-							}
-						}
+				this._bMock = true; // Sin gateway todo tiene que por mock
+
+				return this.callOData(_mService.getViews, {
+				}).then((result) => {
+						oSuccessHandler(result);
 					},
-					error: errorHandler
-				});
-			} */
+					(error) => {
+						oErrorHandler(error);
+					});
+			}
 
 		},
 		// Obtiene la autorización para la vista
@@ -167,7 +161,7 @@ sap.ui.define([
 		},
 		// Lectura de la vista
 		readView: function (oParameters, successHandler, errorHandler) {
-			
+
 			// Se le pasa el filtro de idioma
 			var oFilters = [new Filter(constants.services.filter.langu, sap.ui.model.FilterOperator.EQ, this._sLanguage),
 				new Filter(constants.services.filter.viewName, sap.ui.model.FilterOperator.EQ, oParameters.viewName)
