@@ -1,11 +1,10 @@
 sap.ui.define([
 	"sap/ui/core/UIComponent",
-	"sap/ui/Device",
-	"com/ivancio/zal30-ui5/model/models",
+	"sap/ui/Device",	
 	"sap/m/BusyDialog",
 	"com/ivancio/zal30-ui5/state/ViewConfState",
 	"com/ivancio/zal30-ui5/state/ViewDataState",
-], function (UIComponent, Device, models, BusyDialog, ViewConfState, ViewDataState) {
+], function (UIComponent, Device, BusyDialog, ViewConfState, ViewDataState) {
 	"use strict";
 
 	return UIComponent.extend("com.ivancio.zal30-ui5.Component", {

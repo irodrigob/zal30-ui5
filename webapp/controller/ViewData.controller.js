@@ -3,8 +3,10 @@ sap.ui.define([
 	"sap/m/MessageToast",
 	"sap/m/MessageBox",
 	"com/ivancio/zal30-ui5/constants/constants",
-	"com/ivancio/zal30-ui5/component/general/LogDialog/logDialog"
-], function (BaseController, MessageToast, MessageBox, constants, logDialog) {
+	"com/ivancio/zal30-ui5/component/general/LogDialog/logDialog",
+	"sap/ui/table/Column",
+	"sap/m/Text",
+], function (BaseController, MessageToast, MessageBox, constants, logDialog, Column, Text) {
 	"use strict";
 
 	return BaseController.extend("com.ivancio.zal30-ui5.controller.ViewData", {
@@ -35,6 +37,29 @@ sap.ui.define([
 		// Botón de ir hacía atras en la aplicación
 		onNavBack: function (oEvent) {
 			window.history.go(-1);
+		},
+		// Construcción de las columnas
+		columnFactory: function (sId, oContext) {
+			var mColumn = this._oViewDataModel.getProperty(oContext.sPath);
+			//debugger;
+
+			return new Column(sId, {
+				visible: true,
+				sortProperty: true,
+				filterProperty: true,
+				width: "5rem",
+				label: new sap.m.Label({
+					text: mColumn.headerText
+				}),
+				hAlign: "Begin",
+				template: new Text({
+					text: {
+						path: mColumn.name
+					},
+					wrapping: false
+				})
+			});
+
 		},
 		//////////////////////////////////
 		//                              //
@@ -134,44 +159,34 @@ sap.ui.define([
 			if (!this._oOwnerComponent.isBusyDialogOpen())
 				this._oOwnerComponent.showBusyDialog();
 
-			// Se llama para que se inicie el proceso de lectura
-			/*this._viewConfState.readView(sViewName, function (oView) {
-					that._oOwnerComponent.closeBusyDialog();
-					debugger;
-				},
-				function () {
-					that._oOwnerComponent.closeBusyDialog();
 
-				});	*/
-			/*	
-			this._viewConfState.readView({
-				viewName: sViewName,
-				fromViewData:true
-			}).then((oView) => {
-					debugger;
-			});*/
 			this._viewDataState.readConfDataView({
 					viewName: sViewName,
 					fromViewData: true
-				}, function (oView) {
+				}, function () {
 					that._oOwnerComponent.closeBusyDialog(); // Se cierra el dialogo
 
-					that._oView = oView; // Se guarda la vista 
 
 					// Se guarda en el modelo el nombre y descripción de la vista
-					that._oViewDataModel.setProperty("/viewName", oView.viewInfo.viewName);
-					that._oViewDataModel.setProperty("/viewDesc", oView.viewInfo.viewDesc);
+					that._oViewDataModel.setProperty("/viewName", that._viewDataState.getViewInfo().viewName);
+					that._oViewDataModel.setProperty("/viewDesc", that._viewDataState.getViewInfo().viewDesc);
 
 					// Se llama al método encargado de construir la tabla a mostrar
-					that._buildViewData();
+					that._buildTableData();
 				},
 				function (oError) {
 					that._oOwnerComponent.closeBusyDialog();
 				});
 
 		},
-		// Construye la tabla para mostrar los datos
-		_buildViewData: function () {
+		// Se construye los datos para poder pintar los datos en la tabla
+		_buildTableData: function () {
+
+			// Se recuperarán las columnas
+			this._oViewDataModel.setProperty("/columns", this._viewDataState.getColumnsTable());
+
+			// Se recuperarán los datos
+			this._oViewDataModel.setProperty("/data", this._viewDataState.getViewData());
 
 		}
 

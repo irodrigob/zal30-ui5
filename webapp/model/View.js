@@ -40,8 +40,9 @@ sap.ui.define([
 		getViewInfo: function () {
 			return this._viewInfo;
 		},
-		// Guarda los datos de la vista
-		setViewData:function(oData){
+		// Guarda los datos de la vista provenientes del servicio. Es decir, hay que convertir
+		// el string json en un objeto JSON de UI5.
+		setViewDataFromService:function(oData){
 
 			// Datos en su formato original
 			this._oOriginalViewData = oData;

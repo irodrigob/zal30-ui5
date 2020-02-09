@@ -3,11 +3,10 @@ sap.ui.define([
 	"sap/m/MessageToast",
 	'sap/ui/model/Filter',
 	'sap/ui/core/Fragment',
-	"sap/base/Log",
-	"com/ivancio/zal30-ui5/model/models",
+	"sap/base/Log",	
 	"com/ivancio/zal30-ui5/constants/constants",
 	"com/ivancio/zal30-ui5/state/ViewConfState"
-], function (BaseController, MessageToast, Filter, Fragment, Log, models, constants, ViewConfState) {
+], function (BaseController, MessageToast, Filter, Fragment, Log, constants, ViewConfState) {
 	"use strict";
 
 

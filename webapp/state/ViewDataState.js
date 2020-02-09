@@ -37,16 +37,15 @@ sap.ui.define([
 			}), this.readDataView({
 				viewName: mParams.viewName
 			})]).then((result) => {
-					debugger;
 
 					// En el registro 0 esta el resultado de la primera llamada
 					that._oView = result[0];
 
 					// En el registro 1 esta los datos
-					that._oView.setViewData(result[1].DATA);
+					that._oView.setViewDataFromService(result[1].DATA);
 
 					// Se ejecuta el código del Success
-					oSuccessHandler(that._oView);
+					oSuccessHandler();
 
 				},
 				(error) => {
@@ -61,6 +60,34 @@ sap.ui.define([
 				viewName: mParams.viewName,
 				mode: constants.editMode.view
 			});
+		},
+		// Se devuelve los datos de cabecera de la vista
+		getViewInfo: function () {
+			return {
+				viewName: this._oView.viewInfo.viewName,
+				viewDesc: this._oView.viewInfo.viewDesc
+			};
+		},
+		// Se devuelve las columnas de la tabla a partir del catalogo de campos
+		getColumnsTable: function () {
+			var fieldCatalog = this._oView.getFieldCatalog();
+
+			var aColumns = [];
+			for (var x = 0; x < fieldCatalog.length; x++) {
+				var mColumn = {
+					name: fieldCatalog[x].FIELDNAME,
+					shortText: fieldCatalog[x].SHORTEXT,
+					mediumText: fieldCatalog[x].MEDIUMTEXT,
+					longText: fieldCatalog[x].LONGTEXT,
+					headerText: fieldCatalog[x].HEADERTEXT
+				};
+				aColumns.push(mColumn);
+			};
+			return (aColumns);
+		},
+		// Devuelve los datos de la vista
+		getViewData() {
+			return this._oView.getViewData();
 		},
 		//////////////////////////////////	
 		//        Private methods       //	

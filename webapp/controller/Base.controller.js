@@ -1,7 +1,6 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",	
-    "com/ivancio/zal30-ui5/model/models"
-], function (Controller, models) {
+    "sap/ui/core/mvc/Controller"    
+], function (Controller) {
 	"use strict";
 
 	return Controller.extend("com.ivancio.zal30-ui5.controller.Base", {
