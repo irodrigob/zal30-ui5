@@ -54,7 +54,7 @@ sap.ui.define([
 				hAlign: "Begin",
 				template: new Text({
 					text: {
-						path: mColumn.name
+						path: "ViewData>" + mColumn.name
 					},
 					wrapping: false
 				})
@@ -186,7 +186,8 @@ sap.ui.define([
 			this._oViewDataModel.setProperty("/columns", this._viewDataState.getColumnsTable());
 
 			// Se recuperarán los datos
-			this._oViewDataModel.setProperty("/data", this._viewDataState.getViewData());
+			var oData = this._viewDataState.getViewData();
+			this._oViewDataModel.setProperty("/values", oData);
 
 		}
 

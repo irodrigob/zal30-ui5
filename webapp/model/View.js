@@ -48,8 +48,8 @@ sap.ui.define([
 			this._oOriginalViewData = oData;
 
 			// Se guarda los datos en formato JSON
-			this._oViewData = new sap.ui.model.json.JSONModel();
-			this._oViewData.setData(oData);
+			this._oViewData = oData; //new sap.ui.model.json.JSONModel();
+			//this._oViewData.setData(oData);
 
 		},
 		// Devuelve los datos de la vista
