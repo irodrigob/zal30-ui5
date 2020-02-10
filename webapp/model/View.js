@@ -21,7 +21,7 @@ sap.ui.define([
 			BaseModel.call(this, oComponent);
 		},
 		// Guarda el catalogo de campos de la vista
-		setFieldCatalog: function (mFieldCatalog) {
+		setFieldCatalogFromService: function (mFieldCatalog) {
 			this._fieldCatalog = mFieldCatalog;
 		},
 		// Devuelve el catalogo de campos
@@ -42,19 +42,22 @@ sap.ui.define([
 		},
 		// Guarda los datos de la vista provenientes del servicio. Es decir, hay que convertir
 		// el string json en un objeto JSON de UI5.
-		setViewDataFromService:function(oData){
+		setViewDataFromService: function (oData) {
 
-			// Datos en su formato original
-			this._oOriginalViewData = oData;
+			// Debido a que el JSON viene en un literal para poderlo usarla hay que parsearlo.					
+			var oDataJSON = new sap.ui.model.json.JSONModel();
+			oDataJSON.setJSON(oData);
+			
 
-			// Se guarda los datos en formato JSON
-			this._oViewData = oData; //new sap.ui.model.json.JSONModel();
-			//this._oViewData.setData(oData);
+			// Se recuperarán los datos parseado en un objeto JSON válido para poderse usar-
+			this._oViewData = oDataJSON.getData();	
+			this._oOriginalViewData = this._oViewData; // Se guarda los datos originales
+			
 
 		},
 		// Devuelve los datos de la vista
-		getViewData:function(){
-			return this._oViewData;	
+		getViewData: function () {
+			return this._oViewData;
 		}
 	});
 });

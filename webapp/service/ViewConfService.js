@@ -164,7 +164,8 @@ sap.ui.define([
 
 			// Se le pasa el filtro de idioma
 			var oFilters = [new Filter(constants.services.filter.langu, sap.ui.model.FilterOperator.EQ, this._sLanguage),
-				new Filter(constants.services.filter.viewName, sap.ui.model.FilterOperator.EQ, oParameters.viewName)
+				new Filter(constants.services.filter.viewName, sap.ui.model.FilterOperator.EQ, oParameters.viewName),
+				new Filter(constants.services.filter.mode, sap.ui.model.FilterOperator.EQ, oParameters.mode)				
 			];
 
 			// Se llama al servicio  	

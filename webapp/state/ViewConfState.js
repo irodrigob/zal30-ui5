@@ -58,15 +58,16 @@ sap.ui.define([
 			var that = this;
 
 			// Si el origen de la llama es desde la consulta de los datos, la llama se hará en modo promise porque hay que encadenar
-			// llamadas. En caso contrario se llama si esa funcionalidad
+			// llamadas. En caso contrario se llama sin esa funcionalidad
 			if (mParams.fromViewData) {
 				var oPromise = new Promise(function (resolve, reject) {
 
 					// Se lee la configuración de la vista			
 					that._oViewConfService.readView({
-						viewName: mParams.viewName
+						viewName: mParams.viewName,
+						mode: constants.editMode.view
 					}).then((result) => {
-						
+
 							// Se llama al método que devuelve el objeto View con la información del catalogo + la general 
 							var oView = that._instanceViewObject({
 								viewName: mParams.viewName,
@@ -83,7 +84,8 @@ sap.ui.define([
 				return oPromise;
 			} else {
 				this._oViewConfService.readView({
-					viewName: mParams.viewName
+					viewName: mParams.viewName,
+					mode: constants.editMode.view
 				}).then((result) => {
 						// Se llama al método que devuelve el objeto View con la información del catalogo + la general 
 						var oView = that._instanceViewObject({
@@ -91,10 +93,10 @@ sap.ui.define([
 							fieldCatalog: result.results
 						});
 
-						
+
 					},
 					(error) => {
-						
+
 
 					});
 			}
@@ -118,7 +120,7 @@ sap.ui.define([
 			oView.setViewInfo(this.getViewInfo(mParams.viewName));
 
 			// Se guarda el catalogo de campos
-			oView.setFieldCatalog(mParams.fieldCatalog);
+			oView.setFieldCatalogFromService(mParams.fieldCatalog);
 
 			return oView;
 

@@ -187,7 +187,7 @@ sap.ui.define([
 
 			// Se recuperarán los datos
 			var oData = this._viewDataState.getViewData();
-			this._oViewDataModel.setProperty("/values", oData);
+			this._oViewDataModel.setProperty("/values", oData);			
 
 		}
 
