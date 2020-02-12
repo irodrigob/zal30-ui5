@@ -65,7 +65,7 @@ sap.ui.define([
 					// Se lee la configuración de la vista			
 					that._oViewConfService.readView({
 						viewName: mParams.viewName,
-						mode: constants.editMode.view
+						mode: mParams.editMode
 					}).then((result) => {
 
 							// Se llama al método que devuelve el objeto View con la información del catalogo + la general 
@@ -85,7 +85,7 @@ sap.ui.define([
 			} else {
 				this._oViewConfService.readView({
 					viewName: mParams.viewName,
-					mode: constants.editMode.view
+					mode: mParams.editMode
 				}).then((result) => {
 						// Se llama al método que devuelve el objeto View con la información del catalogo + la general 
 						var oView = that._instanceViewObject({
@@ -120,9 +120,35 @@ sap.ui.define([
 			oView.setViewInfo(this.getViewInfo(mParams.viewName));
 
 			// Se guarda el catalogo de campos
-			oView.setFieldCatalogFromService(mParams.fieldCatalog);
+			oView.setFieldCatalogFromService(this._convertServiceFieldCatalog2Intern(mParams.fieldCatalog));
 
 			return oView;
+
+		},
+		// Se convierte el catalogo del servicio en el formato propio de la aplicación
+		_convertServiceFieldCatalog2Intern: function (mFieldCatalog) {
+
+			var aColumns = [];
+			for (var x = 0; x < mFieldCatalog.length; x++) {
+				var mColumn = {
+					name: fieldCatalog[x].FIELDNAME,
+					shortText: fieldCatalog[x].SHORTEXT,
+					mediumText: fieldCatalog[x].MEDIUMTEXT,
+					longText: fieldCatalog[x].LONGTEXT,
+					headerText: fieldCatalog[x].HEADERTEXT,
+					mandatory: fieldCatalog[x].MANDATORY,
+					noOutput: fieldCatalog[x].NOOUTPUT,
+					checkBox:fieldCatalog[x].CHECKBOX,
+					keyDDIC:fieldCatalog[x].KEYDDIC,
+					edit:fieldCatalog[x].EDIT,
+					type:fieldCatalog[x].TYPE,
+					len:fieldCatalog[x].LEN,
+					decimals:fieldCatalog[x].DECIMALS,
+					lowerCase:fieldCatalog[x].LOWERCASE
+				};
+				aColumns.push(mColumn);
+			};
+			return (aColumns);
 
 		}
 	});

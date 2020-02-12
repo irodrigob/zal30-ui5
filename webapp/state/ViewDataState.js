@@ -19,6 +19,9 @@ sap.ui.define([
 			// Se recupera la clase que gestiona los estados de la configuración de la vista
 			this._viewConfState = this._oOwnerComponent.getState(this._oOwnerComponent.state.confView);
 
+			// Modo de edición por defecto
+			this._editMode = constants.editMode.view;
+
 		},
 		// Lectura de la configuración y datos
 		readConfDataView(mParams, oSuccessHandler, oErrorHandler) {
@@ -33,7 +36,8 @@ sap.ui.define([
 
 			Promise.all([this._viewConfState.readView({
 				viewName: mParams.viewName,
-				fromViewData: true
+				fromViewData: true,
+				editMode: this._editMode
 			}), this.readDataView({
 				viewName: mParams.viewName
 			})]).then((result) => {
@@ -70,20 +74,7 @@ sap.ui.define([
 		},
 		// Se devuelve las columnas de la tabla a partir del catalogo de campos
 		getColumnsTable: function () {
-			var fieldCatalog = this._oView.getFieldCatalog();
-
-			var aColumns = [];
-			for (var x = 0; x < fieldCatalog.length; x++) {
-				var mColumn = {
-					name: fieldCatalog[x].FIELDNAME,
-					shortText: fieldCatalog[x].SHORTEXT,
-					mediumText: fieldCatalog[x].MEDIUMTEXT,
-					longText: fieldCatalog[x].LONGTEXT,
-					headerText: fieldCatalog[x].HEADERTEXT
-				};
-				aColumns.push(mColumn);
-			};
-			return (aColumns);
+			return (this._oView.getFieldCatalog());
 		},
 		// Devuelve los datos de la vista
 		getViewData() {
