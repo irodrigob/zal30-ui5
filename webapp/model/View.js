@@ -47,17 +47,33 @@ sap.ui.define([
 			// Debido a que el JSON viene en un literal para poderlo usarla hay que parsearlo.					
 			var oDataJSON = new sap.ui.model.json.JSONModel();
 			oDataJSON.setJSON(oData);
-			
+
 
 			// Se recuperarán los datos parseado en un objeto JSON válido para poderse usar-
-			this._oViewData = oDataJSON.getData();	
+			this._oViewData = oDataJSON.getData();
 			this._oOriginalViewData = this._oViewData; // Se guarda los datos originales
-			
+
 
 		},
 		// Devuelve los datos de la vista
 		getViewData: function () {
 			return this._oViewData;
+		},
+		// Guarda la información si la vista ha sido bloqueada previamente y pporque
+		setLockedResultService:function(mResult){
+			this._alreadyBlocked = mResult.ALREADYLOCKED;
+			this._lockedByUser = mResult.LOCKBYUSER;
+
+		},
+		//////////////////////////////////	
+		//        Private methods       //	
+		//////////////////////////////////		  
+		// Inicialización de variables
+		_initModel: function () {
+
+			this._alreadyBlocked = false;
+			this._lockedByUser = '';
+
 		}
 	});
 });

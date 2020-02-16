@@ -131,20 +131,20 @@ sap.ui.define([
 			var aColumns = [];
 			for (var x = 0; x < mFieldCatalog.length; x++) {
 				var mColumn = {
-					name: fieldCatalog[x].FIELDNAME,
-					shortText: fieldCatalog[x].SHORTEXT,
-					mediumText: fieldCatalog[x].MEDIUMTEXT,
-					longText: fieldCatalog[x].LONGTEXT,
-					headerText: fieldCatalog[x].HEADERTEXT,
-					mandatory: fieldCatalog[x].MANDATORY,
-					noOutput: fieldCatalog[x].NOOUTPUT,
-					checkBox:fieldCatalog[x].CHECKBOX,
-					keyDDIC:fieldCatalog[x].KEYDDIC,
-					edit:fieldCatalog[x].EDIT,
-					type:fieldCatalog[x].TYPE,
-					len:fieldCatalog[x].LEN,
-					decimals:fieldCatalog[x].DECIMALS,
-					lowerCase:fieldCatalog[x].LOWERCASE
+					name: mFieldCatalog[x].FIELDNAME,
+					shortText: mFieldCatalog[x].SHORTEXT,
+					mediumText: mFieldCatalog[x].MEDIUMTEXT,
+					longText: mFieldCatalog[x].LONGTEXT,
+					headerText: mFieldCatalog[x].HEADERTEXT,
+					mandatory: mFieldCatalog[x].MANDATORY,
+					noOutput: mFieldCatalog[x].NOOUTPUT,
+					checkBox: mFieldCatalog[x].CHECKBOX,
+					keyDDIC: mFieldCatalog[x].KEYDDIC,
+					edit: mFieldCatalog[x].EDIT,
+					type: mFieldCatalog[x].TYPE,
+					len: mFieldCatalog[x].LEN,
+					decimals: mFieldCatalog[x].DECIMALS,
+					lowerCase: mFieldCatalog[x].LOWERCASE
 				};
 				aColumns.push(mColumn);
 			};

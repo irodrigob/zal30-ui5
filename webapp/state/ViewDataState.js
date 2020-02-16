@@ -19,34 +19,58 @@ sap.ui.define([
 			// Se recupera la clase que gestiona los estados de la configuración de la vista
 			this._viewConfState = this._oOwnerComponent.getState(this._oOwnerComponent.state.confView);
 
-			// Modo de edición por defecto
-			this._editMode = constants.editMode.view;
+			// Modo de edición
+			this._editMode = '';
 
 		},
+		// Determinación del modo de edición según nivel de autorización
+		determineEditModebyAuthLevel: function (sViewName) {
+			// El nivel de autorización lo marca la información básica obtenida de la vistas leídas. 
+
+			var mViewInfo = this._viewConfState.getViewInfo(sViewName);
+
+			// Si se tiene nivel de autorización "full" entonces tiene permisos para todo. En caso contrario de visualización
+			if (mViewInfo.LEVELAUTH == constants.mLevelAuth.full)
+				this._editMode = constants.editMode.edit;
+			else
+				this._editMode = constants.editMode.view;
+
+		},
+
 		// Lectura de la configuración y datos
 		readConfDataView(mParams, oSuccessHandler, oErrorHandler) {
 			var that = this;
 
-			// Servicio de leer la configuración de la tabla.	
-
-			// Servicio de leer los datos de la tabla			
-			/*var oSrvReadConf = this.readDataView({
-				viewName: mParams.viewName
-			});*/
-
-			Promise.all([this._viewConfState.readView({
+			// Nota IRB: Las llamadas se tienen que construir en el propio array. Si se hacen en variables provoca que se llamen de manera inmediata y la recepción
+			// del resultado en el promise.all no es correcta, ya que se recibe los datos del primer servicio.			
+			var aServices = [this._viewConfState.readView({
 				viewName: mParams.viewName,
 				fromViewData: true,
 				editMode: this._editMode
 			}), this.readDataView({
-				viewName: mParams.viewName
-			})]).then((result) => {
+				viewName: mParams.viewName,
+				editMode: this._editMode
+			})];
+
+			// Si en modo de edición no es de lectura se añade el servicio de bloqueo
+			if (this._editMode == constants.editMode.edit) {
+				aServices.push(this._oViewDataService.lockView({
+					viewName: mParams.viewName
+				}));
+			}
+
+			Promise.all(aServices).then((result) => {
 
 					// En el registro 0 esta el resultado de la primera llamada
 					that._oView = result[0];
 
 					// En el registro 1 esta los datos
 					that._oView.setViewDataFromService(result[1].DATA);
+					
+					// Si se esta editando hay que mirar el resultado del bloqueo
+					if (that._editMode == constants.editMode.edit) {
+						that._oView.setLockedResultService(result[2]);
+					}
 
 					// Se ejecuta el código del Success
 					oSuccessHandler();
@@ -62,7 +86,7 @@ sap.ui.define([
 		readDataView: function (mParams) {
 			return this._oViewDataService.readData({
 				viewName: mParams.viewName,
-				mode: constants.editMode.view
+				editMode: mParams.editMode
 			});
 		},
 		// Se devuelve los datos de cabecera de la vista

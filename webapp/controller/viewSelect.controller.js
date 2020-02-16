@@ -28,6 +28,8 @@ sap.ui.define([
 			// Se asocia el método que se ejecutará cada vez que se navegue a este método por el routing
 			this._oOwnerComponent.getRouter().getRoute(this._mSections.viewSelect).attachPatternMatched(this._onRouteMatched, this);
 
+			
+
 		},
 
 		// Método que gestiona la ayuda para busqueda de las vistas

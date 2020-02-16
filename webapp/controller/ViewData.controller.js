@@ -91,11 +91,10 @@ sap.ui.define([
 			if (viewSelect) {
 				var mViewInfo = this._viewConfState.getViewInfo(sViewName);
 
-				// Se inicia el proceso de lectura de la configuración de la vista y de sus datos.
-				this._readView(sViewName);
-
 				if (mViewInfo) {
-					this._oViewDataModel.setProperty("/viewDesc", mViewInfo.VIEWDESC);
+					// Se inicia el proceso de lectura de la configuración de la vista y de sus datos.
+					this._readView(sViewName);
+					//this._oViewDataModel.setProperty("/viewDesc", mViewInfo.VIEWDESC);
 				} else {
 					// Si no existe se devuelve el mensaje error que no es valida o no tiene autorizacion y se vuelve a la pantalla de seleccion
 					// Mensaje de vista 
@@ -159,7 +158,10 @@ sap.ui.define([
 			if (!this._oOwnerComponent.isBusyDialogOpen())
 				this._oOwnerComponent.showBusyDialog();
 
+			// Determinación del modo de edición segun el nivel de autorización
+			this._viewDataState.determineEditModebyAuthLevel(sViewName);
 
+			// Lectura de los datos y configuracuón de la vista
 			this._viewDataState.readConfDataView({
 					viewName: sViewName,
 					fromViewData: true
@@ -187,7 +189,7 @@ sap.ui.define([
 
 			// Se recuperarán los datos
 			var oData = this._viewDataState.getViewData();
-			this._oViewDataModel.setProperty("/values", oData);			
+			this._oViewDataModel.setProperty("/values", oData);
 
 		}
 

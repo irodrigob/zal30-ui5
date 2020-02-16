@@ -12,6 +12,12 @@ sap.ui.define([
 			bUseMock: false,
 			mockFile: "/readData.json",
 			oDataModel: "masterData"
+		},
+		lockView: {
+			serviceName: "/lockViewSet",
+			bUseMock: false,
+			mockFile: "/lockView.json",
+			oDataModel: "masterData"
 		}
 	};
 
@@ -36,6 +42,7 @@ sap.ui.define([
 		//////////////////////////////////	
 		//        Services              //	
 		//////////////////////////////////		
+		// Lectura de los datos
 		readData:function(mParams){
 			// Se recupera el objeto oData al que apunta el servicio
 			var oModel = this.getModel(_mService.readData.oDataModel);
@@ -45,7 +52,22 @@ sap.ui.define([
 				serviceName: oModel.createKey(_mService.readData.serviceName, {
 					VIEWNAME: mParams.viewName,
 					LANGU: this._sLanguage,
-					MODE: mParams.mode
+					MODE: mParams.editMode
+				})
+			});
+
+			return this.callOData(mLocalService);
+
+		},
+		// Bloqueo de los datos de la vista
+		lockView:function(mParams){
+			// Se recupera el objeto oData al que apunta el servicio
+			var oModel = this.getModel(_mService.lockView.oDataModel);
+
+			// Se crea una nueva configuracuón donde se cambia el valor service name para pasarle la clave de la llama al servicio
+			var mLocalService = merge({}, _mService.lockView, {
+				serviceName: oModel.createKey(_mService.lockView.serviceName, {
+					VIEWNAME: mParams.viewName
 				})
 			});
 
