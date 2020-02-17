@@ -173,6 +173,12 @@ sap.ui.define([
 					that._oViewDataModel.setProperty("/viewName", that._viewDataState.getViewInfo().viewName);
 					that._oViewDataModel.setProperty("/viewDesc", that._viewDataState.getViewInfo().viewDesc);
 
+					// Se mira si la tabla esta bloqueda para mostrar un mensaje indicandolo
+					if (that._viewDataState.getViewAlreadyLocked()) {
+						var sMessage = that._oI18nResource.getText("viewData.lockedView") + " " + that._viewDataState.getUserAlreadyBlocked();
+						MessageToast.show(sMessage);
+					}
+
 					// Se llama al método encargado de construir la tabla a mostrar
 					that._buildTableData();
 				},

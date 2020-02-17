@@ -19,10 +19,13 @@ sap.ui.define([
 
 			// Se llama a la clase padre pasandole los mismos parámetros
 			BaseModel.call(this, oComponent);
+
+			// Inicialización del modelo interno
+			this._initModel();
 		},
-		// Guarda el catalogo de campos de la vista
+		// Guarda el catalogo de campos de la vista. El catalogo se convierte para adaptarlo a la vista
 		setFieldCatalogFromService: function (mFieldCatalog) {
-			this._fieldCatalog = mFieldCatalog;
+			this._fieldCatalog = this._convertServiceFieldCatalog2Intern(mFieldCatalog);
 		},
 		// Devuelve el catalogo de campos
 		getFieldCatalog: function () {
@@ -59,20 +62,41 @@ sap.ui.define([
 		getViewData: function () {
 			return this._oViewData;
 		},
-		// Guarda la información si la vista ha sido bloqueada previamente y pporque
-		setLockedResultService:function(mResult){
-			this._alreadyBlocked = mResult.ALREADYLOCKED;
-			this._lockedByUser = mResult.LOCKBYUSER;
-
-		},
 		//////////////////////////////////	
 		//        Private methods       //	
 		//////////////////////////////////		  
 		// Inicialización de variables
 		_initModel: function () {
+			
+			this._oViewData = '';
+			this._oOriginalViewData = '';
+			this._fieldCatalog = [];
 
-			this._alreadyBlocked = false;
-			this._lockedByUser = '';
+		},
+		// Se convierte el catalogo del servicio en el formato propio de la aplicación
+		_convertServiceFieldCatalog2Intern: function (mFieldCatalog) {
+
+			var aColumns = [];
+			for (var x = 0; x < mFieldCatalog.length; x++) {
+				var mColumn = {
+					name: mFieldCatalog[x].FIELDNAME,
+					shortText: mFieldCatalog[x].SHORTEXT,
+					mediumText: mFieldCatalog[x].MEDIUMTEXT,
+					longText: mFieldCatalog[x].LONGTEXT,
+					headerText: mFieldCatalog[x].HEADERTEXT,
+					mandatory: mFieldCatalog[x].MANDATORY,
+					noOutput: mFieldCatalog[x].NOOUTPUT,
+					checkBox: mFieldCatalog[x].CHECKBOX,
+					keyDDIC: mFieldCatalog[x].KEYDDIC,
+					edit: mFieldCatalog[x].EDIT,
+					type: mFieldCatalog[x].TYPE,
+					len: mFieldCatalog[x].LEN,
+					decimals: mFieldCatalog[x].DECIMALS,
+					lowerCase: mFieldCatalog[x].LOWERCASE
+				};
+				aColumns.push(mColumn);
+			};
+			return (aColumns);
 
 		}
 	});

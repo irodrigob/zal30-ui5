@@ -120,37 +120,12 @@ sap.ui.define([
 			oView.setViewInfo(this.getViewInfo(mParams.viewName));
 
 			// Se guarda el catalogo de campos
-			oView.setFieldCatalogFromService(this._convertServiceFieldCatalog2Intern(mParams.fieldCatalog));
+			oView.setFieldCatalogFromService(mParams.fieldCatalog);
 
 			return oView;
 
 		},
-		// Se convierte el catalogo del servicio en el formato propio de la aplicación
-		_convertServiceFieldCatalog2Intern: function (mFieldCatalog) {
-
-			var aColumns = [];
-			for (var x = 0; x < mFieldCatalog.length; x++) {
-				var mColumn = {
-					name: mFieldCatalog[x].FIELDNAME,
-					shortText: mFieldCatalog[x].SHORTEXT,
-					mediumText: mFieldCatalog[x].MEDIUMTEXT,
-					longText: mFieldCatalog[x].LONGTEXT,
-					headerText: mFieldCatalog[x].HEADERTEXT,
-					mandatory: mFieldCatalog[x].MANDATORY,
-					noOutput: mFieldCatalog[x].NOOUTPUT,
-					checkBox: mFieldCatalog[x].CHECKBOX,
-					keyDDIC: mFieldCatalog[x].KEYDDIC,
-					edit: mFieldCatalog[x].EDIT,
-					type: mFieldCatalog[x].TYPE,
-					len: mFieldCatalog[x].LEN,
-					decimals: mFieldCatalog[x].DECIMALS,
-					lowerCase: mFieldCatalog[x].LOWERCASE
-				};
-				aColumns.push(mColumn);
-			};
-			return (aColumns);
-
-		}
+		
 	});
 	return oViewConfState;
 });

@@ -18,9 +18,10 @@ sap.ui.define([
 
 			// Se recupera la clase que gestiona los estados de la configuración de la vista
 			this._viewConfState = this._oOwnerComponent.getState(this._oOwnerComponent.state.confView);
+			
+			// Inicialización del modelo interno
+			this._initModel();
 
-			// Modo de edición
-			this._editMode = '';
 
 		},
 		// Determinación del modo de edición según nivel de autorización
@@ -66,10 +67,11 @@ sap.ui.define([
 
 					// En el registro 1 esta los datos
 					that._oView.setViewDataFromService(result[1].DATA);
-					
-					// Si se esta editando hay que mirar el resultado del bloqueo
+
+					// Si se esta editando hay que mirar el resultado del bloqueo. El resultado afectará
 					if (that._editMode == constants.editMode.edit) {
-						that._oView.setLockedResultService(result[2]);
+						debugger;
+						that._determineEdtModelAccordingLockView(result[2]);
 					}
 
 					// Se ejecuta el código del Success
@@ -104,6 +106,14 @@ sap.ui.define([
 		getViewData() {
 			return this._oView.getViewData();
 		},
+		// Devuelve si la vista ha sido bloqueada
+		getViewAlreadyLocked: function () {
+			return this._alreadyBlocked;
+		},
+		// Devuelve el usuario que tiene bloqueado la vista
+		getUserAlreadyBlocked: function () {
+			return this._lockedByUser;
+		},
 		//////////////////////////////////	
 		//        Private methods       //	
 		//////////////////////////////////	
@@ -113,6 +123,20 @@ sap.ui.define([
 			this._oViewDataService = new ViewDataService(this._oOwnerComponent);
 
 		},
+		// Determina el modo de edición dependiendo si la tabla esta bloqueda
+		_determineEdtModelAccordingLockView: function (mResult) {
+			this._alreadyBlocked = mResult.ALREADYLOCKED;
+			this._lockedByUser = mResult.LOCKBYUSER;
+
+			if (this._alreadyBlocked) // Con bloqueo la vista solo se puede visualizar
+				this._editMode = constants.editMode.view;
+		},
+		_initModel: function () {
+			// Modo de edición
+			this._editMode = '';
+			this._alreadyBlocked = false;
+			this._lockedByUser = '';
+		}
 	});
 	return oViewDataState;
 });
