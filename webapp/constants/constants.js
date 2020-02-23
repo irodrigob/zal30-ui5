@@ -32,6 +32,12 @@ sap.ui.define([], function () {
 			viewConf: "ViewConf",
 			ViewSelect: "ViewSelectModel",
 			viewData: "ViewData"			
+		},
+		columnTtype:{
+			char:'C',
+			date:'D',
+			time:'T',
+			packed:'P'
 		}
 	};
 	return oConstants

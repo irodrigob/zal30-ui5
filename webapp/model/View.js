@@ -51,8 +51,10 @@ sap.ui.define([
 			var oDataJSON = new sap.ui.model.json.JSONModel();
 			oDataJSON.setJSON(oData);
 
+			// Se adapta los valores según los tipos de campos pasados. Ejemplo: los campos checkbox que hay que cambiar la 'X'/'' por true/false.
+			oDataJSON = this._convValuesFromService(oDataJSON);
 
-			// Se recuperarán los datos parseado en un objeto JSON válido para poderse usar-
+			// Se recuperarán los datos parseado en un objeto JSON válido para poderse usar
 			this._oViewData = oDataJSON.getData();
 			this._oOriginalViewData = this._oViewData; // Se guarda los datos originales
 
@@ -67,7 +69,7 @@ sap.ui.define([
 		//////////////////////////////////		  
 		// Inicialización de variables
 		_initModel: function () {
-			
+
 			this._oViewData = '';
 			this._oOriginalViewData = '';
 			this._fieldCatalog = [];
@@ -98,6 +100,40 @@ sap.ui.define([
 			};
 			return (aColumns);
 
+		},
+		// Conversion de los datos procedentes del servicios
+		_convValuesFromService: function (oDataJSON) {
+
+			// Se recuperán los campos que son checkbox
+			var acheckBoxFields = this._checkBoxFieldsinCatalog();
+
+			// Si hay campos a tratar se inicial el proceso.	
+			if (acheckBoxFields.length) {
+				// Se recorren todos los registros leídos
+				for (var x = 0; x < oDataJSON.oData.length; x++) {
+
+					// Se recorre todos los campos de tipo checbox
+					for (var y = 0; y < acheckBoxFields.length; y++) {
+						// Se recupera el valor
+						var sPath = "/" + x + "/" + acheckBoxFields[y].name;
+						if (oDataJSON.getProperty(sPath) == 'X')
+							oDataJSON.setProperty(sPath, true)
+						else
+							oDataJSON.setProperty(sPath, false)
+
+
+					}
+
+
+				}
+			}
+			return oDataJSON;
+
+
+		},
+		// Devuelve los campos que son checkbox
+		_checkBoxFieldsinCatalog: function () {
+			return this._fieldCatalog.filter(field => field.checkBox == true)
 		}
 	});
 });

@@ -18,7 +18,7 @@ sap.ui.define([
 
 			// Se recupera la clase que gestiona los estados de la configuración de la vista
 			this._viewConfState = this._oOwnerComponent.getState(this._oOwnerComponent.state.confView);
-			
+
 			// Inicialización del modelo interno
 			this._initModel();
 
@@ -36,6 +36,14 @@ sap.ui.define([
 			else
 				this._editMode = constants.editMode.view;
 
+		},
+
+		// Devuelve si se puede editar la vista
+		isViewEditable: function () {
+			if (this._editMode == constants.editMode.edit)
+				return true;
+			else
+				return false;
 		},
 
 		// Lectura de la configuración y datos
@@ -69,10 +77,9 @@ sap.ui.define([
 					that._oView.setViewDataFromService(result[1].DATA);
 
 					// Si se esta editando hay que mirar el resultado del bloqueo. El resultado afectará
-					if (that._editMode == constants.editMode.edit) {
-						debugger;
+					if (that._editMode == constants.editMode.edit)
 						that._determineEdtModelAccordingLockView(result[2]);
-					}
+
 
 					// Se ejecuta el código del Success
 					oSuccessHandler();

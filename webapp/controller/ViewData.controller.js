@@ -6,7 +6,11 @@ sap.ui.define([
 	"com/ivancio/zal30-ui5/component/general/LogDialog/logDialog",
 	"sap/ui/table/Column",
 	"sap/m/Text",
-], function (BaseController, MessageToast, MessageBox, constants, logDialog, Column, Text) {
+	"sap/m/Input",
+	"sap/m/DatePicker",
+	"sap/m/TimePicker",
+	"sap/m/CheckBox"
+], function (BaseController, MessageToast, MessageBox, constants, logDialog, Column, Text, Input, DatePicker, TimePicker, CheckBox) {
 	"use strict";
 
 	return BaseController.extend("com.ivancio.zal30-ui5.controller.ViewData", {
@@ -47,17 +51,12 @@ sap.ui.define([
 				visible: true,
 				sortProperty: true,
 				filterProperty: true,
-				width: "5rem",
+				width: "auto",
 				label: new sap.m.Label({
 					text: mColumn.headerText
 				}),
 				hAlign: "Begin",
-				template: new Text({
-					text: {
-						path: "ViewData>" + mColumn.name
-					},
-					wrapping: false
-				})
+				template: this._getTemplateObjectforTableColumn(mColumn)
 			});
 
 		},
@@ -196,6 +195,68 @@ sap.ui.define([
 			// Se recuperarán los datos
 			var oData = this._viewDataState.getViewData();
 			this._oViewDataModel.setProperty("/values", oData);
+
+		},
+		// Devuelve un objeto de tipo "template" en base al tipo de campo y sus atributos y teniendo en cuenta su modo de visualización
+		_getTemplateObjectforTableColumn: function (mColumn) {
+			// Devuelve si se puede editar la vista	
+			var bEdit = this._viewDataState.isViewEditable();
+
+			switch (mColumn.type) {
+				case constants.columnTtype.char:
+					if (mColumn.checkBox == true) {
+						return new CheckBox({
+							selected: {
+								path: "ViewData>" + mColumn.name
+							},
+							editable: bEdit
+						})	
+					} else {
+						return new Input({
+							value: {
+								path: "ViewData>" + mColumn.name
+							},
+							editable: bEdit,
+							required: mColumn.mandatory
+						})
+					}
+
+					break;
+				case constants.columnTtype.date:
+					return new DatePicker({
+						value: {
+							path: "ViewData>" + mColumn.name
+						},
+						editable: bEdit,
+						required: mColumn.mandatory,
+						valueFormat: "dd/MM/yyyy",
+						displayFormat: "short"
+					})
+
+					break;
+				case constants.columnTtype.time:
+					return new TimePicker({
+						value: {
+							path: "ViewData>" + mColumn.name
+						},
+						editable: bEdit,
+						required: mColumn.mandatory,
+						valueFormat: "HH:mm:ss",
+						displayFormat: "HH:mm:ss"
+					})
+					break;
+				case constants.columnTtype.packed:
+					return new Input({
+						value: {
+							path: "ViewData>" + mColumn.name
+						},
+						editable: bEdit,
+						required: mColumn.mandatory,
+						type: "Number"
+					})
+					break;
+
+			}
 
 		}
 

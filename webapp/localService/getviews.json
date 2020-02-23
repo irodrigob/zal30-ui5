@@ -1,28 +1,58 @@
 {
-    "results": [
-        {            
-            "LANGU": "E",
-            "VIEWNAME": "ZSAT_T_111",
-            "VIEWDESC": "View of reports",
-            "LEVELAUTH":"F"
-        },
-        {
-            "LANGU": "E",
-            "VIEWNAME": "ZRTN_T_2222",
-            "VIEWDESC": "User of applications",
-            "LEVELAUTH":"F"
-        },
-        {
-            "LANGU": "E",
-            "VIEWNAME": "ZSAT_T_3333",
-            "VIEWDESC": "Stores",
-            "LEVELAUTH":"F"
-        },
-        {
-            "LANGU": "E",
-            "VIEWNAME": "USR01",
-            "VIEWDESC": "Users of system",
-            "LEVELAUTH":"R"
-        }
-    ]
+	"results": [{
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getViewsSet('USR01')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getViewsSet('USR01')",
+			"type": "ZAL30_DATA_SRV.getViews"
+		},
+		"LANGU": "",
+		"USER": "",
+		"VIEWNAME": "USR01",
+		"VIEWDESC": "User master record (runtime data)",
+		"LEVELAUTH": "F"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getViewsSet('USR02')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getViewsSet('USR02')",
+			"type": "ZAL30_DATA_SRV.getViews"
+		},
+		"LANGU": "",
+		"USER": "",
+		"VIEWNAME": "USR02",
+		"VIEWDESC": "Logon Data (Kernel-Side Use)",
+		"LEVELAUTH": "F"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getViewsSet('ZAL30_T_FIELDS')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getViewsSet('ZAL30_T_FIELDS')",
+			"type": "ZAL30_DATA_SRV.getViews"
+		},
+		"LANGU": "",
+		"USER": "",
+		"VIEWNAME": "ZAL30_T_FIELDS",
+		"VIEWDESC": "AL30 - Customizing fields of view",
+		"LEVELAUTH": "R"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getViewsSet('ZAL30_T_UI5_TEST')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getViewsSet('ZAL30_T_UI5_TEST')",
+			"type": "ZAL30_DATA_SRV.getViews"
+		},
+		"LANGU": "",
+		"USER": "",
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"VIEWDESC": "AL30 - Table for UI5 for purpose testing",
+		"LEVELAUTH": "F"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getViewsSet('ZAL30_T_USR_AUTH')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getViewsSet('ZAL30_T_USR_AUTH')",
+			"type": "ZAL30_DATA_SRV.getViews"
+		},
+		"LANGU": "",
+		"USER": "",
+		"VIEWNAME": "ZAL30_T_USR_AUTH",
+		"VIEWDESC": "AL30 - User authorizations per view",
+		"LEVELAUTH": "F"
+	}]
 }

@@ -31,7 +31,8 @@
                     path:'/columns',
 					factory: '.columnFactory'
 				}"
-				ariaLabelledBy="title">				
+				ariaLabelledBy="title"
+                width="100%">				
 			</table:Table>
         </content>
         <customHeader>

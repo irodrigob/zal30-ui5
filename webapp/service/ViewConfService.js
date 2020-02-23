@@ -83,24 +83,6 @@ sap.ui.define([
 				if (oParameters && oParameters.viewName)
 					oFilters.push(new Filter(constants.services.filter.viewName, sap.ui.model.FilterOperator.EQ, oParameters.viewName));
 
-
-				// Se llama al servicio para obtener los datos de Gateway o del mock
-				/*this.callSapService(_mService.getViews, {
-					filters: oFilters,
-					success: function (oData) {
-						if (oSuccessHandler) {
-							if (oData) {
-								oSuccessHandler(oData);
-							} else {
-								if (oErrorHandler) {
-									oErrorHandler();
-								}
-							}
-						}
-					},
-					error: oErrorHandler
-				});*/
-
 				// Debido a que el servicio oData se llama dentro de un promise no se puede hacer un return porque quien lo llama no recuperan bien el return y falla
 				// en el then. Por eso, se ejecuta el código de los handler
 				return this.callOData(_mService.getViews, {
@@ -116,7 +98,7 @@ sap.ui.define([
 
 
 
-			/*// Se llama al servicio para obtener los datos del mock si no hay Gateway
+			// Se llama al servicio para obtener los datos del mock si no hay Gateway
 			if (!bgwAvailable) {
 				this._bMock = true; // Sin gateway todo tiene que por mock
 
@@ -127,7 +109,7 @@ sap.ui.define([
 					(error) => {
 						oErrorHandler(error);
 					});
-			}*/
+			}
 
 		},
 		// Obtiene la autorización para la vista
@@ -168,23 +150,6 @@ sap.ui.define([
 				new Filter(constants.services.filter.mode, sap.ui.model.FilterOperator.EQ, oParameters.mode)				
 			];
 
-			// Se llama al servicio  	
-			/*this.callSapService(_mService.readView, {
-				filters: oFilters,
-				bSynchronous: true,
-				success: function (oData) {
-					if (successHandler) {
-						if (oData) {
-							successHandler(oData);
-						} else {
-							if (errorHandler) {
-								errorHandler();
-							}
-						}
-					}
-				},
-				error: errorHandler
-			});*/
 			return this.callOData(_mService.readView, {
 				filters: oFilters
 			});

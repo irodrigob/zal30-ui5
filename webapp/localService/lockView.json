@@ -1,0 +1,10 @@
+{
+	"__metadata": {
+		"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/lockViewSet('USR02')",
+		"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/lockViewSet('USR02')",
+		"type": "ZAL30_DATA_SRV.lockView"
+	},
+	"VIEWNAME": "ZAL30_T_UI5_TEST",
+	"ALREADYLOCKED": false,
+	"LOCKBYUSER": ""
+}
