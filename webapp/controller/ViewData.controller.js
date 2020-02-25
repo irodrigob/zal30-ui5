@@ -9,8 +9,9 @@ sap.ui.define([
 	"sap/m/Input",
 	"sap/m/DatePicker",
 	"sap/m/TimePicker",
-	"sap/m/CheckBox"
-], function (BaseController, MessageToast, MessageBox, constants, logDialog, Column, Text, Input, DatePicker, TimePicker, CheckBox) {
+	"sap/m/CheckBox",
+	"sap/m/ObjectNumber"
+], function (BaseController, MessageToast, MessageBox, constants, logDialog, Column, Text, Input, DatePicker, TimePicker, CheckBox, ObjectNumber) {
 	"use strict";
 
 	return BaseController.extend("com.ivancio.zal30-ui5.controller.ViewData", {
@@ -210,14 +211,15 @@ sap.ui.define([
 								path: "ViewData>" + mColumn.name
 							},
 							editable: bEdit
-						})	
+						})
 					} else {
 						return new Input({
 							value: {
 								path: "ViewData>" + mColumn.name
 							},
 							editable: bEdit,
-							required: mColumn.mandatory
+							required: mColumn.mandatory,
+							maxLength: mColumn.len
 						})
 					}
 
@@ -248,11 +250,15 @@ sap.ui.define([
 				case constants.columnTtype.packed:
 					return new Input({
 						value: {
-							path: "ViewData>" + mColumn.name
+							path: "ViewData>" + mColumn.name,
+							type: 'sap.ui.model.type.Float',
+							formatOptions: {
+								decimals:mColumn.decimals
+							}
 						},
 						editable: bEdit,
 						required: mColumn.mandatory,
-						type: "Number"
+						maxLength: mColumn.len
 					})
 					break;
 
