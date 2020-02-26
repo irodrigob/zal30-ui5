@@ -46,7 +46,6 @@ sap.ui.define([
 		// Construcción de las columnas
 		columnFactory: function (sId, oContext) {
 			var mColumn = this._oViewDataModel.getProperty(oContext.sPath);
-			//debugger;
 
 			return new Column(sId, {
 				visible: true,
@@ -59,6 +58,17 @@ sap.ui.define([
 				hAlign: "Begin",
 				template: this._getTemplateObjectforTableColumn(mColumn)
 			});
+
+		},
+		onTesting: function (oEvent) {
+			debugger;
+		},
+		onInputNumberChanged: function (oEvent) {
+			debugger;
+			var _oInput = oEvent.getSource();
+			var val = _oInput.getValue();
+			val = val.replace(/[^\d]/g, '');
+			_oInput.setValue(val);
 
 		},
 		//////////////////////////////////
@@ -253,12 +263,20 @@ sap.ui.define([
 							path: "ViewData>" + mColumn.name,
 							type: 'sap.ui.model.type.Float',
 							formatOptions: {
-								decimals:mColumn.decimals
+								decimals: mColumn.decimals,
+								groupingEnabled: false
 							}
 						},
 						editable: bEdit,
 						required: mColumn.mandatory,
-						maxLength: mColumn.len
+						maxLength: mColumn.len,
+						liveChange: function (oEvent) {
+							debugger;
+							var _oInput = oEvent.getSource();
+							var val = _oInput.getValue();
+							val = val.replace(/[^0-9]/g, '');
+							_oInput.setValue(val);
+						}
 					})
 					break;
 

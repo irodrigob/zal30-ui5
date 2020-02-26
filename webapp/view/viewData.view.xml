@@ -34,6 +34,12 @@
 				ariaLabelledBy="title"
                 width="100%">				
 			</table:Table>
+                        <Button press="onTesting"
+						icon="sap-icon://navigation-right-arrow" 
+						text="Testing"
+						enabled="{model:'ViewSelectModel', path:'/viewSelected'}">
+						
+					</Button>
         </content>
         <customHeader>
             <!--sap.m.IBar-->
