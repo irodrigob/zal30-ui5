@@ -1,10 +1,11 @@
 sap.ui.define([
 	"sap/ui/core/UIComponent",
-	"sap/ui/Device",	
+	"sap/ui/Device",
 	"sap/m/BusyDialog",
 	"com/ivancio/zal30-ui5/state/ViewConfState",
 	"com/ivancio/zal30-ui5/state/ViewDataState",
-], function (UIComponent, Device, BusyDialog, ViewConfState, ViewDataState) {
+	"sap/ui/core/format/NumberFormat"
+], function (UIComponent, Device, BusyDialog, ViewConfState, ViewDataState, NumberFormat) {
 	"use strict";
 
 	return UIComponent.extend("com.ivancio.zal30-ui5.Component", {
@@ -32,6 +33,9 @@ sap.ui.define([
 
 			// enable routing
 			this.getRouter().initialize();
+
+			// Configuracion iniciales del usuario	
+			this._initUserConfiguration();
 
 			// Se inicializa el modelo de datos
 			this._initModelData();
@@ -63,20 +67,25 @@ sap.ui.define([
 		getState: function (sState) {
 			return this["_o" + sState + "State"];
 		},
+		// Devuelve la configuración del usuario
+		getUserConfig: function () {
+			return this._oUserConfig;
+		},
 		//////////////////////////////////
 		//                              //
 		//        Private methods       //
 		//                              //
 		//////////////////////////////////
+		// Inicializa el modelo interno de datos
 		_initModelData: function () {
 
-			// Se inicializa la variable con el modelo de la aplicaciC3n. Este AppData esta
+			// Se inicializa la variable con el modelo de la aplicacion. Este AppData esta
 			// definido en el manifest con la etiqueta "appData". 
 			var oAppDataModel = this.getModel("appData");
 
-			oAppDataModel.setProperty("/section", ''); // En que pC!gina o seccion de la aplicaciC3n se esta
+			oAppDataModel.setProperty("/section", ''); // En que pagina o seccion de la aplicaciC3n se esta
 
-			// Se indica que se tiene que hacer el control de autorizaciC3n de la vista
+			// Se indica que se tiene que hacer el control de autorizacion de la vista
 			oAppDataModel.setProperty("/checkAuthView", true);
 
 			// Se indica que NO se accede por la vista de seleccion de vistas. Esto cambiara al acceder
@@ -91,8 +100,16 @@ sap.ui.define([
 
 			// A nivel interno de UI5 se fuerza el uso del ingles
 			sap.ui.getCore().getConfiguration().setLanguage("en");
-
+		},
+		// Inicializacion de la configuración del usuario
+		_initUserConfiguration: function () {			
+			this._oUserConfig = {
+				dateFormat: sap.ui.core.format.DateFormat.getInstance().oFormatOptions.pattern,
+				decimalSeparator: sap.ui.core.format.NumberFormat.getFloatInstance().oFormatOptions.decimalSeparator,
+				thousandSeparator: sap.ui.core.format.NumberFormat.getFloatInstance().oFormatOptions.decimalSeparator === "." ? "," : "."
+			};
 		}
+
 
 	});
 });

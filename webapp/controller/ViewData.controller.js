@@ -64,12 +64,7 @@ sap.ui.define([
 			debugger;
 		},
 		onInputNumberChanged: function (oEvent) {
-			debugger;
-			var _oInput = oEvent.getSource();
-			var val = _oInput.getValue();
-			val = val.replace(/[^\d]/g, '');
-			_oInput.setValue(val);
-
+			oEvent.getSource().setValue(oEvent.getSource().getValue().replace(/[^\d|.,]/g, ''));
 		},
 		//////////////////////////////////
 		//                              //
@@ -210,6 +205,7 @@ sap.ui.define([
 		},
 		// Devuelve un objeto de tipo "template" en base al tipo de campo y sus atributos y teniendo en cuenta su modo de visualización
 		_getTemplateObjectforTableColumn: function (mColumn) {
+
 			// Devuelve si se puede editar la vista	
 			var bEdit = this._viewDataState.isViewEditable();
 
@@ -264,20 +260,15 @@ sap.ui.define([
 							type: 'sap.ui.model.type.Float',
 							formatOptions: {
 								decimals: mColumn.decimals,
-								groupingEnabled: false
+								groupingSeparator: this._oOwnerComponent.getUserConfig().thousandSeparator,
+								decimalSeparator: this._oOwnerComponent.getUserConfig().decimalSeparator
 							}
 						},
 						editable: bEdit,
 						required: mColumn.mandatory,
 						maxLength: mColumn.len,
-						liveChange: function (oEvent) {
-							debugger;
-							var _oInput = oEvent.getSource();
-							var val = _oInput.getValue();
-							val = val.replace(/[^0-9]/g, '');
-							_oInput.setValue(val);
-						}
-					})
+						change: this.onInputNumberChanged
+					});
 					break;
 
 			}
