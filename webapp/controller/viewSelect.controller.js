@@ -3,7 +3,7 @@ sap.ui.define([
 	"sap/m/MessageToast",
 	'sap/ui/model/Filter',
 	'sap/ui/core/Fragment',
-	"sap/base/Log",	
+	"sap/base/Log",
 	"com/ivancio/zal30-ui5/constants/constants",
 	"com/ivancio/zal30-ui5/state/ViewConfState"
 ], function (BaseController, MessageToast, Filter, Fragment, Log, constants, ViewConfState) {
@@ -28,10 +28,9 @@ sap.ui.define([
 			// Se asocia el método que se ejecutará cada vez que se navegue a este método por el routing
 			this._oOwnerComponent.getRouter().getRoute(this._mSections.viewSelect).attachPatternMatched(this._onRouteMatched, this);
 
-			
+
 
 		},
-
 		// Método que gestiona la ayuda para busqueda de las vistas
 		onHandleViewHelp: function (oEvent) {
 			// Se recupera el valor actual para aplicar al filtro de la ventana de vistas
@@ -174,7 +173,7 @@ sap.ui.define([
 				viewSelected: false,
 				viewName: ''
 			});
-		},		
+		},
 		// Inicialización del modelo de datos y carga inicial de datos
 		_initModelData: function () {
 			this._oViewSelectModel = new sap.ui.model.json.JSONModel();

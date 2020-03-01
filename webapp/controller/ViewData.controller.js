@@ -9,12 +9,12 @@ sap.ui.define([
 	"sap/m/Input",
 	"sap/m/DatePicker",
 	"sap/m/TimePicker",
-	"sap/m/CheckBox",
-	"sap/m/ObjectNumber"
-], function (BaseController, MessageToast, MessageBox, constants, logDialog, Column, Text, Input, DatePicker, TimePicker, CheckBox, ObjectNumber) {
+	"sap/m/CheckBox"
+], function (BaseController, MessageToast, MessageBox, constants, logDialog, Column, Text, Input, DatePicker, TimePicker, CheckBox) {
 	"use strict";
 
 	return BaseController.extend("com.ivancio.zal30-ui5.controller.ViewData", {
+
 
 		//////////////////////////////////
 		//                              //
@@ -38,6 +38,8 @@ sap.ui.define([
 				this._oLogDialog = new logDialog();
 				this.getView().addDependent(this._oLogDialog);
 			}
+
+			let oView = this.getView();
 		},
 		// Botón de ir hacía atras en la aplicación
 		onNavBack: function (oEvent) {
@@ -64,7 +66,24 @@ sap.ui.define([
 			debugger;
 		},
 		onInputNumberChanged: function (oEvent) {
-			oEvent.getSource().setValue(oEvent.getSource().getValue().replace(/[^\d|.,]/g, ''));
+			debugger;
+
+			var oSource = oEvent.getSource();
+			var oParent = oSource.getParent();
+			var sPath = oParent.getBindingContext("ViewData").getPath();
+
+			var nValue = oEvent.getSource().getValue();
+			nValue.replace(/[^\d|.,]/g, '');
+
+			var oFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
+				decimals: 2,
+				groupingSeparator: this._oOwnerComponent.getUserConfig().thousandSeparator,
+				decimalSeparator: this._oOwnerComponent.getUserConfig().decimalSeparator,
+				maxFractionDigits: this._oOwnerComponent.getUserConfig().decimalSeparator
+			});
+			oFormat.format(nValue);
+
+			oEvent.getSource().setValue(nValue);
 		},
 		//////////////////////////////////
 		//                              //
@@ -209,6 +228,11 @@ sap.ui.define([
 			// Devuelve si se puede editar la vista	
 			var bEdit = this._viewDataState.isViewEditable();
 
+			var oContext = {
+				context: this,
+				column: mColumn
+			};
+
 			switch (mColumn.type) {
 				case constants.columnTtype.char:
 					if (mColumn.checkBox == true) {
@@ -254,21 +278,24 @@ sap.ui.define([
 					})
 					break;
 				case constants.columnTtype.packed:
-					return new Input({
+					var oInput = new Input({
 						value: {
 							path: "ViewData>" + mColumn.name,
 							type: 'sap.ui.model.type.Float',
 							formatOptions: {
 								decimals: mColumn.decimals,
 								groupingSeparator: this._oOwnerComponent.getUserConfig().thousandSeparator,
-								decimalSeparator: this._oOwnerComponent.getUserConfig().decimalSeparator
+								decimalSeparator: this._oOwnerComponent.getUserConfig().decimalSeparator,
+								maxFractionDigits: this._oOwnerComponent.getUserConfig().decimalSeparator
 							}
 						},
+						id: mColumn.name,
 						editable: bEdit,
 						required: mColumn.mandatory,
 						maxLength: mColumn.len,
-						change: this.onInputNumberChanged
+						change: this.onInputNumberChanged.bind(this)
 					});
+					return oInput;
 					break;
 
 			}
