@@ -65,12 +65,18 @@ sap.ui.define([
 		onTesting: function (oEvent) {
 			debugger;
 		},
-		onInputNumberChanged: function (oEvent) {
+		onInputNumberChanged: function (oEvent, oContext) {
 			debugger;
 
 			var oSource = oEvent.getSource();
+
+
+			// Registro de la tabla donde se ha modificado
 			var oParent = oSource.getParent();
 			var sPath = oParent.getBindingContext("ViewData").getPath();
+
+			// Columna donde se ha cambiado el valor
+			var sColumn = oSource.getAggregation("customData")[0].getValue();
 
 			var nValue = oEvent.getSource().getValue();
 			nValue.replace(/[^\d|.,]/g, '');
@@ -228,11 +234,6 @@ sap.ui.define([
 			// Devuelve si se puede editar la vista	
 			var bEdit = this._viewDataState.isViewEditable();
 
-			var oContext = {
-				context: this,
-				column: mColumn
-			};
-
 			switch (mColumn.type) {
 				case constants.columnTtype.char:
 					if (mColumn.checkBox == true) {
@@ -278,7 +279,7 @@ sap.ui.define([
 					})
 					break;
 				case constants.columnTtype.packed:
-					var oInput = new Input({
+					return new Input({
 						value: {
 							path: "ViewData>" + mColumn.name,
 							type: 'sap.ui.model.type.Float',
@@ -289,13 +290,18 @@ sap.ui.define([
 								maxFractionDigits: this._oOwnerComponent.getUserConfig().decimalSeparator
 							}
 						},
-						id: mColumn.name,
 						editable: bEdit,
 						required: mColumn.mandatory,
 						maxLength: mColumn.len,
-						change: this.onInputNumberChanged.bind(this)
+						change: [this.onInputNumberChanged, this],
+						customData: {
+							Type: "sap.ui.core.CustomData",
+							key: "columName",
+							value: mColumn.name
+						}
+
+
 					});
-					return oInput;
 					break;
 
 			}
