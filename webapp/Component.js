@@ -104,7 +104,7 @@ sap.ui.define([
 		// Inicializacion de la configuración del usuario
 		_initUserConfiguration: function () {			
 			this._oUserConfig = {
-				dateFormat: sap.ui.core.format.DateFormat.getInstance().oFormatOptions.pattern,
+				dateFormat: "dd/MM/yyyy", //sap.ui.core.format.DateFormat.getInstance().oFormatOptions.pattern,
 				decimalSeparator: sap.ui.core.format.NumberFormat.getFloatInstance().oFormatOptions.decimalSeparator,
 				thousandSeparator: sap.ui.core.format.NumberFormat.getFloatInstance().oFormatOptions.decimalSeparator === "." ? "," : "."
 			};

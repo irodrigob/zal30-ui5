@@ -65,7 +65,7 @@ sap.ui.define([
 		onTesting: function (oEvent) {
 			debugger;
 		},
-		onInputNumberChanged: function (oEvent, oContext) {
+		onInputNumberChanged: function (oEvent) {
 			debugger;
 
 			var oSource = oEvent.getSource();
@@ -73,7 +73,8 @@ sap.ui.define([
 
 			// Registro de la tabla donde se ha modificado
 			var oParent = oSource.getParent();
-			var sPath = oParent.getBindingContext("ViewData").getPath();
+			var sPath = oParent.getBindingContext("ViewData").getPath();			
+			var mRow = this._oViewDataModel.getProperty(sPath);
 
 			// Columna donde se ha cambiado el valor
 			var sColumn = oSource.getAggregation("customData")[0].getValue();
@@ -81,13 +82,17 @@ sap.ui.define([
 			var nValue = oEvent.getSource().getValue();
 			nValue.replace(/[^\d|.,]/g, '');
 
-			var oFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
+			mRow[sColumn] = nValue;
+			this._oViewDataModel.setProperty(sPath, mRow);
+
+
+			/*var oFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
 				decimals: 2,
 				groupingSeparator: this._oOwnerComponent.getUserConfig().thousandSeparator,
 				decimalSeparator: this._oOwnerComponent.getUserConfig().decimalSeparator,
 				maxFractionDigits: this._oOwnerComponent.getUserConfig().decimalSeparator
 			});
-			oFormat.format(nValue);
+			oFormat.format(nValue);*/
 
 			oEvent.getSource().setValue(nValue);
 		},
@@ -234,6 +239,13 @@ sap.ui.define([
 			// Devuelve si se puede editar la vista	
 			var bEdit = this._viewDataState.isViewEditable();
 
+			// Se usa los customData para pasar información
+			var mCustomData = {
+				Type: "sap.ui.core.CustomData",
+				key: "columName",
+				value: mColumn.name
+			};
+
 			switch (mColumn.type) {
 				case constants.columnTtype.char:
 					if (mColumn.checkBox == true) {
@@ -262,7 +274,7 @@ sap.ui.define([
 						},
 						editable: bEdit,
 						required: mColumn.mandatory,
-						valueFormat: "dd/MM/yyyy",
+						valueFormat: this._oOwnerComponent.getUserConfig().dateFormat, 
 						displayFormat: "short"
 					})
 
@@ -294,13 +306,7 @@ sap.ui.define([
 						required: mColumn.mandatory,
 						maxLength: mColumn.len,
 						change: [this.onInputNumberChanged, this],
-						customData: {
-							Type: "sap.ui.core.CustomData",
-							key: "columName",
-							value: mColumn.name
-						}
-
-
+						customData: mCustomData
 					});
 					break;
 
