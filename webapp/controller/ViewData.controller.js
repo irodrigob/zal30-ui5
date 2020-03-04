@@ -65,11 +65,11 @@ sap.ui.define([
 		onTesting: function (oEvent) {
 			debugger;
 		},
-		onInputNumberChanged: function (oEvent) {
-			debugger;
+		// Evento que se dispara cuando se modifica el valor de algun registros
+		onValueChange:function(oEvent){
 
+			// Objeto donde se ha cambiado el valor
 			var oSource = oEvent.getSource();
-
 
 			// Registro de la tabla donde se ha modificado
 			var oParent = oSource.getParent();
@@ -78,6 +78,11 @@ sap.ui.define([
 
 			// Columna donde se ha cambiado el valor
 			var sColumn = oSource.getAggregation("customData")[0].getValue();
+		},
+		onInputNumberChanged: function (oEvent) {
+			debugger;
+
+			
 
 			var nValue = oEvent.getSource().getValue();
 			nValue.replace(/[^\d|.,]/g, '');
@@ -228,9 +233,8 @@ sap.ui.define([
 			// Se recuperarán las columnas
 			this._oViewDataModel.setProperty("/columns", this._viewDataState.getColumnsTable());
 
-			// Se recuperarán los datos
-			var oData = this._viewDataState.getViewData();
-			this._oViewDataModel.setProperty("/values", oData);
+			// Se recuperarán los datos			
+			this._oViewDataModel.setProperty("/values", this._viewDataState.getViewData());
 
 		},
 		// Devuelve un objeto de tipo "template" en base al tipo de campo y sus atributos y teniendo en cuenta su modo de visualización
@@ -253,7 +257,8 @@ sap.ui.define([
 							selected: {
 								path: "ViewData>" + mColumn.name
 							},
-							editable: bEdit
+							editable: bEdit,
+							customData: mCustomData
 						})
 					} else {
 						return new Input({
@@ -262,7 +267,8 @@ sap.ui.define([
 							},
 							editable: bEdit,
 							required: mColumn.mandatory,
-							maxLength: mColumn.len
+							maxLength: mColumn.len,
+							customData: mCustomData
 						})
 					}
 
@@ -275,7 +281,8 @@ sap.ui.define([
 						editable: bEdit,
 						required: mColumn.mandatory,
 						valueFormat: this._oOwnerComponent.getUserConfig().dateFormat, 
-						displayFormat: "short"
+						displayFormat: "short",
+						customData: mCustomData
 					})
 
 					break;
@@ -287,7 +294,8 @@ sap.ui.define([
 						editable: bEdit,
 						required: mColumn.mandatory,
 						valueFormat: "HH:mm:ss",
-						displayFormat: "HH:mm:ss"
+						displayFormat: "HH:mm:ss",
+						customData: mCustomData
 					})
 					break;
 				case constants.columnTtype.packed:
