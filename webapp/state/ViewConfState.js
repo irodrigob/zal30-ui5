@@ -57,8 +57,9 @@ sap.ui.define([
 		readView: function (mParams, oSuccessHandler, oErrorHandler) {
 			var that = this;
 
-			// Si el origen de la llama es desde la consulta de los datos, la llama se hará en modo promise porque hay que encadenar
-			// llamadas. En caso contrario se llama sin esa funcionalidad
+			// Si el origen de la llama es desde la vista de los datos, ViewData.Controller.js, la llamada se hará devolviendo el objeto promise. El motivo es que
+			// desde la consulta de datos se encadenan llamadas y la unica manera que procesarlas todas seguidas es con el objeto promise. En caso de llamarse
+			// desde la vista de selección de vista se hará directamente la llamada. El 
 			if (mParams.fromViewData) {
 				var oPromise = new Promise(function (resolve, reject) {
 

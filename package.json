@@ -27,8 +27,8 @@
     "ui5-middleware-simpleproxy": "*"
   },
   "ui5": {
-    "dependencies": [      
-      "ui5-middleware-simpleproxy"      
+    "dependencies": [
+      "ui5-middleware-simpleproxy"
     ]
   }
 }

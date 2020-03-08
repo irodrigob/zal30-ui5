@@ -51,7 +51,7 @@ sap.ui.define([
 			var that = this;
 
 			// Nota IRB: Las llamadas se tienen que construir en el propio array. Si se hacen en variables provoca que se llamen de manera inmediata y la recepción
-			// del resultado en el promise.all no es correcta, ya que se recibe los datos del primer servicio.			
+			// del resultado en el promise.all no es correcta, ya que siempre se recibe los datos del primer servicio.			
 			var aServices = [this._viewConfState.readView({
 				viewName: mParams.viewName,
 				fromViewData: true,
@@ -76,7 +76,7 @@ sap.ui.define([
 					// En el registro 1 esta los datos
 					that._oView.setViewDataFromService(result[1].DATA);
 
-					// Si se esta editando hay que mirar el resultado del bloqueo. El resultado afectará
+					// Si se esta editando hay que mirar el resultado del bloqueo. Si esta bloqueado la tabla no podrá ser editada
 					if (that._editMode == constants.editMode.edit)
 						that._determineEdtModelAccordingLockView(result[2]);
 
@@ -120,6 +120,22 @@ sap.ui.define([
 		// Devuelve el usuario que tiene bloqueado la vista
 		getUserAlreadyBlocked: function () {
 			return this._lockedByUser;
+		},
+		// Evento que se lanza cuando un datos de la vista ha sido modificado. Este evento es mixto entre la controladora de la vista
+		// que determina donde se ha disparado el evento y aquí, que es el que hace las comprobaciones y validaciones
+		// La estructura con los datos modificados tendra los siguientes campos:
+		// path, column, value
+		onValueCellChanged: function (mParams) {
+			// Se inicializa la matriz con los datos de salida
+			var mParamsOutput = {
+				value: mParams.value
+			};
+			debugger;
+
+			// Se formatea el campo según la configuración de la columna
+			mParamsOutput.value = this._oView.formatterValue(mParams.column, mParams.value);
+
+			return mParamsOutput;
 		},
 		//////////////////////////////////	
 		//        Private methods       //	

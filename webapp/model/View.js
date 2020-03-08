@@ -47,22 +47,55 @@ sap.ui.define([
 		// el string json en un objeto JSON de UI5.
 		setViewDataFromService: function (oData) {
 
-			// Debido a que el JSON viene en un literal para poderlo usarla hay que parsearlo.					
-			var oDataJSON = new sap.ui.model.json.JSONModel();
-			oDataJSON.setJSON(oData);
+			// Debido a que el JSON viene en un literal para poderlo usarla hay que parsearlo.								
+			this._oViewData.setJSON(oData);
 
 			// Se adapta los valores según los tipos de campos pasados. Ejemplo: los campos checkbox que hay que cambiar la 'X'/'' por true/false.
-			oDataJSON = this._convValuesFromService(oDataJSON);
+			this._oViewData = this._convValuesFromService(this._oViewData);
 
-			// Se recuperarán los datos parseado en un objeto JSON válido para poderse usar
-			this._oViewData = oDataJSON.getData();
-			this._oOriginalViewData = this._oViewData; // Se guarda los datos originales
+			// Se guarda el valor original
+			this._oOriginalViewData = this._oViewData;
 
 
 		},
 		// Devuelve los datos de la vista
 		getViewData: function () {
-			return this._oViewData;
+			// Los datos se devuelve en formato plano para que puede ser usado en otros objetos, como la tabla de las vistas	
+			return this._oViewData.getData();
+		},
+		// Devuelve la información de una columna del catalogo de campos
+		getColumnInfo: function (sColumn) {
+			return this._fieldCatalog.find(columns => columns.name === sColumn);
+		},
+		// Formatea el valor en base al tipo de columna
+		formatterValue: function (sColumn, oOldValue) {
+
+			// Obtenemos la información de la columna	
+			var mColumn = this.getColumnInfo(sColumn);
+			switch (mColumn.type) {
+				case constants.columnTtype.char:
+
+					if (mColumn.checkBox == true) {
+
+					} else {
+
+					}
+					return sOldValue;
+					break;
+				case constants.columnTtype.date:
+					return sOldValue;
+					break;
+				case constants.columnTtype.time:
+					return sOldValue;
+					break;
+				case constants.columnTtype.packed:
+					// A los campos númericos se les quita las letras
+					return oOldValue.replace(/[^\d|.,]/g, '');
+					break;
+
+			}
+
+
 		},
 		//////////////////////////////////	
 		//        Private methods       //	
@@ -70,7 +103,7 @@ sap.ui.define([
 		// Inicialización de variables
 		_initModel: function () {
 
-			this._oViewData = '';
+			this._oViewData = new sap.ui.model.json.JSONModel();
 			this._oOriginalViewData = '';
 			this._fieldCatalog = [];
 

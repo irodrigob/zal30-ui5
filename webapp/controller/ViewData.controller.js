@@ -51,8 +51,8 @@ sap.ui.define([
 
 			return new Column(sId, {
 				visible: true,
-				sortProperty: true,
-				filterProperty: true,
+				sortProperty: mColumn.name,
+				filterProperty: mColumn.name,
 				width: "auto",
 				label: new sap.m.Label({
 					text: mColumn.headerText
@@ -66,29 +66,35 @@ sap.ui.define([
 			debugger;
 		},
 		// Evento que se dispara cuando se modifica el valor de algun registros
-		onValueChange:function(oEvent){
+		onValueChange: function (oEvent) {
 
 			// Objeto donde se ha cambiado el valor
 			var oSource = oEvent.getSource();
 
 			// Registro de la tabla donde se ha modificado
 			var oParent = oSource.getParent();
-			var sPath = oParent.getBindingContext("ViewData").getPath();			
-			var mRow = this._oViewDataModel.getProperty(sPath);
+			var sPath = oParent.getBindingContext("ViewData").getPath();
+			//var mRow = this._oViewDataModel.getProperty(sPath);
 
 			// Columna donde se ha cambiado el valor
-			var sColumn = oSource.getAggregation("customData")[0].getValue();
+			//var sColumn = oSource.getAggregation("customData")[0].getValue();
+
+			var mResult = this._viewDataState.onValueCellChanged({
+				path: oParent.getBindingContext("ViewData").getPath(),
+				column: oSource.getAggregation("customData")[0].getValue(),
+				value: oEvent.getSource().getValue()				
+			});
+			
+			oEvent.getSource().setValue(mResult.value);
+			
 		},
 		onInputNumberChanged: function (oEvent) {
-			debugger;
-
-			
 
 			var nValue = oEvent.getSource().getValue();
 			nValue.replace(/[^\d|.,]/g, '');
 
-			mRow[sColumn] = nValue;
-			this._oViewDataModel.setProperty(sPath, mRow);
+			/*mRow[sColumn] = nValue;
+			this._oViewDataModel.setProperty(sPath, mRow);*/
 
 
 			/*var oFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
@@ -258,6 +264,7 @@ sap.ui.define([
 								path: "ViewData>" + mColumn.name
 							},
 							editable: bEdit,
+							select: [this.onValueChange, this],
 							customData: mCustomData
 						})
 					} else {
@@ -268,6 +275,7 @@ sap.ui.define([
 							editable: bEdit,
 							required: mColumn.mandatory,
 							maxLength: mColumn.len,
+							change: [this.onValueChange, this],
 							customData: mCustomData
 						})
 					}
@@ -280,11 +288,11 @@ sap.ui.define([
 						},
 						editable: bEdit,
 						required: mColumn.mandatory,
-						valueFormat: this._oOwnerComponent.getUserConfig().dateFormat, 
-						displayFormat: "short",
+						valueFormat: this._oOwnerComponent.getUserConfig().dateFormat,
+						displayFormat: this._oOwnerComponent.getUserConfig().displayDateFormat,
+						change: [this.onValueChange, this],
 						customData: mCustomData
 					})
-
 					break;
 				case constants.columnTtype.time:
 					return new TimePicker({
@@ -293,9 +301,10 @@ sap.ui.define([
 						},
 						editable: bEdit,
 						required: mColumn.mandatory,
-						valueFormat: "HH:mm:ss",
-						displayFormat: "HH:mm:ss",
-						customData: mCustomData
+						valueFormat: this._oOwnerComponent.getUserConfig().timeFormat,
+						displayFormat: this._oOwnerComponent.getUserConfig().displayTimeFormat,
+						customData: mCustomData,
+						change: [this.onValueChange, this]
 					})
 					break;
 				case constants.columnTtype.packed:
@@ -313,7 +322,7 @@ sap.ui.define([
 						editable: bEdit,
 						required: mColumn.mandatory,
 						maxLength: mColumn.len,
-						change: [this.onInputNumberChanged, this],
+						change: [this.onValueChange, this],
 						customData: mCustomData
 					});
 					break;
