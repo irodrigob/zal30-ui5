@@ -81,12 +81,13 @@ sap.ui.define([
 
 			var mResult = this._viewDataState.onValueCellChanged({
 				path: oParent.getBindingContext("ViewData").getPath(),
-				column: oSource.getAggregation("customData")[0].getValue(),
-				value: oEvent.getSource().getValue()				
+				column: oSource.getAggregation("customData")[0].getValue().columnName,
+				objetType:oSource.getAggregation("customData")[0].getValue().objectType,
+				value: oSource.getAggregation("customData")[0].getValue().objectType == constants.columnObjectType.checkbox ? oSource.getSelected() : oSource.getValue()
 			});
-			
+
 			oEvent.getSource().setValue(mResult.value);
-			
+
 		},
 		onInputNumberChanged: function (oEvent) {
 
@@ -249,16 +250,21 @@ sap.ui.define([
 			// Devuelve si se puede editar la vista	
 			var bEdit = this._viewDataState.isViewEditable();
 
-			// Se usa los customData para pasar información
+			// Se usa los customData para pasar información. La general será la del nombre de la columna. Despuées
+			// hay especificas a nivel de objeto, que aun inicializandose aquí se informarán segun el objeto
 			var mCustomData = {
 				Type: "sap.ui.core.CustomData",
-				key: "columName",
-				value: mColumn.name
+				key: "customValues",
+				value: {
+					columnaName: mColumn.name,
+					objectType: ""
+				}
 			};
 
 			switch (mColumn.type) {
 				case constants.columnTtype.char:
 					if (mColumn.checkBox == true) {
+						mCustomData.value.objectType = constants.columnObjectType.checkbox;
 						return new CheckBox({
 							selected: {
 								path: "ViewData>" + mColumn.name
@@ -268,6 +274,7 @@ sap.ui.define([
 							customData: mCustomData
 						})
 					} else {
+						mCustomData.value.objectType = constants.columnObjectType.input;
 						return new Input({
 							value: {
 								path: "ViewData>" + mColumn.name
@@ -282,6 +289,7 @@ sap.ui.define([
 
 					break;
 				case constants.columnTtype.date:
+					mCustomData.value.objectType = constants.columnObjectType.datePicker;
 					return new DatePicker({
 						value: {
 							path: "ViewData>" + mColumn.name
@@ -295,6 +303,7 @@ sap.ui.define([
 					})
 					break;
 				case constants.columnTtype.time:
+					mCustomData.value.objectType = constants.columnObjectType.timePicker;
 					return new TimePicker({
 						value: {
 							path: "ViewData>" + mColumn.name
@@ -308,6 +317,7 @@ sap.ui.define([
 					})
 					break;
 				case constants.columnTtype.packed:
+					mCustomData.value.objectType = constants.columnObjectType.input;
 					return new Input({
 						value: {
 							path: "ViewData>" + mColumn.name,
@@ -326,7 +336,6 @@ sap.ui.define([
 						customData: mCustomData
 					});
 					break;
-
 			}
 
 		}

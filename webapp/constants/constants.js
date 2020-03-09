@@ -7,9 +7,9 @@ sap.ui.define([], function () {
 			read: "R",
 			non: "N"
 		},
-		editMode:{
-			edit:"U",
-			view:"V"
+		editMode: {
+			edit: "U",
+			view: "V"
 		},
 		mMessageType: {
 			error: "E",
@@ -28,16 +28,22 @@ sap.ui.define([], function () {
 				mode: "MODE"
 			}
 		},
-		jsonModel: {			
+		jsonModel: {
 			viewConf: "ViewConf",
 			ViewSelect: "ViewSelectModel",
-			viewData: "ViewData"			
+			viewData: "ViewData"
 		},
-		columnTtype:{
-			char:'C',
-			date:'D',
-			time:'T',
-			packed:'P'
+		columnTtype: {
+			char: "C",
+			date: "D",
+			time: "T",
+			packed: "P"
+		},
+		columnObjectType: {
+			input: "input",
+			datePicker: "datepicker",
+			timePicker: "timepicker",
+			checkbox: "checkbox"
 		}
 	};
 	return oConstants
