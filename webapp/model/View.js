@@ -97,6 +97,18 @@ sap.ui.define([
 
 
 		},
+		// Actualiza el valor de un campo en el modelo propio
+		updateValueModel: function (sColumn, sPath, oValue) {
+			// Se recupera la fila donde esta el valor a modificar
+			var mRow = this._oViewData.getProperty(sPath);
+
+			// Se actualiza el nuevo valor
+			mRow[sColumn] = oValue;
+
+			// Se actualiza en el modelo
+			this._oViewData.setProperty(sPath, mRow);
+
+		},
 		//////////////////////////////////	
 		//        Private methods       //	
 		//////////////////////////////////		  

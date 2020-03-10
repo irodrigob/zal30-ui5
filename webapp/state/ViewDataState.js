@@ -129,11 +129,19 @@ sap.ui.define([
 			// Se inicializa la matriz con los datos de salida
 			var mParamsOutput = {
 				value: mParams.value
-			};
-			debugger;
+			};			
+
+			// el path que se recupera de la vista es /values/<fila>, esto no es compatible con el modelo de datos propio de la clase View. Que es
+			// una variable con el modelo json, por ello se quita el values. 
+			// Como coincide el número de fila se hace por este método, pero en caso de problemas futuros se usará un campo interno
+			mParams.path = mParams.path.replace("/values/","/");
 
 			// Se formatea el campo según la configuración de la columna
 			mParamsOutput.value = this._oView.formatterValue(mParams.column, mParams.value);
+
+			// Se sicroniza el valor en el modelo de datos propio
+			this._oView.updateValueModel(mParams.column, mParams.path, mParamsOutput.value);
+
 
 			return mParamsOutput;
 		},

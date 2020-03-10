@@ -72,42 +72,32 @@ sap.ui.define([
 			var oSource = oEvent.getSource();
 
 			// Registro de la tabla donde se ha modificado
-			var oParent = oSource.getParent();
-			var sPath = oParent.getBindingContext("ViewData").getPath();
-			//var mRow = this._oViewDataModel.getProperty(sPath);
+			var oRow = oSource.getParent();
+			var sPath = oRow.getBindingContext("ViewData").getPath();
+			var mRow = this._oViewDataModel.getProperty(sPath);
 
 			// Columna donde se ha cambiado el valor
-			//var sColumn = oSource.getAggregation("customData")[0].getValue();
+			var sColumn = oSource.getAggregation("customData")[0].getValue().columnName;
 
 			var mResult = this._viewDataState.onValueCellChanged({
-				path: oParent.getBindingContext("ViewData").getPath(),
-				column: oSource.getAggregation("customData")[0].getValue().columnName,
+				path: sPath,
+				column: sColumn,
 				objetType:oSource.getAggregation("customData")[0].getValue().objectType,
 				value: oSource.getAggregation("customData")[0].getValue().objectType == constants.columnObjectType.checkbox ? oSource.getSelected() : oSource.getValue()
 			});
 
+			var oTable = oRow.getParent();
+			oTable.getBinding("rows").refresh();
+			// El modelo de datos
+			//mRow[sColumn] = mResult.value;
+			//this._oViewDataModel.setProperty(sPath, mRow);
+
+			//oTable.getBinding("rows").refresh();
+			// Se actualiza el valor formateado en el objeto
 			oEvent.getSource().setValue(mResult.value);
 
 		},
-		onInputNumberChanged: function (oEvent) {
 
-			var nValue = oEvent.getSource().getValue();
-			nValue.replace(/[^\d|.,]/g, '');
-
-			/*mRow[sColumn] = nValue;
-			this._oViewDataModel.setProperty(sPath, mRow);*/
-
-
-			/*var oFormat = sap.ui.core.format.NumberFormat.getFloatInstance({
-				decimals: 2,
-				groupingSeparator: this._oOwnerComponent.getUserConfig().thousandSeparator,
-				decimalSeparator: this._oOwnerComponent.getUserConfig().decimalSeparator,
-				maxFractionDigits: this._oOwnerComponent.getUserConfig().decimalSeparator
-			});
-			oFormat.format(nValue);*/
-
-			oEvent.getSource().setValue(nValue);
-		},
 		//////////////////////////////////
 		//                              //
 		//        Private methods       //
@@ -256,7 +246,7 @@ sap.ui.define([
 				Type: "sap.ui.core.CustomData",
 				key: "customValues",
 				value: {
-					columnaName: mColumn.name,
+					columnName: mColumn.name,
 					objectType: ""
 				}
 			};
