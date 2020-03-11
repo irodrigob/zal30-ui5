@@ -1,9 +1,8 @@
 sap.ui.define([
 	"com/ivancio/zal30-ui5/state/ViewBaseState",
 	"com/ivancio/zal30-ui5/service/ViewDataService",
-	"com/ivancio/zal30-ui5/constants/constants",
-	"com/ivancio/zal30-ui5/model/View"
-], function (ViewBaseState, ViewDataService, constants, View) {
+	"com/ivancio/zal30-ui5/constants/constants"
+], function (ViewBaseState, ViewDataService, constants) {
 	"use strict";
 
 	var oViewDataState = ViewBaseState.extend("com.ivancio.zal30-ui5.state.ViewBaseState", {
@@ -140,7 +139,9 @@ sap.ui.define([
 			mParamsOutput.value = this._oView.formatterValue(mParams.column, mParams.value);
 
 			// Se sicroniza el valor en el modelo de datos propio
-			this._oView.updateValueModel(mParams.column, mParams.path, mParamsOutput.value);
+			// NOTA: debido a que los modelos de la ViewModel y la vista están clonados por referencia se hace el cambio en la vista, de esta manera
+			// no se pierde el valor en el input de la vista
+			//this._oView.updateValueModel(mParams.column, mParams.path, mParamsOutput.value);
 
 
 			return mParamsOutput;

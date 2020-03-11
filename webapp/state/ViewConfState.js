@@ -2,8 +2,8 @@ sap.ui.define([
 	"com/ivancio/zal30-ui5/state/ViewBaseState",
 	"com/ivancio/zal30-ui5/service/ViewConfService",
 	"com/ivancio/zal30-ui5/constants/constants",
-	"com/ivancio/zal30-ui5/model/View"
-], function (ViewBaseState, ViewConfService, constants, View) {
+	"com/ivancio/zal30-ui5/model/viewModel"
+], function (ViewBaseState, ViewConfService, constants, viewModel) {
 	"use strict";
 
 
@@ -115,7 +115,7 @@ sap.ui.define([
 		// Se instacia el objeto vista con los datos pasados + otros que se determinan
 		_instanceViewObject(mParams) {
 			// Se instancia el objeto vista que guardará toda la información de la vista pasada por parámetro			
-			var oView = new View(this._oOwnerComponent);
+			var oView = new viewModel(this._oOwnerComponent);
 
 			// Se guarda la info general de la vista
 			oView.setViewInfo(this.getViewInfo(mParams.viewName));

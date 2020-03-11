@@ -86,14 +86,17 @@ sap.ui.define([
 				value: oSource.getAggregation("customData")[0].getValue().objectType == constants.columnObjectType.checkbox ? oSource.getSelected() : oSource.getValue()
 			});
 
-			var oTable = oRow.getParent();
-			oTable.getBinding("rows").refresh();
-			// El modelo de datos
-			//mRow[sColumn] = mResult.value;
-			//this._oViewDataModel.setProperty(sPath, mRow);
+			
+			// Esta solución no me gusta por lo siguiente: Al construir la tabla el modelo de datos de la vista seleccionada que gestiona la clase
+			// viewModel.js devuelve por referencia los datos al ViewDataState. Este a su vez se lo devuelve a este controlador.
+			// Debido a que los formatters y controles se hacen en la clase viewModel.js, inicialmente la actualización de los valores se hacía 
+			// en la clase viewModel.js que provocaba que también el modelo propio del controlador. Esto tan simple hacía que luego el valor en el campo de la vista se perdiera,
+			// por lo que hace se opta por el cambio en el modelo en esta clase controladora que se replicará en el modelo del fichero viewModel.js.
+			// Actualizar el modelo es necesario porque en el caso de importe/cantidades pueden poner más decimales de los previsto, en vista se quitan pero no en el modelo. Por eso
+			// se actualiza en el modelo
+			mRow[sColumn] = mResult.value;
+			this._oViewDataModel.setProperty(sPath, mRow);
 
-			//oTable.getBinding("rows").refresh();
-			// Se actualiza el valor formateado en el objeto
 			oEvent.getSource().setValue(mResult.value);
 
 		},

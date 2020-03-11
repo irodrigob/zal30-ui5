@@ -7,7 +7,7 @@ sap.ui.define([
 ], function (BaseModel, JSONModel, merge, Filter, constants) {
 	"use strict";
 
-	return BaseModel.extend("com.ivancio.zal30-ui5.model.View", {
+	return BaseModel.extend("com.ivancio.zal30-ui5.model.viewModel", {
 		viewInfo: {
 			viewName: "",
 			viewDesc: ""
