@@ -82,11 +82,11 @@ sap.ui.define([
 			var mResult = this._viewDataState.onValueCellChanged({
 				path: sPath,
 				column: sColumn,
-				objetType:oSource.getAggregation("customData")[0].getValue().objectType,
+				objetType: oSource.getAggregation("customData")[0].getValue().objectType,
 				value: oSource.getAggregation("customData")[0].getValue().objectType == constants.columnObjectType.checkbox ? oSource.getSelected() : oSource.getValue()
 			});
 
-			
+
 			// Esta solución no me gusta por lo siguiente: Al construir la tabla el modelo de datos de la vista seleccionada que gestiona la clase
 			// viewModel.js devuelve por referencia los datos al ViewDataState. Este a su vez se lo devuelve a este controlador.
 			// Debido a que los formatters y controles se hacen en la clase viewModel.js, inicialmente la actualización de los valores se hacía 
@@ -100,7 +100,14 @@ sap.ui.define([
 			oEvent.getSource().setValue(mResult.value);
 
 		},
+		// Evento que se lanza cuando se pulsa el boton de borrar entradas 
+		onDeleteEntries: function (oEvent) {
 
+		},
+		// Evento que se alnza cuando se pulsa el botón de añadir nueva entrada
+		onAddEntry: function (oEvent) {
+
+		},
 		//////////////////////////////////
 		//                              //
 		//        Private methods       //
@@ -236,6 +243,8 @@ sap.ui.define([
 			// Se recuperarán los datos			
 			this._oViewDataModel.setProperty("/values", this._viewDataState.getViewData());
 
+			// Se establece las propiedades del layout de la tabla
+			this._setInitialTableDataLayout();
 		},
 		// Devuelve un objeto de tipo "template" en base al tipo de campo y sus atributos y teniendo en cuenta su modo de visualización
 		_getTemplateObjectforTableColumn: function (mColumn) {
@@ -331,6 +340,12 @@ sap.ui.define([
 					break;
 			}
 
+		},
+		// Establece el layout inicial de la tabla de datos
+		_setInitialTableDataLayout: function () {			
+			var oTable = this.byId("tableData");
+
+			oTable.setFixedColumnCount(this._viewDataState.getnumberKeyFieldsVisible());
 		}
 
 	});

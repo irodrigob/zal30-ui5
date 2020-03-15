@@ -19,7 +19,7 @@
 								description="" 
 								type="Text" 
 								textFormatMode="Key" 
-								placeholder="{i18n>ViewSelect.laceHolderInput}" 
+								placeholder="{i18n>ViewSelect.placeHolderInput}" 
 								required="true" 
 								showValueHelp="true" 
 								valueHelpRequest="onHandleViewHelp" 

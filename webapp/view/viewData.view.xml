@@ -18,43 +18,38 @@
         title="{ model: 'ViewData', path:'/viewName' } - { model: 'ViewData', path:'/viewDesc' }" 
         visible="true">
         <content>
-            <table:Table
-				id="tableData"
-				selectionMode="MultiToggle"
-				visibleRowCount="10"
-				enableSelectAll="false"
-				rows="{ model: 'ViewData', path:'/values' }"
-				threshold="15"
-				enableBusyIndicator="true"
-				columns="{
+            <table:Table id="tableData" 
+                selectionMode="MultiToggle" 
+                visibleRowCount="10" 
+                enableSelectAll="false" 
+                rows="{ model: 'ViewData', path:'/values' }" 
+                threshold="15" 
+                enableBusyIndicator="true" 
+                columns="{
 					model: 'ViewData', 
                     path:'/columns',
 					factory: '.columnFactory'
-				}"
-				ariaLabelledBy="title"
-                width="100%">				
-			</table:Table>
-                        <Button press="onTesting"
-						icon="sap-icon://navigation-right-arrow" 
-						text="Testing"
-						enabled="{model:'ViewSelectModel', path:'/viewSelected'}">
-						
-					</Button>
+				}" 
+                ariaLabelledBy="title" 
+                width="100%">
+                <table:extension>
+                    <OverflowToolbar>
+                        <ToolbarSpacer/>
+                        <Button icon="sap-icon://delete" 
+                            tooltip="{i18n>ViewData.tooltipBtnDeleted}" 
+                            press="onDeleteEntries"/>                        
+                        <Button icon="sap-icon://add" 
+                            tooltip="{i18n>ViewData.tooltipBtnAdd}" 
+                            press="onAddEntry"/>
+                    </OverflowToolbar>
+                </table:extension>
+            </table:Table>
+            <Button press="onTesting" 
+                icon="sap-icon://navigation-right-arrow" 
+                text="Testing" 
+                enabled="{model:'ViewSelectModel', path:'/viewSelected'}">
+
+            </Button>
         </content>
-        <customHeader>
-            <!--sap.m.IBar-->
-        </customHeader>
-        <footer>
-            <!--sap.m.IBar-->
-        </footer>
-        <headerContent>
-            <!--sap.ui.core.Control-->
-        </headerContent>
-        <landmarkInfo>
-            <!--sap.m.PageAccessibleLandmarkInfo-->
-        </landmarkInfo>
-        <subHeader>
-            <!--sap.m.IBar-->
-        </subHeader>
     </Page>
 </mvc:View>     
