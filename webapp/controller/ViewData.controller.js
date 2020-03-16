@@ -249,103 +249,110 @@ sap.ui.define([
 		// Devuelve un objeto de tipo "template" en base al tipo de campo y sus atributos y teniendo en cuenta su modo de visualización
 		_getTemplateObjectforTableColumn: function (mColumn) {
 
-			// Devuelve si se puede editar la vista	
-			var bEdit = this._viewDataState.isViewEditable();
+			// Las columnas técnicas ni se mostrarán
+			if (!mColumn.tech) {
 
-			// Se usa los customData para pasar información. La general será la del nombre de la columna. Despuées
-			// hay especificas a nivel de objeto, que aun inicializandose aquí se informarán segun el objeto
-			var mCustomData = {
-				Type: "sap.ui.core.CustomData",
-				key: "customValues",
-				value: {
-					columnName: mColumn.name,
-					objectType: ""
-				}
-			};
+				// Devuelve si se puede editar la vista	
+				var bEdit = this._viewDataState.isViewEditable();
 
-			switch (mColumn.type) {
-				case constants.columnTtype.char:
-					if (mColumn.checkBox == true) {
-						mCustomData.value.objectType = constants.columnObjectType.checkbox;
-						return new CheckBox({
-							selected: {
+				// Se usa los customData para pasar información. La general será la del nombre de la columna. Despuées
+				// hay especificas a nivel de objeto, que aun inicializandose aquí se informarán segun el objeto
+				var mCustomData = {
+					Type: "sap.ui.core.CustomData",
+					key: "customValues",
+					value: {
+						columnName: mColumn.name,
+						objectType: ""
+					}
+				};
+
+				switch (mColumn.type) {
+					case constants.columnTtype.char:
+						if (mColumn.checkBox == true) {
+							mCustomData.value.objectType = constants.columnObjectType.checkbox;
+							return new CheckBox({
+								selected: {
+									path: "ViewData>" + mColumn.name
+								},
+								editable: bEdit,
+								select: [this.onValueChange, this],
+								customData: mCustomData
+							})
+						} else {
+							mCustomData.value.objectType = constants.columnObjectType.input;
+							return new Input({
+								value: {
+									path: "ViewData>" + mColumn.name
+								},
+								editable: bEdit,
+								required: mColumn.mandatory,
+								maxLength: mColumn.len,
+								change: [this.onValueChange, this],
+								customData: mCustomData
+							})
+						}
+
+						break;
+					case constants.columnTtype.date:
+						mCustomData.value.objectType = constants.columnObjectType.datePicker;
+						return new DatePicker({
+							value: {
 								path: "ViewData>" + mColumn.name
 							},
 							editable: bEdit,
-							select: [this.onValueChange, this],
+							required: mColumn.mandatory,
+							valueFormat: this._oOwnerComponent.getUserConfig().dateFormat,
+							displayFormat: this._oOwnerComponent.getUserConfig().displayDateFormat,
+							change: [this.onValueChange, this],
 							customData: mCustomData
 						})
-					} else {
+						break;
+					case constants.columnTtype.time:
+						mCustomData.value.objectType = constants.columnObjectType.timePicker;
+						return new TimePicker({
+							value: {
+								path: "ViewData>" + mColumn.name
+							},
+							editable: bEdit,
+							required: mColumn.mandatory,
+							valueFormat: this._oOwnerComponent.getUserConfig().timeFormat,
+							displayFormat: this._oOwnerComponent.getUserConfig().displayTimeFormat,
+							customData: mCustomData,
+							change: [this.onValueChange, this]
+						})
+						break;
+					case constants.columnTtype.packed:
 						mCustomData.value.objectType = constants.columnObjectType.input;
 						return new Input({
 							value: {
-								path: "ViewData>" + mColumn.name
+								path: "ViewData>" + mColumn.name,
+								type: 'sap.ui.model.type.Float',
+								formatOptions: {
+									decimals: mColumn.decimals,
+									groupingSeparator: this._oOwnerComponent.getUserConfig().thousandSeparator,
+									decimalSeparator: this._oOwnerComponent.getUserConfig().decimalSeparator,
+									maxFractionDigits: this._oOwnerComponent.getUserConfig().decimalSeparator
+								}
 							},
 							editable: bEdit,
 							required: mColumn.mandatory,
 							maxLength: mColumn.len,
 							change: [this.onValueChange, this],
 							customData: mCustomData
-						})
-					}
-
-					break;
-				case constants.columnTtype.date:
-					mCustomData.value.objectType = constants.columnObjectType.datePicker;
-					return new DatePicker({
-						value: {
-							path: "ViewData>" + mColumn.name
-						},
-						editable: bEdit,
-						required: mColumn.mandatory,
-						valueFormat: this._oOwnerComponent.getUserConfig().dateFormat,
-						displayFormat: this._oOwnerComponent.getUserConfig().displayDateFormat,
-						change: [this.onValueChange, this],
-						customData: mCustomData
-					})
-					break;
-				case constants.columnTtype.time:
-					mCustomData.value.objectType = constants.columnObjectType.timePicker;
-					return new TimePicker({
-						value: {
-							path: "ViewData>" + mColumn.name
-						},
-						editable: bEdit,
-						required: mColumn.mandatory,
-						valueFormat: this._oOwnerComponent.getUserConfig().timeFormat,
-						displayFormat: this._oOwnerComponent.getUserConfig().displayTimeFormat,
-						customData: mCustomData,
-						change: [this.onValueChange, this]
-					})
-					break;
-				case constants.columnTtype.packed:
-					mCustomData.value.objectType = constants.columnObjectType.input;
-					return new Input({
-						value: {
-							path: "ViewData>" + mColumn.name,
-							type: 'sap.ui.model.type.Float',
-							formatOptions: {
-								decimals: mColumn.decimals,
-								groupingSeparator: this._oOwnerComponent.getUserConfig().thousandSeparator,
-								decimalSeparator: this._oOwnerComponent.getUserConfig().decimalSeparator,
-								maxFractionDigits: this._oOwnerComponent.getUserConfig().decimalSeparator
-							}
-						},
-						editable: bEdit,
-						required: mColumn.mandatory,
-						maxLength: mColumn.len,
-						change: [this.onValueChange, this],
-						customData: mCustomData
-					});
-					break;
+						});
+						break;
+				}
 			}
 
 		},
 		// Establece el layout inicial de la tabla de datos
-		_setInitialTableDataLayout: function () {			
-			var oTable = this.byId("tableData");
-
-			oTable.setFixedColumnCount(this._viewDataState.getnumberKeyFieldsVisible());
+		_setInitialTableDataLayout: function () {
+			var oTable = this.byId(constants.objectsId.viewData.tableData);
+			
+			// Los campos clave se marcan como fijos para facilitar su mantenimiento. Hay que resaltar que se cuentan todos
+			// los campos clave incluyendo los que nunca se mostrarán, como el mandante, el motivo es que la tabla los tiene en cuenta
+			// aunque no se pinte. Creo que es debido a que si que esta en el modelo de columnas.			
+			oTable.setFixedColumnCount(this._viewDataState.getnumberKeyFields());
 		}
 
 	});

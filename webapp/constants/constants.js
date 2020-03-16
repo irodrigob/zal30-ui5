@@ -19,6 +19,9 @@ sap.ui.define([], function () {
 		objectsId: {
 			viewSelect: {
 				viewInput: "viewInput"
+			},
+			viewData:{
+				tableData:"tableData"
 			}
 		},
 		services: {

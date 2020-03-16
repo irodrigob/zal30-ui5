@@ -31,7 +31,8 @@
 					factory: '.columnFactory'
 				}" 
                 ariaLabelledBy="title" 
-                width="100%">
+                width="100%"
+                showColumnVisibilityMenu="true">
                 <table:extension>
                     <OverflowToolbar>
                         <ToolbarSpacer/>

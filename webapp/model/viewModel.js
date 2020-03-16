@@ -109,13 +109,13 @@ sap.ui.define([
 			this._oViewData.setProperty(sPath, mRow);
 
 		},
-		// Devuelve el número de campos clave visibles, teniendo en cuenta que:
-		// sea clave, claro esta, no sea técnico(como el campo mandante que no se muestra nunca y es clave) y que que se quiera visible
-		getnumberKeyFieldsVisible: function () {
+		// Devuelve el número de campos clave. 		
+		getnumberKeyFields: function () {
 			var nNumber = 0;
 
 			for (var x = 0; x < this._fieldCatalog.length; x++) {				
-				if (this._fieldCatalog[x].keyDDIC && !this._fieldCatalog[x].tech && !this._fieldCatalog[x].noOutput)
+				// && !this._fieldCatalog[x].tech && !this._fieldCatalog[x].noOutput
+				if (this._fieldCatalog[x].keyDDIC)
 					nNumber = nNumber + 1;
 			}
 			return nNumber;

@@ -147,8 +147,8 @@ sap.ui.define([
 			return mParamsOutput;
 		},
 		// Devuelve el numero de columnas clave y visible
-		getnumberKeyFieldsVisible: function () {
-			return this._oView.getnumberKeyFieldsVisible();
+		getnumberKeyFields: function () {
+			return this._oView.getnumberKeyFields();
 		},
 		//////////////////////////////////	
 		//        Private methods       //	
