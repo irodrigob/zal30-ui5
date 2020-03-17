@@ -245,6 +245,9 @@ sap.ui.define([
 
 			// Se establece las propiedades del layout de la tabla
 			this._setInitialTableDataLayout();
+
+			// Establece el modo de edición de las celdas de la tabla
+			this._setEditCellTable();
 		},
 		// Devuelve un objeto de tipo "template" en base al tipo de campo y sus atributos y teniendo en cuenta su modo de visualización
 		_getTemplateObjectforTableColumn: function (mColumn) {
@@ -348,11 +351,24 @@ sap.ui.define([
 		// Establece el layout inicial de la tabla de datos
 		_setInitialTableDataLayout: function () {
 			var oTable = this.byId(constants.objectsId.viewData.tableData);
-			
+
 			// Los campos clave se marcan como fijos para facilitar su mantenimiento. Hay que resaltar que se cuentan todos
 			// los campos clave incluyendo los que nunca se mostrarán, como el mandante, el motivo es que la tabla los tiene en cuenta
 			// aunque no se pinte. Creo que es debido a que si que esta en el modelo de columnas.			
 			oTable.setFixedColumnCount(this._viewDataState.getnumberKeyFields());
+		},
+		// Establece la edición de campos a nivel de celda
+		_setEditCellTable: function () {
+			var oTable = this.byId(constants.objectsId.viewData.tableData);
+
+			debugger;
+
+			var oRows = oTable.getBinding("rows");
+
+			/*var oRow = oSource.getParent();
+			var sPath = oRow.getBindingContext("ViewData").getPath();
+			var mRow = this._oViewDataModel.getProperty(sPath);*/
+
 		}
 
 	});

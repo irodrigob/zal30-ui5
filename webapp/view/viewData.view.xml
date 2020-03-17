@@ -19,8 +19,7 @@
         visible="true">
         <content>
             <table:Table id="tableData" 
-                selectionMode="MultiToggle" 
-                visibleRowCount="10" 
+                selectionMode="MultiToggle"                 
                 enableSelectAll="false" 
                 rows="{ model: 'ViewData', path:'/values' }" 
                 threshold="15" 
@@ -32,7 +31,8 @@
 				}" 
                 ariaLabelledBy="title" 
                 width="100%"
-                showColumnVisibilityMenu="true">
+                showColumnVisibilityMenu="true"
+                visibleRowCountMode="Auto">
                 <table:extension>
                     <OverflowToolbar>
                         <ToolbarSpacer/>
