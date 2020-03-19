@@ -56,6 +56,9 @@ sap.ui.define([
 			// Se guarda el valor original
 			this._oOriginalViewData = this._oViewData;
 
+			// Se añaden los campos de control para poder determinar si un campo es editable o no.
+			this._addeditFields();
+
 
 		},
 		// Devuelve los datos de la vista
@@ -113,7 +116,7 @@ sap.ui.define([
 		getnumberKeyFields: function () {
 			var nNumber = 0;
 
-			for (var x = 0; x < this._fieldCatalog.length; x++) {				
+			for (var x = 0; x < this._fieldCatalog.length; x++) {
 				// && !this._fieldCatalog[x].tech && !this._fieldCatalog[x].noOutput
 				if (this._fieldCatalog[x].keyDDIC)
 					nNumber = nNumber + 1;
@@ -192,6 +195,23 @@ sap.ui.define([
 		// Devuelve los campos que son checkbox
 		_checkBoxFieldsinCatalog: function () {
 			return this._fieldCatalog.filter(field => field.checkBox == true)
+		},
+		// Añade campos de control al modelo de datos
+		_addeditFields: function () {
+			debugger;
+			// Se recorren los datos leídos
+			for (var z = 0; z < this._oViewData.oData.length; z++) {
+				for (var x = 0; x < this._fieldCatalog.length; x++) {
+					// Los campos técnicos
+					if (!this._fieldCatalog[x].tech) {
+
+						// se construye el nombre del nuevo campo que será el nombre del campo + un sufijo
+						var sPathEditFieldname = "/" + z + "/" + this._fieldCatalog[x].name + constants.tableData.suffix_edit_field;
+						this._oViewData.setProperty(sPathEditFieldname, this._fieldCatalog[x].edit);
+
+					}
+				}
+			}
 		}
 	});
 });

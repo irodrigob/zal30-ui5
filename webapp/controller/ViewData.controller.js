@@ -83,7 +83,7 @@ sap.ui.define([
 				path: sPath,
 				column: sColumn,
 				objetType: oSource.getAggregation("customData")[0].getValue().objectType,
-				value: oSource.getAggregation("customData")[0].getValue().objectType == constants.columnObjectType.checkbox ? oSource.getSelected() : oSource.getValue()
+				value: oSource.getAggregation("customData")[0].getValue().objectType == constants.tableData.columnObjectType.checkbox ? oSource.getSelected() : oSource.getValue()
 			});
 
 
@@ -272,7 +272,7 @@ sap.ui.define([
 				switch (mColumn.type) {
 					case constants.columnTtype.char:
 						if (mColumn.checkBox == true) {
-							mCustomData.value.objectType = constants.columnObjectType.checkbox;
+							mCustomData.value.objectType = constants.tableData.columnObjectType.checkbox;
 							return new CheckBox({
 								selected: {
 									path: "ViewData>" + mColumn.name
@@ -282,7 +282,7 @@ sap.ui.define([
 								customData: mCustomData
 							})
 						} else {
-							mCustomData.value.objectType = constants.columnObjectType.input;
+							mCustomData.value.objectType = constants.tableData.columnObjectType.input;
 							return new Input({
 								value: {
 									path: "ViewData>" + mColumn.name
@@ -297,7 +297,7 @@ sap.ui.define([
 
 						break;
 					case constants.columnTtype.date:
-						mCustomData.value.objectType = constants.columnObjectType.datePicker;
+						mCustomData.value.objectType = constants.tableData.columnObjectType.datePicker;
 						return new DatePicker({
 							value: {
 								path: "ViewData>" + mColumn.name
@@ -311,7 +311,7 @@ sap.ui.define([
 						})
 						break;
 					case constants.columnTtype.time:
-						mCustomData.value.objectType = constants.columnObjectType.timePicker;
+						mCustomData.value.objectType = constants.tableData.columnObjectType.timePicker;
 						return new TimePicker({
 							value: {
 								path: "ViewData>" + mColumn.name
@@ -325,7 +325,7 @@ sap.ui.define([
 						})
 						break;
 					case constants.columnTtype.packed:
-						mCustomData.value.objectType = constants.columnObjectType.input;
+						mCustomData.value.objectType = constants.tableData.columnObjectType.input;
 						return new Input({
 							value: {
 								path: "ViewData>" + mColumn.name,

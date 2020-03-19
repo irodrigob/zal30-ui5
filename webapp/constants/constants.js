@@ -20,8 +20,8 @@ sap.ui.define([], function () {
 			viewSelect: {
 				viewInput: "viewInput"
 			},
-			viewData:{
-				tableData:"tableData"
+			viewData: {
+				tableData: "tableData"
 			}
 		},
 		services: {
@@ -42,11 +42,20 @@ sap.ui.define([], function () {
 			time: "T",
 			packed: "P"
 		},
-		columnObjectType: {
-			input: "input",
-			datePicker: "datepicker",
-			timePicker: "timepicker",
-			checkbox: "checkbox"
+		tableData: {
+			columnObjectType: {
+				input: "input",
+				datePicker: "datepicker",
+				timePicker: "timepicker",
+				checkbox: "checkbox"
+			},
+			suffix_edit_field: "_ZAL30_EDIT",
+			internalFields: {
+				is_dict: "ZAL30_IS_DICT",
+				tabix: "ZAL30_TABIX",
+				updkz: "ZAL30_UPDKZ"
+			}
+
 		}
 	};
 	return oConstants
