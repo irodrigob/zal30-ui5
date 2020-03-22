@@ -75,6 +75,7 @@ sap.ui.define([
 		},
 		// Formatea el valor en base al tipo de columna
 		formatterValue: function (sColumn, oOldValue) {
+			var oNewValue = oOldValue;
 
 			// Obtenemos la información de la columna	
 			var mColumn = this.getColumnInfo(sColumn);
@@ -86,17 +87,17 @@ sap.ui.define([
 					} else {
 
 					}
-					return sOldValue;
+					return oNewValue;
 					break;
 				case constants.columnTtype.date:
-					return sOldValue;
+					return oNewValue;
 					break;
 				case constants.columnTtype.time:
-					return sOldValue;
+					return oNewValue;
 					break;
 				case constants.columnTtype.packed:
 					// A los campos númericos se les quita las letras
-					return oOldValue.replace(/[^\d|.,]/g, '');
+					return oNewValue.replace(/[^\d|.,]/g, '');
 					break;
 
 			}
@@ -129,16 +130,17 @@ sap.ui.define([
 		// Se modifica si a nivel de celda es posible editar el campo segun los valores y atributos
 		detEditableCellValue: function (mRow) {
 			// Se recorren todos los campos del catalogo para poder acceder a cada campo de manera individual
-
 			for (var x = 0; x < this._fieldCatalog.length; x++) {
-				var sFieldEdit = this._fieldCatalog[x].name + constants.tableData.suffix_edit_field;
-				// Si el campo de edición existe se continua el proceso
-				if (mRow[this._fieldCatalog[x].name + constants.tableData.suffix_edit_field]) {
-					//var sFieldKeyDDIC = 
-					debugger;
 
+				// Si el campo de edición existe se continua el proceso. El IF lo hago en dos pasos para que quede más claro su funcionamiento
+				if (mRow[this._fieldCatalog[x].name + constants.tableData.suffix_edit_field]) {
+					// Si el valor proviene del diccionario, es decir, que existe en base de datos y es un campo clave el campo se marca como no editable.
+					if (mRow[constants.tableData.internalFields.isDict] == "X" && this._fieldCatalog[x].keyDDIC) {
+						mRow[this._fieldCatalog[x].name + constants.tableData.suffix_edit_field] = false;						
+					}
 				}
 			}
+			return mRow;
 		},
 		//////////////////////////////////	
 		//        Private methods       //	
@@ -234,8 +236,7 @@ sap.ui.define([
 				var sRow = this._oViewData.getProperty(sPath); // Recuperación del modelo
 				// Se llama a la función encarga de determinar que celdas son editables
 				var sNewRow = this.detEditableCellValue(sRow);
-
-				this._oViewData.setProperty(sPath, sNewRow);
+				this._oViewData.setProperty(sPath, sNewRow); // Actualización del modelo
 
 			}
 		}

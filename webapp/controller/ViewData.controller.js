@@ -268,7 +268,8 @@ sap.ui.define([
 						objectType: ""
 					}
 				};
-
+				// Campo encargado de gestionar si un campo es editable
+				var sPathEditField = "ViewData>" + mColumn.name + constants.tableData.suffix_edit_field;
 				switch (mColumn.type) {
 					case constants.columnTtype.char:
 						if (mColumn.checkBox == true) {
@@ -277,7 +278,9 @@ sap.ui.define([
 								selected: {
 									path: "ViewData>" + mColumn.name
 								},
-								editable: bEdit,
+								editable: {
+									path: sPathEditField
+								},
 								select: [this.onValueChange, this],
 								customData: mCustomData
 							})
@@ -287,7 +290,12 @@ sap.ui.define([
 								value: {
 									path: "ViewData>" + mColumn.name
 								},
-								editable: bEdit,
+								editable: {
+									path: sPathEditField,
+									formatter : function(bValue){
+										 return bValue;
+									}
+								},
 								required: mColumn.mandatory,
 								maxLength: mColumn.len,
 								change: [this.onValueChange, this],
@@ -302,7 +310,12 @@ sap.ui.define([
 							value: {
 								path: "ViewData>" + mColumn.name
 							},
-							editable: bEdit,
+							editable: {
+								path: sPathEditField,
+								formatter : function(bValue){
+									 return bValue;
+								}
+							},
 							required: mColumn.mandatory,
 							valueFormat: this._oOwnerComponent.getUserConfig().dateFormat,
 							displayFormat: this._oOwnerComponent.getUserConfig().displayDateFormat,
@@ -316,7 +329,12 @@ sap.ui.define([
 							value: {
 								path: "ViewData>" + mColumn.name
 							},
-							editable: bEdit,
+							editable: {
+								path: sPathEditField,
+								formatter : function(bValue){
+									 return bValue;
+								}
+							},
 							required: mColumn.mandatory,
 							valueFormat: this._oOwnerComponent.getUserConfig().timeFormat,
 							displayFormat: this._oOwnerComponent.getUserConfig().displayTimeFormat,
@@ -337,7 +355,12 @@ sap.ui.define([
 									maxFractionDigits: this._oOwnerComponent.getUserConfig().decimalSeparator
 								}
 							},
-							editable: bEdit,
+							editable: {
+								path: sPathEditField,
+								formatter : function(bValue){
+									 return bValue;
+								}
+							},
 							required: mColumn.mandatory,
 							maxLength: mColumn.len,
 							change: [this.onValueChange, this],
@@ -360,8 +383,6 @@ sap.ui.define([
 		// Establece la edición de campos a nivel de celda
 		_setEditCellTable: function () {
 			var oTable = this.byId(constants.objectsId.viewData.tableData);
-
-			debugger;
 
 			var oRows = oTable.getBinding("rows");
 
