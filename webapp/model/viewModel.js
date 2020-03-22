@@ -59,6 +59,9 @@ sap.ui.define([
 			// Se añaden los campos de control para poder determinar si un campo es editable o no.
 			this._addeditFields();
 
+			// Se establece a nivel de celda si el campo será editable o no
+			this._setInitialEditCellValues();
+
 
 		},
 		// Devuelve los datos de la vista
@@ -123,6 +126,20 @@ sap.ui.define([
 			}
 			return nNumber;
 		},
+		// Se modifica si a nivel de celda es posible editar el campo segun los valores y atributos
+		detEditableCellValue: function (mRow) {
+			// Se recorren todos los campos del catalogo para poder acceder a cada campo de manera individual
+
+			for (var x = 0; x < this._fieldCatalog.length; x++) {
+				var sFieldEdit = this._fieldCatalog[x].name + constants.tableData.suffix_edit_field;
+				// Si el campo de edición existe se continua el proceso
+				if (mRow[this._fieldCatalog[x].name + constants.tableData.suffix_edit_field]) {
+					//var sFieldKeyDDIC = 
+					debugger;
+
+				}
+			}
+		},
 		//////////////////////////////////	
 		//        Private methods       //	
 		//////////////////////////////////		  
@@ -181,11 +198,7 @@ sap.ui.define([
 							oDataJSON.setProperty(sPath, true)
 						else
 							oDataJSON.setProperty(sPath, false)
-
-
 					}
-
-
 				}
 			}
 			return oDataJSON;
@@ -198,11 +211,10 @@ sap.ui.define([
 		},
 		// Añade campos de control al modelo de datos
 		_addeditFields: function () {
-			debugger;
 			// Se recorren los datos leídos
 			for (var z = 0; z < this._oViewData.oData.length; z++) {
 				for (var x = 0; x < this._fieldCatalog.length; x++) {
-					// Los campos técnicos
+					// Los campos técnicos no tendrán campo de edición porque nunca se muestran
 					if (!this._fieldCatalog[x].tech) {
 
 						// se construye el nombre del nuevo campo que será el nombre del campo + un sufijo
@@ -212,6 +224,21 @@ sap.ui.define([
 					}
 				}
 			}
+		},
+		// Establece la edición inicial de las celdas según sus valores. 
+		// Esta función solo se usará en la lectura inicial
+		_setInitialEditCellValues: function () {
+			// Se recorren los datos leídos
+			for (var z = 0; z < this._oViewData.oData.length; z++) {
+				var sPath = "/" + z + "/"; // Path de acceso al modelo
+				var sRow = this._oViewData.getProperty(sPath); // Recuperación del modelo
+				// Se llama a la función encarga de determinar que celdas son editables
+				var sNewRow = this.detEditableCellValue(sRow);
+
+				this._oViewData.setProperty(sPath, sNewRow);
+
+			}
 		}
+
 	});
 });

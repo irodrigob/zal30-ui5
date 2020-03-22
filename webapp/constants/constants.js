@@ -51,7 +51,7 @@ sap.ui.define([], function () {
 			},
 			suffix_edit_field: "_ZAL30_EDIT",
 			internalFields: {
-				is_dict: "ZAL30_IS_DICT",
+				isDict: "ZAL30_IS_DICT",
 				tabix: "ZAL30_TABIX",
 				updkz: "ZAL30_UPDKZ"
 			}
