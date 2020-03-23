@@ -144,11 +144,15 @@ sap.ui.define([
 			//this._oView.updateValueModel(mParams.column, mParams.path, mParamsOutput.value);
 
 
+			// Se informa el campo que indica el tipo de actualización a nivel de línea. El indicador será el de update, aunque a nivel interno
+			// se el registro ya tiene un indicador como el de inserción no se modificará. 
+			this._oView.setRowUpdateIndicator(mParams.column, mParams.path, mParamsOutput.value, constants.tableData.fieldUpkzValues.update);
+
 			return mParamsOutput;
 		},
 		// Devuelve el numero de columnas clave y visible
-		getnumberKeyFields: function () {
-			return this._oView.getnumberKeyFields();
+		getNumberKeyFields: function () {
+			return this._oView.getNumberKeyFields();
 		},
 		//////////////////////////////////	
 		//        Private methods       //	

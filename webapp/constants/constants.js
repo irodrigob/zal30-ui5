@@ -34,7 +34,7 @@ sap.ui.define([], function () {
 		jsonModel: {
 			viewConf: "ViewConf",
 			ViewSelect: "ViewSelectModel",
-			viewData: "ViewData"
+			viewData: "viewData"
 		},
 		columnTtype: {
 			char: "C",
@@ -54,6 +54,15 @@ sap.ui.define([], function () {
 				isDict: "ZAL30_IS_DICT",
 				tabix: "ZAL30_TABIX",
 				updkz: "ZAL30_UPDKZ"
+			},
+			fieldUpkzValues: {
+				update: "U",
+				insert: "I",
+				delete: "D"
+			},
+			path:{
+				values:"/values",
+				columns:"/columns"
 			}
 
 		}

@@ -61,6 +61,9 @@
 					"bundleName": "com.ivancio.zal30-ui5.i18n.i18n"
 				}
 			},
+			"viewData": {
+				"type": "sap.ui.model.json.JSONModel"
+			},
 			"appData": {
 				"type": "sap.ui.model.json.JSONModel"
 			},

@@ -115,6 +115,7 @@ sap.ui.define([
 		//////////////////////////////////
 		// Método que entra cuando se hace a la página desde la routing
 		_onRouteMatched: function (oEvent) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 
 			// Se recupera si se ha entrado por la vista de selección de vistas			
 			var viewSelect = this._oAppDataModel.getProperty("/viewSelect");
@@ -125,8 +126,8 @@ sap.ui.define([
 			var sViewName = oEvent.getParameter("arguments").view;
 
 			// Se guarda en el modelo
-			this._oViewDataModel.setProperty("/viewName", sViewName);
-			this._oViewDataModel.setProperty("/viewDesc", "");
+			oViewDataModel.setProperty("/viewName", sViewName);
+			oViewDataModel.setProperty("/viewDesc", "");
 
 			// Se muestra el loader para toda la aplicación porque se van a empezar a llamar servicios y puede demorarse un poco
 			this._oOwnerComponent.showBusyDialog();
@@ -162,7 +163,7 @@ sap.ui.define([
 						that._oOwnerComponent.closeBusyDialog();
 						// Solo si devuelve datos se informa la descripción de la vista y se comenzará a buscar los datos
 						if (mList[0] && mList[0].VIEWDESC) {
-							that._oViewDataModel.setProperty("/viewDesc", mList[0].VIEWDESC);
+							oViewDataModel.setProperty("/viewDesc", mList[0].VIEWDESC);
 
 							// Se inicia el proceso de lectura de la configuración de la vista y de sus datos.
 							that._readView(sViewName);
@@ -179,11 +180,7 @@ sap.ui.define([
 		},
 		// Inicialización del modelo de datos
 		_initModelData: function () {
-			this._oViewDataModel = new sap.ui.model.json.JSONModel();
-
 			this._resetModel(); // Reset, en este caso, creación del modelo de datos
-
-			this.getView().setModel(this._oViewDataModel, constants.jsonModel.viewData);
 
 			// Se recupera la clase que gestiona los estado de la configuración y datos de las vistas			
 			this._viewConfState = this._oOwnerComponent.getState(this._oOwnerComponent.state.confView);
@@ -191,13 +188,15 @@ sap.ui.define([
 		},
 		// Reset del modelo de datos
 		_resetModel: function () {
-			this._oViewDataModel.setData({
-				viewName: '',
-				viewDesc: ''
-			});
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			//this._oViewDataModel.setData({
+			oViewDataModel.setProperty("/viewName",'');
+			oViewDataModel.setProperty("/viewDesc",'');
+				
 		},
 		// Proceso en que se leen tanto la configuración de la vista como los datos
 		_readView: function (sViewName) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 
 			var that = this;
 
@@ -217,8 +216,8 @@ sap.ui.define([
 
 
 					// Se guarda en el modelo el nombre y descripción de la vista
-					that._oViewDataModel.setProperty("/viewName", that._viewDataState.getViewInfo().viewName);
-					that._oViewDataModel.setProperty("/viewDesc", that._viewDataState.getViewInfo().viewDesc);
+					oViewDataModel.setProperty("/viewName", that._viewDataState.getViewInfo().viewName);
+					oViewDataModel.setProperty("/viewDesc", that._viewDataState.getViewInfo().viewDesc);
 
 					// Se mira si la tabla esta bloqueda para mostrar un mensaje indicandolo
 					if (that._viewDataState.getViewAlreadyLocked()) {
@@ -236,12 +235,12 @@ sap.ui.define([
 		},
 		// Se construye los datos para poder pintar los datos en la tabla
 		_buildTableData: function () {
-
+			
 			// Se recuperarán las columnas
-			this._oViewDataModel.setProperty("/columns", this._viewDataState.getColumnsTable());
+			//this._oViewDataModel.setProperty("/columns", this._viewDataState.getColumnsTable());
 
 			// Se recuperarán los datos			
-			this._oViewDataModel.setProperty("/values", this._viewDataState.getViewData());
+			//this._oViewDataModel.setProperty("/values", this._viewDataState.getViewData());
 
 			// Se establece las propiedades del layout de la tabla
 			this._setInitialTableDataLayout();
@@ -268,18 +267,19 @@ sap.ui.define([
 						objectType: ""
 					}
 				};
-				// Campo encargado de gestionar si un campo es editable
-				var sPathEditField = "ViewData>" + mColumn.name + constants.tableData.suffix_edit_field;
+
 				switch (mColumn.type) {
 					case constants.columnTtype.char:
 						if (mColumn.checkBox == true) {
 							mCustomData.value.objectType = constants.tableData.columnObjectType.checkbox;
 							return new CheckBox({
 								selected: {
-									path: "ViewData>" + mColumn.name
+									model: "ViewData",
+									path: mColumn.name
 								},
 								editable: {
-									path: sPathEditField
+									model: "ViewData",
+									path: mColumn.name + constants.tableData.suffix_edit_field,
 								},
 								select: [this.onValueChange, this],
 								customData: mCustomData
@@ -288,12 +288,14 @@ sap.ui.define([
 							mCustomData.value.objectType = constants.tableData.columnObjectType.input;
 							return new Input({
 								value: {
-									path: "ViewData>" + mColumn.name
+									model: "ViewData",
+									path: mColumn.name
 								},
 								editable: {
-									path: sPathEditField,
-									formatter : function(bValue){
-										 return bValue;
+									model: "ViewData",
+									path: mColumn.name + constants.tableData.suffix_edit_field,
+									formatter: function (bValue) {
+										return bValue;
 									}
 								},
 								required: mColumn.mandatory,
@@ -308,12 +310,14 @@ sap.ui.define([
 						mCustomData.value.objectType = constants.tableData.columnObjectType.datePicker;
 						return new DatePicker({
 							value: {
-								path: "ViewData>" + mColumn.name
+								model: "ViewData",
+								path: mColumn.name
 							},
 							editable: {
-								path: sPathEditField,
-								formatter : function(bValue){
-									 return bValue;
+								model: "ViewData",
+								path: mColumn.name + constants.tableData.suffix_edit_field,
+								formatter: function (bValue) {
+									return bValue;
 								}
 							},
 							required: mColumn.mandatory,
@@ -327,12 +331,14 @@ sap.ui.define([
 						mCustomData.value.objectType = constants.tableData.columnObjectType.timePicker;
 						return new TimePicker({
 							value: {
-								path: "ViewData>" + mColumn.name
+								model: "ViewData",
+								path: mColumn.name
 							},
 							editable: {
-								path: sPathEditField,
-								formatter : function(bValue){
-									 return bValue;
+								model: "ViewData",
+								path: mColumn.name + constants.tableData.suffix_edit_field,
+								formatter: function (bValue) {
+									return bValue;
 								}
 							},
 							required: mColumn.mandatory,
@@ -346,7 +352,8 @@ sap.ui.define([
 						mCustomData.value.objectType = constants.tableData.columnObjectType.input;
 						return new Input({
 							value: {
-								path: "ViewData>" + mColumn.name,
+								model: "ViewData",
+								path: mColumn.name,
 								type: 'sap.ui.model.type.Float',
 								formatOptions: {
 									decimals: mColumn.decimals,
@@ -356,9 +363,10 @@ sap.ui.define([
 								}
 							},
 							editable: {
-								path: sPathEditField,
-								formatter : function(bValue){
-									 return bValue;
+								model: "ViewData",
+								path: mColumn.name + constants.tableData.suffix_edit_field,
+								formatter: function (bValue) {
+									return bValue;
 								}
 							},
 							required: mColumn.mandatory,
@@ -378,7 +386,7 @@ sap.ui.define([
 			// Los campos clave se marcan como fijos para facilitar su mantenimiento. Hay que resaltar que se cuentan todos
 			// los campos clave incluyendo los que nunca se mostrarán, como el mandante, el motivo es que la tabla los tiene en cuenta
 			// aunque no se pinte. Creo que es debido a que si que esta en el modelo de columnas.			
-			oTable.setFixedColumnCount(this._viewDataState.getnumberKeyFields());
+			oTable.setFixedColumnCount(this._viewDataState.getNumberKeyFields());
 		},
 		// Establece la edición de campos a nivel de celda
 		_setEditCellTable: function () {
