@@ -25,11 +25,15 @@ sap.ui.define([
 		},
 		// Guarda el catalogo de campos de la vista. El catalogo se convierte para adaptarlo a la vista
 		setFieldCatalogFromService: function (mFieldCatalog) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+
 			this._fieldCatalog = this._convertServiceFieldCatalog2Intern(mFieldCatalog);
+			oViewDataModel.setProperty(constants.tableData.path.columns, this._convertServiceFieldCatalog2Intern(mFieldCatalog));
 		},
 		// Devuelve el catalogo de campos
 		getFieldCatalog: function () {
-			return this._fieldCatalog;
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			return oViewDataModel.getProperty(constants.tableData.path.columns);
 		},
 		// Guarda información general de la vista
 		setViewInfo: function (mViewInfo) {
@@ -47,7 +51,7 @@ sap.ui.define([
 		// el string json en un objeto JSON de UI5.
 		setViewDataFromService: function (sData) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			
+
 			// Debido a que el JSON viene en un literal para poderlo usarla hay que parsearlo.								
 			var oData = new sap.ui.model.json.JSONModel();
 			oData.setJSON(sData);
@@ -76,11 +80,17 @@ sap.ui.define([
 		},
 		// Devuelve la información de una columna del catalogo de campos
 		getColumnInfo: function (sColumn) {
-			return this._fieldCatalog.find(columns => columns.name === sColumn);
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var mFielCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
+			return mFielCatalog.find(columns => columns.name === sColumn);
 		},
 		// Formatea el valor en base al tipo de columna
 		formatterValue: function (sColumn, oOldValue) {
-			var oNewValue = oOldValue;
+			var mReturn = {
+				newValue: oOldValue,
+				formatted: false
+			};
+
 
 			// Obtenemos la información de la columna	
 			var mColumn = this.getColumnInfo(sColumn);
@@ -92,37 +102,32 @@ sap.ui.define([
 					} else {
 
 					}
-					return oNewValue;
 					break;
 				case constants.columnTtype.date:
-					return oNewValue;
 					break;
 				case constants.columnTtype.time:
-					return oNewValue;
 					break;
 				case constants.columnTtype.packed:
 					// A los campos númericos se les quita las letras
-					return oNewValue.replace(/[^\d|.,]/g, '');
+					mReturn.newValue = mReturn.newValue.replace(/[^\d|.,]/g, '');
+					mReturn.formatted = true; // Se indica que se ha aplicado formateo
 					break;
 
 			}
 
-
+			return mReturn;
 		},
 		// Actualiza el valor de un campo en el modelo propio
 		updateValueModel: function (sColumn, sPath, oValue) {
-			// Se recupera la fila donde esta el valor a modificar
-			var mRow = this._oViewData.getProperty(sPath);
-
-			// Se actualiza el nuevo valor
-			mRow[sColumn] = oValue;
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 
 			// Se actualiza en el modelo
-			this._oViewData.setProperty(sPath, mRow);
+			oViewDataModel.setProperty(sPath + "/" + sColumn, oValue);
 
 		},
 		// Actualiza el indicador de actualización a nivel de línea
 		setRowUpdateIndicator(sColumn, sPath, oValue, sUpdkz) {
+			/*
 			// Se recupera la fila donde se ha hecho el cambio
 			var mRow = this._oViewData.getProperty(sPath);
 
@@ -134,29 +139,33 @@ sap.ui.define([
 
 			// Se actualiza en el modelo
 			this._oViewData.setProperty(sPath, mRow);
-
+*/
 		},
 		// Devuelve el número de campos clave. 		
 		getNumberKeyFields: function () {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var mFielCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
 			var nNumber = 0;
 
 			for (var x = 0; x < this._fieldCatalog.length; x++) {
 				// && !this._fieldCatalog[x].tech && !this._fieldCatalog[x].noOutput
-				if (this._fieldCatalog[x].keyDDIC)
+				if (mFielCatalog[x].keyDDIC)
 					nNumber = nNumber + 1;
 			}
 			return nNumber;
 		},
 		// Se modifica si a nivel de celda es posible editar el campo segun los valores y atributos
 		detEditableCellValue: function (mRow) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var mFielCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
 			// Se recorren todos los campos del catalogo para poder acceder a cada campo de manera individual
 			for (var x = 0; x < this._fieldCatalog.length; x++) {
 
 				// Si el campo de edición existe se continua el proceso. El IF lo hago en dos pasos para que quede más claro su funcionamiento
-				if (mRow[this._fieldCatalog[x].name + constants.tableData.suffix_edit_field]) {
+				if (mRow[mFielCatalog[x].name + constants.tableData.suffix_edit_field]) {
 					// Si el valor proviene del diccionario, es decir, que existe en base de datos y es un campo clave el campo se marca como no editable.
-					if (mRow[constants.tableData.internalFields.isDict] == "X" && this._fieldCatalog[x].keyDDIC) {
-						mRow[this._fieldCatalog[x].name + constants.tableData.suffix_edit_field] = false;
+					if (mRow[constants.tableData.internalFields.isDict] == "X" && mFielCatalog[x].keyDDIC) {
+						mRow[mFielCatalog[x].name + constants.tableData.suffix_edit_field] = false;
 					}
 				}
 			}
@@ -168,12 +177,11 @@ sap.ui.define([
 		// Inicialización de variables
 		_initModel: function () {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			oViewDataModel.setProperty("/columns", {});
-			oViewDataModel.setProperty("/values", {});
-			//this._oViewData = new sap.ui.model.json.JSONModel();
+			oViewDataModel.setProperty(constants.tableData.path.values, {});
+			oViewDataModel.setProperty(constants.tableData.path.columns, {});
 			this._oViewDataDeletd = new sap.ui.model.json.JSONModel();
 			this._oOriginalViewData = '';
-			this._fieldCatalog = [];
+
 
 		},
 		// Se convierte el catalogo del servicio en el formato propio de la aplicación
@@ -205,6 +213,8 @@ sap.ui.define([
 		},
 		// Conversion de los datos procedentes del servicios
 		_convValuesFromService: function (oViewDataModel) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var mValues = oViewDataModel.getProperty(constants.tableData.path.values);
 
 			// Se recuperán los campos que son checkbox
 			var acheckBoxFields = this._checkBoxFieldsinCatalog();
@@ -212,16 +222,16 @@ sap.ui.define([
 			// Si hay campos a tratar se inicial el proceso.	
 			if (acheckBoxFields.length) {
 				// Se recorren todos los registros leídos
-				for (var x = 0; x < oViewDataModel.oData.values.length; x++) {
+				for (var x = 0; x < mValues.length; x++) {
 
 					// Se recorre todos los campos de tipo checbox
 					for (var y = 0; y < acheckBoxFields.length; y++) {
 						// Se recupera el valor
 						var sPath = constants.tableData.path.values + "/" + x + "/" + acheckBoxFields[y].name;
 						if (oViewDataModel.getProperty(sPath) == 'X')
-						oViewDataModel.setProperty(sPath, true)
+							oViewDataModel.setProperty(sPath, true)
 						else
-						oViewDataModel.setProperty(sPath, false)
+							oViewDataModel.setProperty(sPath, false)
 					}
 				}
 			}
@@ -229,20 +239,26 @@ sap.ui.define([
 		},
 		// Devuelve los campos que son checkbox
 		_checkBoxFieldsinCatalog: function () {
-			return this._fieldCatalog.filter(field => field.checkBox == true)
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var mFielCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
+
+			return mFielCatalog.filter(field => field.checkBox == true)
 		},
 		// Añade campos de control al modelo de datos
 		_addeditFields: function () {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var mFielCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
+			var mValues = oViewDataModel.getProperty(constants.tableData.path.values);
+
 			// Se recorren los datos leídos
-			for (var z = 0; z < oViewDataModel.oData.values.length; z++) {
-				for (var x = 0; x < this._fieldCatalog.length; x++) {
+			for (var z = 0; z < mValues.length; z++) {
+				for (var x = 0; x < mFielCatalog.length; x++) {
 					// Los campos técnicos no tendrán campo de edición porque nunca se muestran
-					if (!this._fieldCatalog[x].tech) {
+					if (!mFielCatalog[x].tech) {
 
 						// se construye el nombre del nuevo campo que será el nombre del campo + un sufijo
-						var sPathEditFieldname = constants.tableData.path.values + "/" + z + "/" + this._fieldCatalog[x].name + constants.tableData.suffix_edit_field;
-						oViewDataModel.setProperty(sPathEditFieldname, this._fieldCatalog[x].edit);
+						var sPathEditFieldname = constants.tableData.path.values + "/" + z + "/" + mFielCatalog[x].name + constants.tableData.suffix_edit_field;
+						oViewDataModel.setProperty(sPathEditFieldname, mFielCatalog[x].edit);
 
 					}
 				}
@@ -252,8 +268,9 @@ sap.ui.define([
 		// Esta función solo se usará en la lectura inicial
 		_setInitialEditCellValues: function () {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var mValues = oViewDataModel.getProperty(constants.tableData.path.values);
 			// Se recorren los datos leídos
-			for (var z = 0; z < oViewDataModel.oData.values.length; z++) {
+			for (var z = 0; z < mValues.length; z++) {
 				var sPath = constants.tableData.path.values + "/" + z + "/"; // Path de acceso al modelo
 				var sRow = oViewDataModel.getProperty(sPath); // Recuperación del modelo
 				// Se llama a la función encarga de determinar que celdas son editables

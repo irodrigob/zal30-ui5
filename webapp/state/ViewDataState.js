@@ -130,18 +130,18 @@ sap.ui.define([
 				value: mParams.value
 			};
 
-			// el path que se recupera de la vista es /values/<fila>, esto no es compatible con el modelo de datos propio de la clase View. Que es
-			// una variable con el modelo json, por ello se quita el values. 
-			// Como coincide el número de fila se hace por este método, pero en caso de problemas futuros se usará un campo interno
-			mParams.path = mParams.path.replace("/values/", "/");
-
 			// Se formatea el campo según la configuración de la columna
-			mParamsOutput.value = this._oView.formatterValue(mParams.column, mParams.value);
+			var mFormatterResult = this._oView.formatterValue(mParams.column, mParams.value);
 
-			// Se sicroniza el valor en el modelo de datos propio
-			// NOTA: debido a que los modelos de la ViewModel y la vista están clonados por referencia se hace el cambio en la vista, de esta manera
-			// no se pierde el valor en el input de la vista
-			//this._oView.updateValueModel(mParams.column, mParams.path, mParamsOutput.value);
+			mParamsOutput.value = mFormatterResult.newValue;
+
+			// Si se ha aplicado formato es cuando se actualiza el modelo el propio.
+			// Esto sobretodo se hace en los nuúmeros donde se introduce: quitan caracteres no validos(este caso no es necesario la actualización del modelo
+			// porque se hace de manera automática cuando el valor formateado se pasa al valor del campo) y más decimales de los indicados en el campo . En el campo de los decimales, es especial.
+			// Especial porque en el modelo tiene los decimales mal pero el input se ve bien. Pero para que luego no de problemas hay que sincronizar. Como no tengo manera de saber si han puesto
+			// decimales de más, se sincroniza siempre en los campos númericos y listos.
+			if (mFormatterResult.formatted)
+				this._oView.updateValueModel(mParams.column, mParams.path, mParamsOutput.value);
 
 
 			// Se informa el campo que indica el tipo de actualización a nivel de línea. El indicador será el de update, aunque a nivel interno

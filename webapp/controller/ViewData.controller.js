@@ -47,7 +47,9 @@ sap.ui.define([
 		},
 		// Construcción de las columnas
 		columnFactory: function (sId, oContext) {
-			var mColumn = this._oViewDataModel.getProperty(oContext.sPath);
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+
+			var mColumn = oViewDataModel.getProperty(oContext.sPath);
 
 			return new Column(sId, {
 				visible: true,
@@ -73,29 +75,20 @@ sap.ui.define([
 
 			// Registro de la tabla donde se ha modificado
 			var oRow = oSource.getParent();
-			var sPath = oRow.getBindingContext("ViewData").getPath();
-			var mRow = this._oViewDataModel.getProperty(sPath);
+			var sPath = oRow.getBindingContext(constants.jsonModel.viewData).getPath();
+			//var mRow = this._oViewDataModel.getProperty(sPath);
 
 			// Columna donde se ha cambiado el valor
 			var sColumn = oSource.getAggregation("customData")[0].getValue().columnName;
+			// tipo de objeto usado en la celda
+			var sObjectTypeCell = oSource.getAggregation("customData")[0].getValue().objectType;
 
 			var mResult = this._viewDataState.onValueCellChanged({
 				path: sPath,
 				column: sColumn,
-				objetType: oSource.getAggregation("customData")[0].getValue().objectType,
-				value: oSource.getAggregation("customData")[0].getValue().objectType == constants.tableData.columnObjectType.checkbox ? oSource.getSelected() : oSource.getValue()
+				objetType: sObjectTypeCell,
+				value: sObjectTypeCell == constants.tableData.columnObjectType.checkbox ? oSource.getSelected() : oSource.getValue()
 			});
-
-
-			// Esta solución no me gusta por lo siguiente: Al construir la tabla el modelo de datos de la vista seleccionada que gestiona la clase
-			// viewModel.js devuelve por referencia los datos al ViewDataState. Este a su vez se lo devuelve a este controlador.
-			// Debido a que los formatters y controles se hacen en la clase viewModel.js, inicialmente la actualización de los valores se hacía 
-			// en la clase viewModel.js que provocaba que también el modelo propio del controlador. Esto tan simple hacía que luego el valor en el campo de la vista se perdiera,
-			// por lo que hace se opta por el cambio en el modelo en esta clase controladora que se replicará en el modelo del fichero viewModel.js.
-			// Actualizar el modelo es necesario porque en el caso de importe/cantidades pueden poner más decimales de los previsto, en vista se quitan pero no en el modelo. Por eso
-			// se actualiza en el modelo
-			mRow[sColumn] = mResult.value;
-			this._oViewDataModel.setProperty(sPath, mRow);
 
 			oEvent.getSource().setValue(mResult.value);
 
@@ -190,9 +183,9 @@ sap.ui.define([
 		_resetModel: function () {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			//this._oViewDataModel.setData({
-			oViewDataModel.setProperty("/viewName",'');
-			oViewDataModel.setProperty("/viewDesc",'');
-				
+			oViewDataModel.setProperty("/viewName", '');
+			oViewDataModel.setProperty("/viewDesc", '');
+
 		},
 		// Proceso en que se leen tanto la configuración de la vista como los datos
 		_readView: function (sViewName) {
@@ -235,7 +228,7 @@ sap.ui.define([
 		},
 		// Se construye los datos para poder pintar los datos en la tabla
 		_buildTableData: function () {
-			
+
 			// Se recuperarán las columnas
 			//this._oViewDataModel.setProperty("/columns", this._viewDataState.getColumnsTable());
 
@@ -274,11 +267,11 @@ sap.ui.define([
 							mCustomData.value.objectType = constants.tableData.columnObjectType.checkbox;
 							return new CheckBox({
 								selected: {
-									model: "ViewData",
+									model: constants.jsonModel.viewData,
 									path: mColumn.name
 								},
 								editable: {
-									model: "ViewData",
+									model: constants.jsonModel.viewData,
 									path: mColumn.name + constants.tableData.suffix_edit_field,
 								},
 								select: [this.onValueChange, this],
@@ -288,11 +281,11 @@ sap.ui.define([
 							mCustomData.value.objectType = constants.tableData.columnObjectType.input;
 							return new Input({
 								value: {
-									model: "ViewData",
+									model: constants.jsonModel.viewData,
 									path: mColumn.name
 								},
 								editable: {
-									model: "ViewData",
+									model: constants.jsonModel.viewData,
 									path: mColumn.name + constants.tableData.suffix_edit_field,
 									formatter: function (bValue) {
 										return bValue;
@@ -310,11 +303,11 @@ sap.ui.define([
 						mCustomData.value.objectType = constants.tableData.columnObjectType.datePicker;
 						return new DatePicker({
 							value: {
-								model: "ViewData",
+								model: constants.jsonModel.viewData,
 								path: mColumn.name
 							},
 							editable: {
-								model: "ViewData",
+								model: constants.jsonModel.viewData,
 								path: mColumn.name + constants.tableData.suffix_edit_field,
 								formatter: function (bValue) {
 									return bValue;
@@ -331,11 +324,11 @@ sap.ui.define([
 						mCustomData.value.objectType = constants.tableData.columnObjectType.timePicker;
 						return new TimePicker({
 							value: {
-								model: "ViewData",
+								model: constants.jsonModel.viewData,
 								path: mColumn.name
 							},
 							editable: {
-								model: "ViewData",
+								model: constants.jsonModel.viewData,
 								path: mColumn.name + constants.tableData.suffix_edit_field,
 								formatter: function (bValue) {
 									return bValue;
@@ -352,7 +345,7 @@ sap.ui.define([
 						mCustomData.value.objectType = constants.tableData.columnObjectType.input;
 						return new Input({
 							value: {
-								model: "ViewData",
+								model: constants.jsonModel.viewData,
 								path: mColumn.name,
 								type: 'sap.ui.model.type.Float',
 								formatOptions: {
@@ -363,7 +356,7 @@ sap.ui.define([
 								}
 							},
 							editable: {
-								model: "ViewData",
+								model: constants.jsonModel.viewData,
 								path: mColumn.name + constants.tableData.suffix_edit_field,
 								formatter: function (bValue) {
 									return bValue;

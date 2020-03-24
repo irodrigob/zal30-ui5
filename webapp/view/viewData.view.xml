@@ -15,17 +15,17 @@
         showNavButton="true" 
         navButtonPress="onNavBack" 
         showSubHeader="true" 
-        title="{ model: 'ViewData', path:'/viewName' } - { model: 'ViewData', path:'/viewDesc' }" 
+        title="{ model: 'viewData', path:'/viewName' } - { model: 'viewData', path:'/viewDesc' }" 
         visible="true">
         <content>
             <table:Table id="tableData" 
                 selectionMode="MultiToggle"                 
                 enableSelectAll="false" 
-                rows="{ model: 'ViewData', path:'/values' }" 
+                rows="{ model: 'viewData', path:'/values' }" 
                 threshold="15" 
                 enableBusyIndicator="true" 
                 columns="{
-					model: 'ViewData', 
+					model: 'viewData', 
                     path:'/columns',
 					factory: '.columnFactory'
 				}" 
