@@ -19,7 +19,7 @@
         visible="true">
         <content>
             <table:Table id="tableData" 
-                selectionMode="MultiToggle"                 
+                selectionMode="MultiToggle" 
                 enableSelectAll="false" 
                 rows="{ model: 'viewData', path:'/values' }" 
                 threshold="15" 
@@ -30,15 +30,17 @@
 					factory: '.columnFactory'
 				}" 
                 ariaLabelledBy="title" 
-                width="100%"
-                showColumnVisibilityMenu="true"
-                visibleRowCountMode="Auto">
+                width="100%" 
+                showColumnVisibilityMenu="true" 
+                visibleRowCountMode="Auto" 
+                rowSelectionChange="onRowSelectionChange">
                 <table:extension>
                     <OverflowToolbar>
                         <ToolbarSpacer/>
                         <Button icon="sap-icon://delete" 
                             tooltip="{i18n>ViewData.tooltipBtnDeleted}" 
-                            press="onDeleteEntries"/>                        
+                            press="onDeleteEntries" 
+                            enabled="{model:'viewData', path:'/btnDeletedEnabled'}"/>
                         <Button icon="sap-icon://add" 
                             tooltip="{i18n>ViewData.tooltipBtnAdd}" 
                             press="onAddEntry"/>

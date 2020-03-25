@@ -9,8 +9,9 @@ sap.ui.define([
 	"sap/m/Input",
 	"sap/m/DatePicker",
 	"sap/m/TimePicker",
-	"sap/m/CheckBox"
-], function (BaseController, MessageToast, MessageBox, constants, logDialog, Column, Text, Input, DatePicker, TimePicker, CheckBox) {
+	"sap/m/CheckBox",
+	'sap/ui/model/Filter'
+], function (BaseController, MessageToast, MessageBox, constants, logDialog, Column, Text, Input, DatePicker, TimePicker, CheckBox, Filter) {
 	"use strict";
 
 	return BaseController.extend("com.ivancio.zal30-ui5.controller.ViewData", {
@@ -96,10 +97,22 @@ sap.ui.define([
 		// Evento que se lanza cuando se pulsa el boton de borrar entradas 
 		onDeleteEntries: function (oEvent) {
 
+			aIndices = this.byId(constants.objectsId.viewData.tableData).getSelectedIndices();
+			this._viewDataState.onDeleteEntries(aIndices);
+
 		},
 		// Evento que se alnza cuando se pulsa el botón de añadir nueva entrada
 		onAddEntry: function (oEvent) {
 
+		},
+		onRowSelectionChange: function (oEvent) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			
+			// Filas selecciondas	
+			oEvent.getParameter("rowIndices");
+
+			var bEnabled = this.byId(constants.objectsId.viewData.tableData).getSelectedIndices().length ? true : false;
+			oViewDataModel.setProperty("/btnDeletedEnabled", bEnabled);
 		},
 		//////////////////////////////////
 		//                              //
@@ -173,6 +186,7 @@ sap.ui.define([
 		},
 		// Inicialización del modelo de datos
 		_initModelData: function () {
+
 			this._resetModel(); // Reset, en este caso, creación del modelo de datos
 
 			// Se recupera la clase que gestiona los estado de la configuración y datos de las vistas			
@@ -185,6 +199,7 @@ sap.ui.define([
 			//this._oViewDataModel.setData({
 			oViewDataModel.setProperty("/viewName", '');
 			oViewDataModel.setProperty("/viewDesc", '');
+			oViewDataModel.setProperty("/btnDeletedEnabled", false);
 
 		},
 		// Proceso en que se leen tanto la configuración de la vista como los datos
@@ -240,6 +255,18 @@ sap.ui.define([
 
 			// Establece el modo de edición de las celdas de la tabla
 			this._setEditCellTable();
+
+			// Se establece el filtro de borrado. Es decir, no se ven los registros borrados
+			this._setDeletedRowsDeleted();
+		},
+		// Filtro de registros borrados
+		_setDeletedRowsDeleted: function () {
+
+			// se crea el filtro para el campo de actualización
+			var oFilter = new Filter(constants.tableData.internalFields.updkz, sap.ui.model.FilterOperator.NE, constants.tableData.fieldUpkzValues.delete);
+
+			this.byId(constants.objectsId.viewData.tableData).getBinding("rows").filter(oFilter);
+
 		},
 		// Devuelve un objeto de tipo "template" en base al tipo de campo y sus atributos y teniendo en cuenta su modo de visualización
 		_getTemplateObjectforTableColumn: function (mColumn) {

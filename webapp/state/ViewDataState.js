@@ -150,6 +150,10 @@ sap.ui.define([
 
 			return mParamsOutput;
 		},
+		// Evento que se lanza cuando se marcan líneas para borrar
+		onDeleteEntries:function(aRows){
+
+		},
 		// Devuelve el numero de columnas clave y visible
 		getNumberKeyFields: function () {
 			return this._oView.getNumberKeyFields();
