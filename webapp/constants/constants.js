@@ -34,7 +34,8 @@ sap.ui.define([], function () {
 		jsonModel: {
 			viewConf: "ViewConf",
 			ViewSelect: "ViewSelectModel",
-			viewData: "viewData"
+			viewData: "viewData",
+			dialog: "dialog"
 		},
 		columnTtype: {
 			char: "C",

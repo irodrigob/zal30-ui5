@@ -40,10 +40,12 @@
                         <Button icon="sap-icon://delete" 
                             tooltip="{i18n>ViewData.tooltipBtnDeleted}" 
                             press="onDeleteEntries" 
-                            enabled="{model:'viewData', path:'/btnDeletedEnabled'}"/>
+                            enabled="{model:'viewData', path:'/btnDeletedEnabled'}"
+                            visible="{model:'viewData', path:'/btnDeletedVisible'}"/>
                         <Button icon="sap-icon://add" 
                             tooltip="{i18n>ViewData.tooltipBtnAdd}" 
-                            press="onAddEntry"/>
+                            press="onAddEntry"
+                            visible="{model:'viewData',path:'/btnDeletedVisible'}"/>
                     </OverflowToolbar>
                 </table:extension>
             </table:Table>

@@ -153,10 +153,20 @@ sap.ui.define([
 		// Evento que se lanza cuando se marcan líneas para borrar
 		onDeleteEntries:function(aRows){
 
+			// Como se controla que el botón de borrar se habilite solo cuando se seleccionan registros, cuando llega a este método
+			// seguro que hay líneas seleccionadas
+			
+
 		},
 		// Devuelve el numero de columnas clave y visible
 		getNumberKeyFields: function () {
 			return this._oView.getNumberKeyFields();
+		},
+		// Establece la visibilidad de los objetos asociados a la edición, como los botones de añadir y borrar
+		setVisibleEditButtons(bVisible){
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			oViewDataModel.setProperty("/btnDeletedVisible", bVisible);
+			oViewDataModel.setProperty("/btnAddVisible", bVisible);
 		},
 		//////////////////////////////////	
 		//        Private methods       //	
@@ -172,9 +182,17 @@ sap.ui.define([
 			this._alreadyBlocked = mResult.ALREADYLOCKED;
 			this._lockedByUser = mResult.LOCKBYUSER;
 
-			if (this._alreadyBlocked) // Con bloqueo la vista solo se puede visualizar
+			if (this._alreadyBlocked){
+				// Con bloqueo la vista solo se puede visualizar
 				this._editMode = constants.editMode.view;
-		},
+
+				// Además se ocultan los botones asociados a la edición
+				this.setVisibleEditButtons(false);
+			} 
+			else{
+				this.setVisibleEditButtons(true);
+			}
+		},		
 		_initModel: function () {
 			// Modo de edición
 			this._editMode = '';

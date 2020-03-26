@@ -1,0 +1,16 @@
+<core:FragmentDefinition xmlns="sap.m" 
+    xmlns:core="sap.ui.core">
+    <Dialog title="{model:'Dialog' path:'/title'}">
+    </Dialog>
+    <content>
+    <Text text="{model:'Dialog' path:'/textMessage'}"/>
+    </content>
+    <beginButton>
+        <Button text="{model:'Dialog' path:'/beginButtonText'}" 
+            press="onBeginButtonDialog"/>
+    </beginButton>
+    <EndButton>
+        <Button text="{model:'Dialog' path:'/beginButtonText'}" 
+            press="onEndButtonDialog"/>
+    </beginButton>
+</core:FragmentDefinition>

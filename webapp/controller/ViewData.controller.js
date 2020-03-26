@@ -10,8 +10,9 @@ sap.ui.define([
 	"sap/m/DatePicker",
 	"sap/m/TimePicker",
 	"sap/m/CheckBox",
-	'sap/ui/model/Filter'
-], function (BaseController, MessageToast, MessageBox, constants, logDialog, Column, Text, Input, DatePicker, TimePicker, CheckBox, Filter) {
+	'sap/ui/model/Filter',
+	"com/ivancio/zal30-ui5/component/general/confirmDialog/ConfirmDialog"
+], function (BaseController, MessageToast, MessageBox, constants, logDialog, Column, Text, Input, DatePicker, TimePicker, CheckBox, Filter, ConfirmDialog) {
 	"use strict";
 
 	return BaseController.extend("com.ivancio.zal30-ui5.controller.ViewData", {
@@ -38,6 +39,12 @@ sap.ui.define([
 			if (!this._oLogDialog) {
 				this._oLogDialog = new logDialog();
 				this.getView().addDependent(this._oLogDialog);
+			}
+
+			// se instancia el control del popup de confirmación de dialogo
+			if (!this._oConfirmDialog) {
+				this._oConfirmDialog = new ConfirmDialog();
+				this.getView().addDependent(this._oConfirmDialog);
 			}
 
 			let oView = this.getView();
@@ -107,7 +114,7 @@ sap.ui.define([
 		},
 		onRowSelectionChange: function (oEvent) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			
+
 			// Filas selecciondas	
 			oEvent.getParameter("rowIndices");
 
@@ -186,12 +193,11 @@ sap.ui.define([
 		},
 		// Inicialización del modelo de datos
 		_initModelData: function () {
-
-			this._resetModel(); // Reset, en este caso, creación del modelo de datos
-
 			// Se recupera la clase que gestiona los estado de la configuración y datos de las vistas			
 			this._viewConfState = this._oOwnerComponent.getState(this._oOwnerComponent.state.confView);
 			this._viewDataState = this._oOwnerComponent.getState(this._oOwnerComponent.state.dataView);
+
+			this._resetModel(); // Reset, en este caso, creación del modelo de datos
 		},
 		// Reset del modelo de datos
 		_resetModel: function () {
@@ -200,7 +206,8 @@ sap.ui.define([
 			oViewDataModel.setProperty("/viewName", '');
 			oViewDataModel.setProperty("/viewDesc", '');
 			oViewDataModel.setProperty("/btnDeletedEnabled", false);
-
+			// Los botones de edición no se visualizan por defecto
+			this._viewDataState.setVisibleEditButtons(false);
 		},
 		// Proceso en que se leen tanto la configuración de la vista como los datos
 		_readView: function (sViewName) {
