@@ -126,7 +126,19 @@ sap.ui.define([
 
 		},
 		// Actualiza el indicador de actualización a nivel de línea
-		setRowUpdateIndicator(sColumn, sPath, oValue, sUpdkz) {
+		setRowUpdateIndicator(sPath, sUpdkz) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+
+			// Se monta el path directo al campo que guarda el campo de actualización
+			var sPathUpdkz = sPath + "/" + constants.tableData.internalFields.updkz;
+			switch (sUpdkz) {
+				case constants.tableData.fieldUpkzValues.update:
+					break;
+				case constants.tableData.fieldUpkzValues.delete:
+				case constants.tableData.fieldUpkzValues.insert:
+					oViewDataModel.setProperty(sPathUpdkz, sUpdkz);
+					break;
+			}
 			/*
 			// Se recupera la fila donde se ha hecho el cambio
 			var mRow = this._oViewData.getProperty(sPath);

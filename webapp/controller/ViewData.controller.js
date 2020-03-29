@@ -103,16 +103,25 @@ sap.ui.define([
 		},
 		// Evento que se lanza cuando se pulsa el boton de borrar entradas 
 		onDeleteEntries: function (oEvent) {
-
+			var that = this;
 			var aIndices = this.byId(constants.objectsId.viewData.tableData).getSelectedIndices();
-			this._viewDataState.onDeleteEntries(aIndices);
 
 			// Se muestra el popup de confirmación
-			var sTitle = this._oI18nResource.getText("ViewData.popupConfDeleteTitle");
-			var sMessage = this._oI18nResource.getText("ViewData.popupConfDeleteMessage");
-			var sBeginButton = this._oI18nResource.getText("ViewData.popupConfDeleteBeginButton");
-			var sEndButton = this._oI18nResource.getText("ViewData.popupConfDeleteEndButton");
-			this._oConfirmDialog.setValues(sTitle, sMessage, sBeginButton, sEndButton);
+
+			this._oConfirmDialog.setValues({
+				sTitle: this._oI18nResource.getText("ViewData.popupConfDeleteTitle"),
+				sTextMessage: this._oI18nResource.getText("ViewData.popupConfDeleteMessage"),
+				sBeginButtonText: this._oI18nResource.getText("ViewData.popupConfDeleteBeginButton"),
+				sEndButtonText: this._oI18nResource.getText("ViewData.popupConfDeleteEndButton"),
+				oCallBackStartButton: function (oEvent) {
+					
+					that._viewDataState.onDeleteEntries(aIndices);
+					var oTable = that.byId(constants.objectsId.viewData.tableData);								
+					oTable.getBinding("rows").applyFilter(); // Se vuelven aplicar los filtros definidos		
+					oTable.updateRows(); /// Se actualizan los datos de las filas para que se refresque la tabla					
+				},
+				oCallBackEndButton: {}
+			});
 			this._oConfirmDialog.openDialog(this);
 
 		},
@@ -272,10 +281,10 @@ sap.ui.define([
 			this._setEditCellTable();
 
 			// Se establece el filtro de borrado. Es decir, no se ven los registros borrados
-			this._setDeletedRowsDeleted();
+			this._setFilterRowsDeleted();
 		},
 		// Filtro de registros borrados
-		_setDeletedRowsDeleted: function () {
+		_setFilterRowsDeleted: function () {
 
 			// se crea el filtro para el campo de actualización
 			var oFilter = new Filter(constants.tableData.internalFields.updkz, sap.ui.model.FilterOperator.NE, constants.tableData.fieldUpkzValues.delete);

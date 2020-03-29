@@ -144,18 +144,19 @@ sap.ui.define([
 				this._oView.updateValueModel(mParams.column, mParams.path, mParamsOutput.value);
 
 
-			// Se informa el campo que indica el tipo de actualización a nivel de línea. El indicador será el de update, aunque a nivel interno
-			// se el registro ya tiene un indicador como el de inserción no se modificará. 
-			this._oView.setRowUpdateIndicator(mParams.column, mParams.path, mParamsOutput.value, constants.tableData.fieldUpkzValues.update);
+			// Se informa en que línea se ha hecho el cambio
+			this._oView.setRowUpdateIndicator(mParams.path, constants.tableData.fieldUpkzValues.update);
 
 			return mParamsOutput;
 		},
 		// Evento que se lanza cuando se marcan líneas para borrar
-		onDeleteEntries:function(aRows){
+		onDeleteEntries: function (aRows) {
 
 			// Como se controla que el botón de borrar se habilite solo cuando se seleccionan registros, cuando llega a este método
 			// seguro que hay líneas seleccionadas
-			
+			for (var x = 0; x < aRows.length; x++) {
+				this._oView.setRowUpdateIndicator(constants.tableData.path.values + "/" + aRows[x], constants.tableData.fieldUpkzValues.delete);
+			}
 
 		},
 		// Devuelve el numero de columnas clave y visible
@@ -163,7 +164,7 @@ sap.ui.define([
 			return this._oView.getNumberKeyFields();
 		},
 		// Establece la visibilidad de los objetos asociados a la edición, como los botones de añadir y borrar
-		setVisibleEditButtons(bVisible){
+		setVisibleEditButtons(bVisible) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			oViewDataModel.setProperty("/btnDeletedVisible", bVisible);
 			oViewDataModel.setProperty("/btnAddVisible", bVisible);
@@ -182,17 +183,16 @@ sap.ui.define([
 			this._alreadyBlocked = mResult.ALREADYLOCKED;
 			this._lockedByUser = mResult.LOCKBYUSER;
 
-			if (this._alreadyBlocked){
+			if (this._alreadyBlocked) {
 				// Con bloqueo la vista solo se puede visualizar
 				this._editMode = constants.editMode.view;
 
 				// Además se ocultan los botones asociados a la edición
 				this.setVisibleEditButtons(false);
-			} 
-			else{
+			} else {
 				this.setVisibleEditButtons(true);
 			}
-		},		
+		},
 		_initModel: function () {
 			// Modo de edición
 			this._editMode = '';
