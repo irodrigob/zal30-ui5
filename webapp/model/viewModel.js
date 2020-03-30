@@ -49,28 +49,32 @@ sap.ui.define([
 		},
 		// Guarda los datos de la vista provenientes del servicio. Es decir, hay que convertir
 		// el string json en un objeto JSON de UI5.
-		setViewDataFromService: function (sData) {
+		setViewDataFromService: function (oDataGW) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 
 			// Debido a que el JSON viene en un literal para poderlo usarla hay que parsearlo.								
 			var oData = new sap.ui.model.json.JSONModel();
-			oData.setJSON(sData);
+			oData.setJSON(oDataGW.DATA);
+
+			// Se añaden los campos de control para poder determinar si un campo es editable o no.
+			oData = this._addeditFields(oData);
+
+			// Se establece a nivel de celda si el campo será editable o no
+			oData = this._setInitialEditCellValues(oData);
+
+			// Se adapta los valores según los tipos de campos pasados. Ejemplo: los campos checkbox que hay que cambiar la 'X'/'' por true/false.			
+			oData = this._convValuesFromService(oData);
 
 			oViewDataModel.setProperty("/values", oData.getData());
 
-			// Se adapta los valores según los tipos de campos pasados. Ejemplo: los campos checkbox que hay que cambiar la 'X'/'' por true/false.
-			//this._oViewData = this._convValuesFromService(this._oViewData);
-			this._convValuesFromService(oViewDataModel);
+			// Se hace lo mismos pasos para los datos de template, pero estos no se guardan en el modelo de UI5 sino que se guardan como variable
+			this._oDataTemplate = new sap.ui.model.json.JSONModel();
+			this._oDataTemplate.setJSON(oDataGW.DATA_TEMPLATE);
+			this._oDataTemplate = this._addeditFields(this._oDataTemplate);
+			this._oDataTemplate = this._setInitialEditCellValues(this._oDataTemplate);
 
 			// Se guarda el valor original
 			this._oOriginalViewData = oViewDataModel; //this._oViewData;
-
-			// Se añaden los campos de control para poder determinar si un campo es editable o no.
-			this._addeditFields();
-
-			// Se establece a nivel de celda si el campo será editable o no
-			this._setInitialEditCellValues();
-
 
 		},
 		// Devuelve los datos de la vista
@@ -224,29 +228,28 @@ sap.ui.define([
 
 		},
 		// Conversion de los datos procedentes del servicios
-		_convValuesFromService: function (oViewDataModel) {
-			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			var mValues = oViewDataModel.getProperty(constants.tableData.path.values);
-
+		_convValuesFromService: function (oData) {
+			
 			// Se recuperán los campos que son checkbox
 			var acheckBoxFields = this._checkBoxFieldsinCatalog();
 
 			// Si hay campos a tratar se inicial el proceso.	
 			if (acheckBoxFields.length) {
 				// Se recorren todos los registros leídos
-				for (var x = 0; x < mValues.length; x++) {
+				for (var x = 0; x < oData.oData.length; x++) {
 
 					// Se recorre todos los campos de tipo checbox
 					for (var y = 0; y < acheckBoxFields.length; y++) {
 						// Se recupera el valor
-						var sPath = constants.tableData.path.values + "/" + x + "/" + acheckBoxFields[y].name;
-						if (oViewDataModel.getProperty(sPath) == 'X')
-							oViewDataModel.setProperty(sPath, true)
+						var sPath = "/" + x + "/" + acheckBoxFields[y].name;
+						if (oData.getProperty(sPath) == 'X')
+							oData.setProperty(sPath, true)
 						else
-							oViewDataModel.setProperty(sPath, false)
+							oData.setProperty(sPath, false)
 					}
 				}
 			}
+			return oData;
 
 		},
 		// Devuelve los campos que son checkbox
@@ -257,39 +260,41 @@ sap.ui.define([
 			return mFielCatalog.filter(field => field.checkBox == true)
 		},
 		// Añade campos de control al modelo de datos
-		_addeditFields: function () {
+		_addeditFields: function (oData) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			var mFielCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
-			var mValues = oViewDataModel.getProperty(constants.tableData.path.values);
 
 			// Se recorren los datos leídos
-			for (var z = 0; z < mValues.length; z++) {
+			for (var z = 0; z < oData.oData.length; z++) {
 				for (var x = 0; x < mFielCatalog.length; x++) {
 					// Los campos técnicos no tendrán campo de edición porque nunca se muestran
 					if (!mFielCatalog[x].tech) {
 
 						// se construye el nombre del nuevo campo que será el nombre del campo + un sufijo
-						var sPathEditFieldname = constants.tableData.path.values + "/" + z + "/" + mFielCatalog[x].name + constants.tableData.suffix_edit_field;
-						oViewDataModel.setProperty(sPathEditFieldname, mFielCatalog[x].edit);
+						// constants.tableData.path.values +
+						var sPathEditFieldname = "/" + z + "/" + mFielCatalog[x].name + constants.tableData.suffix_edit_field;
+						oData.setProperty(sPathEditFieldname, mFielCatalog[x].edit);
 
 					}
 				}
 			}
+			return oData;
 		},
 		// Establece la edición inicial de las celdas según sus valores. 
 		// Esta función solo se usará en la lectura inicial
-		_setInitialEditCellValues: function () {
+		_setInitialEditCellValues: function (oData) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			var mValues = oViewDataModel.getProperty(constants.tableData.path.values);
 			// Se recorren los datos leídos
-			for (var z = 0; z < mValues.length; z++) {
-				var sPath = constants.tableData.path.values + "/" + z + "/"; // Path de acceso al modelo
-				var sRow = oViewDataModel.getProperty(sPath); // Recuperación del modelo
+			for (var z = 0; z < oData.oData.length; z++) {
+				// constants.tableData.path.values
+				var sPath = "/" + z + "/"; // Path de acceso al modelo
+				var sRow = oData.getProperty(sPath); // Recuperación del modelo
 				// Se llama a la función encarga de determinar que celdas son editables
-				var sNewRow = this.detEditableCellValue(sRow);
-				oViewDataModel.setProperty(sPath, sNewRow); // Actualización del modelo
+				sRow = this.detEditableCellValue(sRow);
+				oData.setProperty(sPath, sRow); // Actualización del modelo
 
 			}
+			return oData;
 		}
 
 	});

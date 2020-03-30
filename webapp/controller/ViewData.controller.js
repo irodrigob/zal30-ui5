@@ -84,7 +84,6 @@ sap.ui.define([
 			// Registro de la tabla donde se ha modificado
 			var oRow = oSource.getParent();
 			var sPath = oRow.getBindingContext(constants.jsonModel.viewData).getPath();
-			//var mRow = this._oViewDataModel.getProperty(sPath);
 
 			// Columna donde se ha cambiado el valor
 			var sColumn = oSource.getAggregation("customData")[0].getValue().columnName;
@@ -96,8 +95,7 @@ sap.ui.define([
 				column: sColumn,
 				objetType: sObjectTypeCell,
 				value: sObjectTypeCell == constants.tableData.columnObjectType.checkbox ? oSource.getSelected() : oSource.getValue()
-			});
-
+			});			
 			oEvent.getSource().setValue(mResult.value);
 
 		},
@@ -114,9 +112,9 @@ sap.ui.define([
 				sBeginButtonText: this._oI18nResource.getText("ViewData.popupConfDeleteBeginButton"),
 				sEndButtonText: this._oI18nResource.getText("ViewData.popupConfDeleteEndButton"),
 				oCallBackStartButton: function (oEvent) {
-					
+
 					that._viewDataState.onDeleteEntries(aIndices);
-					var oTable = that.byId(constants.objectsId.viewData.tableData);								
+					var oTable = that.byId(constants.objectsId.viewData.tableData);
 					oTable.getBinding("rows").applyFilter(); // Se vuelven aplicar los filtros definidos		
 					oTable.updateRows(); /// Se actualizan los datos de las filas para que se refresque la tabla					
 				},
@@ -127,7 +125,10 @@ sap.ui.define([
 		},
 		// Evento que se alnza cuando se pulsa el botón de añadir nueva entrada
 		onAddEntry: function (oEvent) {
+			that._viewDataState.onAddEntries();
 
+			var oTable = this.byId(constants.objectsId.viewData.tableData);
+			oTable.updateRows();
 		},
 		onRowSelectionChange: function (oEvent) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
