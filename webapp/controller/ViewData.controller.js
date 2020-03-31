@@ -125,10 +125,7 @@ sap.ui.define([
 		},
 		// Evento que se alnza cuando se pulsa el botón de añadir nueva entrada
 		onAddEntry: function (oEvent) {
-			that._viewDataState.onAddEntries();
-
-			var oTable = this.byId(constants.objectsId.viewData.tableData);
-			oTable.updateRows();
+			this._viewDataState.onAddEntry();			
 		},
 		onRowSelectionChange: function (oEvent) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);

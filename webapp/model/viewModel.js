@@ -55,26 +55,19 @@ sap.ui.define([
 			// Debido a que el JSON viene en un literal para poderlo usarla hay que parsearlo.								
 			var oData = new sap.ui.model.json.JSONModel();
 			oData.setJSON(oDataGW.DATA);
+			oData = this._processAdapModelDataFromGW(oData);
+			// Se guardado los valores en el modelo original
+			oViewDataModel.setProperty(constants.tableData.path.values, oData.getData());
 
-			// Se añaden los campos de control para poder determinar si un campo es editable o no.
-			oData = this._addeditFields(oData);
-
-			// Se establece a nivel de celda si el campo será editable o no
-			oData = this._setInitialEditCellValues(oData);
-
-			// Se adapta los valores según los tipos de campos pasados. Ejemplo: los campos checkbox que hay que cambiar la 'X'/'' por true/false.			
-			oData = this._convValuesFromService(oData);
-
-			oViewDataModel.setProperty("/values", oData.getData());
+			// Se guarda los valores originales
+			this._oOriginalViewData = new sap.ui.model.json.JSONModel();
+			this._oOriginalViewData.setJSON(oDataGW.DATA);
+			this._oOriginalViewData = this._processAdapModelDataFromGW(this._oOriginalViewData);
 
 			// Se hace lo mismos pasos para los datos de template, pero estos no se guardan en el modelo de UI5 sino que se guardan como variable
 			this._oDataTemplate = new sap.ui.model.json.JSONModel();
 			this._oDataTemplate.setJSON(oDataGW.DATA_TEMPLATE);
-			this._oDataTemplate = this._addeditFields(this._oDataTemplate);
-			this._oDataTemplate = this._setInitialEditCellValues(this._oDataTemplate);
-
-			// Se guarda el valor original
-			this._oOriginalViewData = oViewDataModel; //this._oViewData;
+			this._oDataTemplate = this._processAdapModelDataFromGW(this._oDataTemplate);		
 
 		},
 		// Devuelve los datos de la vista
@@ -137,6 +130,9 @@ sap.ui.define([
 			var sPathUpdkz = sPath + "/" + constants.tableData.internalFields.updkz;
 			switch (sUpdkz) {
 				case constants.tableData.fieldUpkzValues.update:
+					// Se compará si el registro ha cambiado, en caso afirmativo se pone como que se ha actualizado
+					if (this.compareRowDataFromOriginal(sPath))
+						oViewDataModel.setProperty(sPathUpdkz, sUpdkz);
 					break;
 				case constants.tableData.fieldUpkzValues.delete:
 				case constants.tableData.fieldUpkzValues.insert:
@@ -187,6 +183,25 @@ sap.ui.define([
 			}
 			return mRow;
 		},
+		// Añade un registro vacia a los datos
+		addEmptyRow: function () {
+
+			// En el template solo habra un registro
+			var mNewRow = this._oDataTemplate.getProperty("/0");
+
+			// Se recupera el modelo
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+
+			// El nuevo registro se añadira al final, para ello tengo que saber el número total de registros
+			var sPath = constants.tableData.path.values + "/" + oViewDataModel.oData.values.length;
+
+			// Se añade el registro
+			oViewDataModel.setProperty(sPath, mNewRow);
+
+			// Se marca la fila con el indicador de actualización
+			this.setRowUpdateIndicator(sPath, constants.tableData.fieldUpkzValues.insert);
+
+		},
 		//////////////////////////////////	
 		//        Private methods       //	
 		//////////////////////////////////		  
@@ -229,7 +244,7 @@ sap.ui.define([
 		},
 		// Conversion de los datos procedentes del servicios
 		_convValuesFromService: function (oData) {
-			
+
 			// Se recuperán los campos que son checkbox
 			var acheckBoxFields = this._checkBoxFieldsinCatalog();
 
@@ -294,6 +309,29 @@ sap.ui.define([
 				oData.setProperty(sPath, sRow); // Actualización del modelo
 
 			}
+			return oData;
+		},
+		// Compara una fila de datos con su valor original para ver si hay cambios
+		compareRowDataFromOriginal(sPath) {
+
+			debugger;
+
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+
+			var mRow = oViewDataModel.getProperty(sPath);
+			var mOriginalRow = this._oOriginalViewData.getProperty(sPath);
+		},
+		// Proceso que adapta el modelo de datos que proviene de GW al modelo que se necesita en al aplicación
+		_processAdapModelDataFromGW(oData) {
+			// Se añaden los campos de control para poder determinar si un campo es editable o no.
+			oData = this._addeditFields(oData);
+
+			// Se establece a nivel de celda si el campo será editable o no
+			oData = this._setInitialEditCellValues(oData);
+
+			// Se adapta los valores según los tipos de campos pasados. Ejemplo: los campos checkbox que hay que cambiar la 'X'/'' por true/false.			
+			oData = this._convValuesFromService(oData);
+
 			return oData;
 		}
 

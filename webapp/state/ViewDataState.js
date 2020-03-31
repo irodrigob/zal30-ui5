@@ -171,6 +171,10 @@ sap.ui.define([
 			oViewDataModel.setProperty("/btnDeletedVisible", bVisible);
 			oViewDataModel.setProperty("/btnAddVisible", bVisible);
 		},
+		// Evento que se produce al añadir una entrada
+		onAddEntry:function(){
+			this._oView.addEmptyRow();
+		},
 		//////////////////////////////////	
 		//        Private methods       //	
 		//////////////////////////////////	
