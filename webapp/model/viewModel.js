@@ -61,13 +61,14 @@ sap.ui.define([
 
 			// Se guarda los valores originales
 			this._oOriginalViewData = new sap.ui.model.json.JSONModel();
-			this._oOriginalViewData.setJSON(oDataGW.DATA);
-			this._oOriginalViewData = this._processAdapModelDataFromGW(this._oOriginalViewData);
+			/*this._oOriginalViewData.setJSON(oDataGW.DATA);
+			this._oOriginalViewData = this._processAdapModelDataFromGW(this._oOriginalViewData);*/
+			this._oOriginalViewData.setProperty(constants.tableData.path.values, merge({}, oData.getData()));
 
 			// Se hace lo mismos pasos para los datos de template, pero estos no se guardan en el modelo de UI5 sino que se guardan como variable
 			this._oDataTemplate = new sap.ui.model.json.JSONModel();
 			this._oDataTemplate.setJSON(oDataGW.DATA_TEMPLATE);
-			this._oDataTemplate = this._processAdapModelDataFromGW(this._oDataTemplate);		
+			this._oDataTemplate = this._processAdapModelDataFromGW(this._oDataTemplate);
 
 		},
 		// Devuelve los datos de la vista
@@ -107,6 +108,8 @@ sap.ui.define([
 				case constants.columnTtype.packed:
 					// A los campos númericos se les quita las letras
 					mReturn.newValue = mReturn.newValue.replace(/[^\d|.,]/g, '');
+					
+
 					mReturn.formatted = true; // Se indica que se ha aplicado formateo
 					break;
 
@@ -131,8 +134,13 @@ sap.ui.define([
 			switch (sUpdkz) {
 				case constants.tableData.fieldUpkzValues.update:
 					// Se compará si el registro ha cambiado, en caso afirmativo se pone como que se ha actualizado
-					if (this.compareRowDataFromOriginal(sPath))
+					if (this.compareRowDataFromOriginal(sPath)) {
+						console.log("iguales")
 						oViewDataModel.setProperty(sPathUpdkz, sUpdkz);
+					} else {
+						console.log("diferentes")
+					}
+
 					break;
 				case constants.tableData.fieldUpkzValues.delete:
 				case constants.tableData.fieldUpkzValues.insert:
@@ -314,12 +322,33 @@ sap.ui.define([
 		// Compara una fila de datos con su valor original para ver si hay cambios
 		compareRowDataFromOriginal(sPath) {
 
-			debugger;
-
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 
+
+			var bRowsEqual = true; // Por defecto las líneas son iguales
+			// Se recupera el registro actual y el original para comparar
 			var mRow = oViewDataModel.getProperty(sPath);
 			var mOriginalRow = this._oOriginalViewData.getProperty(sPath);
+
+			// Solo se van a comparar registros cuyos campos sean editables y que n sean técnicos en el catalogo de campos
+			for (var x = 0; x < oViewDataModel.oData.columns.length; x++) {
+				if (oViewDataModel.getProperty(constants.tableData.path.columns + "/" + x + "/edit") &&
+					!oViewDataModel.getProperty(constants.tableData.path.columns + "/" + x + "/tech")) {
+					// Nombre del campo a comparar
+					var sFieldName = oViewDataModel.getProperty(constants.tableData.path.columns + "/" + x + "/name");
+
+					// Ruta con el valor
+					var sPathField = sPath + "/" + sFieldName;
+					// Si no hay diferencias entonces se devuelve que no son iguales
+					if (oViewDataModel.getProperty(sPathField) != this._oOriginalViewData.getProperty(sPathField)) {
+						return false;
+					}
+				}
+
+			}
+			// Si llega aquí es que los campos son iguales
+			return true;
+
 		},
 		// Proceso que adapta el modelo de datos que proviene de GW al modelo que se necesita en al aplicación
 		_processAdapModelDataFromGW(oData) {
