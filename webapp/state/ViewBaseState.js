@@ -16,10 +16,6 @@ sap.ui.define([
 			this._oAppDataModel = this._oOwnerComponent.getModel("appData");
 			this._oI18nResource = this._oOwnerComponent.getModel("i18n").getResourceBundle();
 			
-			// Llamada al metodo padre
-			Object.call(this);
-
-
 		}
 	});
 });

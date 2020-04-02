@@ -3,8 +3,9 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/base/util/merge",
 	"sap/ui/model/Filter",
-	"com/ivancio/zal30-ui5/constants/constants"
-], function (BaseModel, JSONModel, merge, Filter, constants) {
+	"com/ivancio/zal30-ui5/constants/constants",
+	"com/ivancio/zal30-ui5/component/helper/formatters"
+], function (BaseModel, JSONModel, merge, Filter, constants, formatters) {
 	"use strict";
 
 	return BaseModel.extend("com.ivancio.zal30-ui5.model.viewModel", {
@@ -22,6 +23,14 @@ sap.ui.define([
 
 			// Inicialización del modelo interno
 			this._initModel();
+
+			// Se instancia la clase que gestiona los formatos, pasandole los formatos por defecto establecidos
+			this._oFormatters = new formatters({
+				timeFormat: this._oOwnerComponent.getUserConfig().timeFormat,
+				dateFormat: this._oOwnerComponent.getUserConfig().dateFormat,
+				decimalSeparator: this._oOwnerComponent.getUserConfig().decimalSeparator,
+				thousandSeparator: this._oOwnerComponent.getUserConfig().thousandSeparator
+			});
 		},
 		// Guarda el catalogo de campos de la vista. El catalogo se convierte para adaptarlo a la vista
 		setFieldCatalogFromService: function (mFieldCatalog) {
@@ -108,7 +117,9 @@ sap.ui.define([
 				case constants.columnTtype.packed:
 					// A los campos númericos se les quita las letras
 					mReturn.newValue = mReturn.newValue.replace(/[^\d|.,]/g, '');
-					
+
+					// Se aplica el formato al numero
+					mReturn.newValue = this._oFormatters.formatfloat(mColumn.decimals, mReturn.newValue);
 
 					mReturn.formatted = true; // Se indica que se ha aplicado formateo
 					break;
@@ -134,11 +145,9 @@ sap.ui.define([
 			switch (sUpdkz) {
 				case constants.tableData.fieldUpkzValues.update:
 					// Se compará si el registro ha cambiado, en caso afirmativo se pone como que se ha actualizado
-					if (this.compareRowDataFromOriginal(sPath)) {
-						console.log("iguales")
+					if (this.compareRowDataFromOriginal(sPath)) {						
 						oViewDataModel.setProperty(sPathUpdkz, sUpdkz);
-					} else {
-						console.log("diferentes")
+					} else {						
 					}
 
 					break;
