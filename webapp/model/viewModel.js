@@ -64,20 +64,24 @@ sap.ui.define([
 			// Debido a que el JSON viene en un literal para poderlo usarla hay que parsearlo.								
 			var oData = new sap.ui.model.json.JSONModel();
 			oData.setJSON(oDataGW.DATA);
-			oData = this._processAdapModelDataFromGW(oData);
+			// Los datos originales no se formatean porque lo hará los propios controles de ui5
+			oData = this._processAdapModelDataFromGW(oData, false);
 			// Se guardado los valores en el modelo original
 			oViewDataModel.setProperty(constants.tableData.path.values, oData.getData());
 
-			// Se guarda los valores originales
+			// Se guarda los valores originales, para evitar que las variables por referencias hagan los dos
+			// modelo iguales hay que usar el merge. Y como además, quiero guardarlo en el mismo path del modelo propio para simplificar
+			// luego las comparativas hago uso de variables intermedias. Además aquí, si que se formatean valores para que quede iguales
+			// que los originales cuando se "bindeen" a los controles de las vistas
 			this._oOriginalViewData = new sap.ui.model.json.JSONModel();
-			/*this._oOriginalViewData.setJSON(oDataGW.DATA);
-			this._oOriginalViewData = this._processAdapModelDataFromGW(this._oOriginalViewData);*/
-			this._oOriginalViewData.setProperty(constants.tableData.path.values, merge({}, oData.getData()));
+			var oDataOriginal = merge({}, oData);
+			oDataOriginal = this._processAdapModelDataFromGW(oDataOriginal, true);
+			this._oOriginalViewData.setProperty(constants.tableData.path.values, oDataOriginal.getData());
 
 			// Se hace lo mismos pasos para los datos de template, pero estos no se guardan en el modelo de UI5 sino que se guardan como variable
 			this._oDataTemplate = new sap.ui.model.json.JSONModel();
 			this._oDataTemplate.setJSON(oDataGW.DATA_TEMPLATE);
-			this._oDataTemplate = this._processAdapModelDataFromGW(this._oDataTemplate);
+			this._oDataTemplate = this._processAdapModelDataFromGW(this._oDataTemplate,false);
 
 		},
 		// Devuelve los datos de la vista
@@ -93,6 +97,39 @@ sap.ui.define([
 		},
 		// Formatea el valor en base al tipo de columna
 		formatterValue: function (sColumn, oOldValue) {
+			// Obtenemos la información de la columna	
+			var mColumn = this.getColumnInfo(sColumn);
+			switch (mColumn.type) {
+				case constants.columnTtype.char:
+
+					if (mColumn.checkBox == true) {
+						if (oOldValue == 'X')
+							return true;
+						else
+							return false;
+
+					} else {
+						return oOldValue;
+					}
+
+					break;
+				case constants.columnTtype.date:
+					return oOldValue;
+					break;
+				case constants.columnTtype.time:
+					return oOldValue;
+					break;
+				case constants.columnTtype.packed:
+					return this._oFormatters.formatfloat(mColumn.decimals, oOldValue);
+					break;
+
+			}
+
+
+		},
+		// Reemplaza carácteres extraños de los datos introducidos.
+		// Ejemplo: En los campos  númericos eliminia cualquier carácter que no sea numeros o separador de miles o decimal
+		replaceStrangeChar: function (sColumn, oOldValue) {
 			var mReturn = {
 				newValue: oOldValue,
 				formatted: false
@@ -118,9 +155,6 @@ sap.ui.define([
 					// A los campos númericos se les quita las letras
 					mReturn.newValue = mReturn.newValue.replace(/[^\d|.,]/g, '');
 
-					// Se aplica el formato al numero
-					mReturn.newValue = this._oFormatters.formatfloat(mColumn.decimals, mReturn.newValue);
-
 					mReturn.formatted = true; // Se indica que se ha aplicado formateo
 					break;
 
@@ -145,9 +179,13 @@ sap.ui.define([
 			switch (sUpdkz) {
 				case constants.tableData.fieldUpkzValues.update:
 					// Se compará si el registro ha cambiado, en caso afirmativo se pone como que se ha actualizado
-					if (this.compareRowDataFromOriginal(sPath)) {						
+					if (this._compareRowDataFromOriginal(sPath)) {
+						console.log("iguales");
+						oViewDataModel.setProperty(sPathUpdkz, '');
+					} else {
+						console.log("diferentes");
 						oViewDataModel.setProperty(sPathUpdkz, sUpdkz);
-					} else {						
+
 					}
 
 					break;
@@ -294,18 +332,18 @@ sap.ui.define([
 		// Añade campos de control al modelo de datos
 		_addeditFields: function (oData) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			var mFielCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
+			var mFieldCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
 
 			// Se recorren los datos leídos
 			for (var z = 0; z < oData.oData.length; z++) {
-				for (var x = 0; x < mFielCatalog.length; x++) {
+				for (var x = 0; x < mFieldCatalog.length; x++) {
 					// Los campos técnicos no tendrán campo de edición porque nunca se muestran
-					if (!mFielCatalog[x].tech) {
+					if (this._isEditableFieldCatalog(mFieldCatalog[x])) {
 
 						// se construye el nombre del nuevo campo que será el nombre del campo + un sufijo
 						// constants.tableData.path.values +
-						var sPathEditFieldname = "/" + z + "/" + mFielCatalog[x].name + constants.tableData.suffix_edit_field;
-						oData.setProperty(sPathEditFieldname, mFielCatalog[x].edit);
+						var sPathEditFieldname = "/" + z + "/" + mFieldCatalog[x].name + constants.tableData.suffix_edit_field;
+						oData.setProperty(sPathEditFieldname, mFieldCatalog[x].edit);
 
 					}
 				}
@@ -328,11 +366,17 @@ sap.ui.define([
 			}
 			return oData;
 		},
+		// Devuelve si un campos será editable según sus atributos
+		_isEditableFieldCatalog: function (mFieldcatalog) {
+			if (!mFieldcatalog.tech && mFieldcatalog.edit)
+				return true;
+			else
+				return false;
+
+		},
 		// Compara una fila de datos con su valor original para ver si hay cambios
-		compareRowDataFromOriginal(sPath) {
-
+		_compareRowDataFromOriginal: function (sPath) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-
 
 			var bRowsEqual = true; // Por defecto las líneas son iguales
 			// Se recupera el registro actual y el original para comparar
@@ -341,8 +385,7 @@ sap.ui.define([
 
 			// Solo se van a comparar registros cuyos campos sean editables y que n sean técnicos en el catalogo de campos
 			for (var x = 0; x < oViewDataModel.oData.columns.length; x++) {
-				if (oViewDataModel.getProperty(constants.tableData.path.columns + "/" + x + "/edit") &&
-					!oViewDataModel.getProperty(constants.tableData.path.columns + "/" + x + "/tech")) {
+				if (this._isEditableFieldCatalog(oViewDataModel.getProperty(constants.tableData.path.columns + "/" + x))) {
 					// Nombre del campo a comparar
 					var sFieldName = oViewDataModel.getProperty(constants.tableData.path.columns + "/" + x + "/name");
 
@@ -359,8 +402,50 @@ sap.ui.define([
 			return true;
 
 		},
+		// Se aplica los formatos a los datos vienen del servicio
+		// En las opciones se puede escoger que tipo de campos se aplicará el formato.
+		// Esto es necesario porque segun el contexto hay campos que no se puede formatear porque lo va hacer
+		// el propio contro
+		_formatValuesFromService: function (oData, mFormatOptions) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+
+			// Se pasa las opciones del parámetro a una variable local. Si no existe el parámetro se pone uno por defecto
+			var mOptions = {
+				formatNumber: mFormatOptions.formatNumber ? mFormatOptions.formatNumber : false,
+				formatDate: mFormatOptions.formatDate ? mFormatOptions.formatDate : false,
+				formatTime: mFormatOptions.formatTime ? mFormatOptions.formatTime : false
+			};
+
+			// Se recorren los datos leídos
+			for (var z = 0; z < oData.oData.length; z++) {
+				for (var x = 0; x < oViewDataModel.oData.columns.length; x++) {
+
+					// Los campos técnicos no tendrán campo de edición porque nunca se muestran
+					if (this._isEditableFieldCatalog(oViewDataModel.getProperty(constants.tableData.path.columns + "/" + x))) {
+						var bFormat = true;
+
+						switch (oViewDataModel.getProperty(constants.tableData.path.columns + "/" + x + "/type")) {
+							case constants.columnTtype.packed:
+								bFormat = mOptions.formatNumber;
+								break;
+						};
+						// Se aplica formato si así se indica	
+						if (bFormat) {
+							// Se determina según el tipo de campo si hay que aplicar formato
+							var sFieldName = oViewDataModel.getProperty(constants.tableData.path.columns + "/" + x + "/name");
+							var sPathValue = "/" + z + "/" + sFieldName;
+							var oNewValue = this.formatterValue(sFieldName, oData.getProperty(sPathValue));
+							oData.setProperty(sPathValue, oNewValue);
+
+						}
+
+					}
+				}
+			}
+			return oData;
+		},
 		// Proceso que adapta el modelo de datos que proviene de GW al modelo que se necesita en al aplicación
-		_processAdapModelDataFromGW(oData) {
+		_processAdapModelDataFromGW(oData, bApplyFormat) {
 			// Se añaden los campos de control para poder determinar si un campo es editable o no.
 			oData = this._addeditFields(oData);
 
@@ -368,7 +453,16 @@ sap.ui.define([
 			oData = this._setInitialEditCellValues(oData);
 
 			// Se adapta los valores según los tipos de campos pasados. Ejemplo: los campos checkbox que hay que cambiar la 'X'/'' por true/false.			
-			oData = this._convValuesFromService(oData);
+			//oData = this._convValuesFromService(oData);
+
+			// Se formatea los valores provenientes del modelo para dejarlos tal cual aparecerán en la tabla. Esto se hace sobretodo
+			// para los datos originales porque tienen que tener el mismo formato que los datos que se muestran en la tabla. Los datos
+			// que se muestran en la tabla se les aplica el formato de manera automática al estar indicado en la columna.
+			oData = this._formatValuesFromService(oData, {
+				formatNumber: bApplyFormat ? bApplyFormat : false,
+				formatDate: bApplyFormat ? bApplyFormat : false,
+				formatTime: bApplyFormat ? bApplyFormat : false
+			});
 
 			return oData;
 		}

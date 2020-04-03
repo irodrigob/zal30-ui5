@@ -133,16 +133,16 @@ sap.ui.define([
 			};
 
 			// Se formatea el campo según la configuración de la columna
-			var mFormatterResult = this._oView.formatterValue(mParams.column, mParams.value);
+			var mReplaceResult = this._oView.replaceStrangeChar(mParams.column, mParams.value);
 
-			mParamsOutput.value = mFormatterResult.newValue;
+			mParamsOutput.value = mReplaceResult.newValue;
 
 			// Si se ha aplicado formato es cuando se actualiza el modelo el propio.
 			// Esto sobretodo se hace en los nuúmeros donde se introduce: quitan caracteres no validos(este caso no es necesario la actualización del modelo
 			// porque se hace de manera automática cuando el valor formateado se pasa al valor del campo) y más decimales de los indicados en el campo . En el campo de los decimales, es especial.
 			// Especial porque en el modelo tiene los decimales mal pero el input se ve bien. Pero para que luego no de problemas hay que sincronizar. Como no tengo manera de saber si han puesto
 			// decimales de más, se sincroniza siempre en los campos númericos y listos.
-			if (mFormatterResult.formatted)
+			if (mReplaceResult.formatted)
 				this._oView.updateValueModel(mParams.column, mParams.path, mParamsOutput.value);
 
 

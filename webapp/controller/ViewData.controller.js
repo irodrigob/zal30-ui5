@@ -73,6 +73,8 @@ sap.ui.define([
 
 		},
 		onTesting: function (oEvent) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+
 			debugger;
 		},
 		// Evento que se dispara cuando se modifica el valor de algun registros
@@ -87,6 +89,7 @@ sap.ui.define([
 
 			// Columna donde se ha cambiado el valor
 			var sColumn = oSource.getAggregation("customData")[0].getValue().columnName;
+
 			// tipo de objeto usado en la celda
 			var sObjectTypeCell = oSource.getAggregation("customData")[0].getValue().objectType;
 
