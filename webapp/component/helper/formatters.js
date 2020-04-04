@@ -36,6 +36,12 @@ sap.ui.define(
 				return NumberFormat.getFloatInstance(oFormatOptions);
 
 			},
+			// Desformatea un registro para dejarlo con su formato original. Es la inversa del formatFloat
+			// En ui5 sería el parse
+			parseFloat: function (nDecimals, oValue) {
+				var oFormatObject = this.getFormatObjectFloat(nDecimals);
+				return oFormatObject.parse(oValue);
+			},
 			//////////////////////////////////	
 			//        Private methods       //	
 			//////////////////////////////////

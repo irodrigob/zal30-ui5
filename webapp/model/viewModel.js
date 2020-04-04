@@ -69,19 +69,17 @@ sap.ui.define([
 			// Se guardado los valores en el modelo original
 			oViewDataModel.setProperty(constants.tableData.path.values, oData.getData());
 
-			// Se guarda los valores originales, para evitar que las variables por referencias hagan los dos
-			// modelo iguales hay que usar el merge. Y como además, quiero guardarlo en el mismo path del modelo propio para simplificar
-			// luego las comparativas hago uso de variables intermedias. Además aquí, si que se formatean valores para que quede iguales
-			// que los originales cuando se "bindeen" a los controles de las vistas
+			// Se guarda los valores originales para poder luego saber si un registro se ha modificado o no. 
+			//Para evitar que las variables por referencias hagan los dos modelo iguales hay que usar el merge. Y como además, quiero guardarlo en el mismo path del modelo propio para simplificar
+			// luego las comparativas hago uso de variables intermedias. 
 			this._oOriginalViewData = new sap.ui.model.json.JSONModel();
 			var oDataOriginal = merge({}, oData);
-			oDataOriginal = this._processAdapModelDataFromGW(oDataOriginal, true);
 			this._oOriginalViewData.setProperty(constants.tableData.path.values, oDataOriginal.getData());
 
 			// Se hace lo mismos pasos para los datos de template, pero estos no se guardan en el modelo de UI5 sino que se guardan como variable
 			this._oDataTemplate = new sap.ui.model.json.JSONModel();
 			this._oDataTemplate.setJSON(oDataGW.DATA_TEMPLATE);
-			this._oDataTemplate = this._processAdapModelDataFromGW(this._oDataTemplate,false);
+			this._oDataTemplate = this._processAdapModelDataFromGW(this._oDataTemplate, false);
 
 		},
 		// Devuelve los datos de la vista
@@ -96,31 +94,63 @@ sap.ui.define([
 			return mFielCatalog.find(columns => columns.name === sColumn);
 		},
 		// Formatea el valor en base al tipo de columna
-		formatterValue: function (sColumn, oOldValue) {
+		formatterValue: function (sColumn, oValue) {
 			// Obtenemos la información de la columna	
 			var mColumn = this.getColumnInfo(sColumn);
 			switch (mColumn.type) {
 				case constants.columnTtype.char:
 
 					if (mColumn.checkBox == true) {
-						if (oOldValue == 'X')
+						if (oValue == 'X')
 							return true;
 						else
 							return false;
 
 					} else {
-						return oOldValue;
+						return oValue;
 					}
 
 					break;
 				case constants.columnTtype.date:
-					return oOldValue;
+					return oValue;
 					break;
 				case constants.columnTtype.time:
-					return oOldValue;
+					return oValue;
 					break;
 				case constants.columnTtype.packed:
-					return this._oFormatters.formatfloat(mColumn.decimals, oOldValue);
+					return this._oFormatters.formatfloat(mColumn.decimals, oValue);
+					break;
+
+			}
+
+
+		},
+		// Elimina el formato del valor de una columna
+		ParseValue: function (sColumn, oValue) {
+			// Obtenemos la información de la columna	
+			var mColumn = this.getColumnInfo(sColumn);
+			switch (mColumn.type) {
+				case constants.columnTtype.char:
+
+					if (mColumn.checkBox == true) {
+						if (oValue == 'X')
+							return true;
+						else
+							return false;
+
+					} else {
+						return oValue;
+					}
+
+					break;
+				case constants.columnTtype.date:
+					return oValue;
+					break;
+				case constants.columnTtype.time:
+					return oValue;
+					break;
+				case constants.columnTtype.packed:
+					return this._oFormatters.parseFloat(mColumn.decimals, oValue);
 					break;
 
 			}
@@ -129,13 +159,7 @@ sap.ui.define([
 		},
 		// Reemplaza carácteres extraños de los datos introducidos.
 		// Ejemplo: En los campos  númericos eliminia cualquier carácter que no sea numeros o separador de miles o decimal
-		replaceStrangeChar: function (sColumn, oOldValue) {
-			var mReturn = {
-				newValue: oOldValue,
-				formatted: false
-			};
-
-
+		replaceStrangeChar: function (sColumn, oValue) {
 			// Obtenemos la información de la columna	
 			var mColumn = this.getColumnInfo(sColumn);
 			switch (mColumn.type) {
@@ -146,21 +170,20 @@ sap.ui.define([
 					} else {
 
 					}
+					return oValue;
 					break;
 				case constants.columnTtype.date:
+					return oValue;
 					break;
 				case constants.columnTtype.time:
+					return oValue;
 					break;
 				case constants.columnTtype.packed:
 					// A los campos númericos se les quita las letras
-					mReturn.newValue = mReturn.newValue.replace(/[^\d|.,]/g, '');
-
-					mReturn.formatted = true; // Se indica que se ha aplicado formateo
+					return oValue.replace(/[^\d|.,]/g, '');
 					break;
-
 			}
 
-			return mReturn;
 		},
 		// Actualiza el valor de un campo en el modelo propio
 		updateValueModel: function (sColumn, sPath, oValue) {
@@ -178,15 +201,21 @@ sap.ui.define([
 			var sPathUpdkz = sPath + "/" + constants.tableData.internalFields.updkz;
 			switch (sUpdkz) {
 				case constants.tableData.fieldUpkzValues.update:
-					// Se compará si el registro ha cambiado, en caso afirmativo se pone como que se ha actualizado
-					if (this._compareRowDataFromOriginal(sPath)) {
-						console.log("iguales");
-						oViewDataModel.setProperty(sPathUpdkz, '');
-					} else {
-						console.log("diferentes");
-						oViewDataModel.setProperty(sPathUpdkz, sUpdkz);
 
+				// Si el resgistro esta en blanco o tiene una actualización es cuando se hace la comparativa. Cualquier otro valor
+				// no se hace porque valor lo que tenga
+					if (oViewDataModel.getProperty(sPathUpdkz) == constants.tableData.fieldUpkzValues.update
+					    || oViewDataModel.getProperty(sPathUpdkz) == '') {
+						if (this._compareRowDataFromOriginal(sPath)) {
+							console.log("iguales");
+							oViewDataModel.setProperty(sPathUpdkz, '');
+						} else {
+							console.log("diferentes");
+							oViewDataModel.setProperty(sPathUpdkz, sUpdkz);
+
+						}
 					}
+
 
 					break;
 				case constants.tableData.fieldUpkzValues.delete:

@@ -132,22 +132,22 @@ sap.ui.define([
 				value: mParams.value
 			};
 
-			// Se formatea el campo según la configuración de la columna
-			var mReplaceResult = this._oView.replaceStrangeChar(mParams.column, mParams.value);
+			// Se quitan cáracteres extraños o no validos. Ejemplo, en los campos númericos que no se pueda poner carácteres que no sea numéros o separador de miles o decimal.
+			mParamsOutput.value = this._oView.replaceStrangeChar(mParams.column, mParams.value);
 
-			mParamsOutput.value = mReplaceResult.newValue;
+			// Se quita el formato que tiene el campo, necesario para poder grabar en el modelo y luego comparar
+			mParamsOutput.value = this._oView.ParseValue(mParams.column, mParamsOutput.value);
 
-			// Si se ha aplicado formato es cuando se actualiza el modelo el propio.
-			// Esto sobretodo se hace en los nuúmeros donde se introduce: quitan caracteres no validos(este caso no es necesario la actualización del modelo
-			// porque se hace de manera automática cuando el valor formateado se pasa al valor del campo) y más decimales de los indicados en el campo . En el campo de los decimales, es especial.
-			// Especial porque en el modelo tiene los decimales mal pero el input se ve bien. Pero para que luego no de problemas hay que sincronizar. Como no tengo manera de saber si han puesto
-			// decimales de más, se sincroniza siempre en los campos númericos y listos.
-			if (mReplaceResult.formatted)
-				this._oView.updateValueModel(mParams.column, mParams.path, mParamsOutput.value);
+			// Se guarda el valor en el modelo propio. Realmente este paso es necesario por dos motivos:
+			// 1) Cuando se ponen decimales de más, el campo tiene los decimales correctos pero no en el modelo oData que se guardan de más. Esto luego puede provocar errores al enviar a SAP.
+			// 2) Para poder hacer comparaciones entre modelo original y el nuevo. Básico para saber el modo de actualización correcto. Sin el paso anterior hacer la comparación no sería posible			
+			this._oView.updateValueModel(mParams.column, mParams.path, mParamsOutput.value);
 
 
 			// Se informa en que línea se ha hecho el cambio
 			this._oView.setRowUpdateIndicator(mParams.path, constants.tableData.fieldUpkzValues.update);
+
+			mParamsOutput.value = this._oView.formatterValue(mParams.column, mParamsOutput.value);
 
 			return mParamsOutput;
 		},
@@ -172,7 +172,7 @@ sap.ui.define([
 			oViewDataModel.setProperty("/btnAddVisible", bVisible);
 		},
 		// Evento que se produce al añadir una entrada
-		onAddEntry:function(){
+		onAddEntry: function () {
 			this._oView.addEmptyRow();
 		},
 		//////////////////////////////////	

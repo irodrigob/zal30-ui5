@@ -91,8 +91,7 @@ sap.ui.define([
 			var sColumn = oSource.getAggregation("customData")[0].getValue().columnName;
 
 			// tipo de objeto usado en la celda
-			var sObjectTypeCell = oSource.getAggregation("customData")[0].getValue().objectType;
-
+			var sObjectTypeCell = oSource.getAggregation("customData")[0].getValue().objectType;			
 			var mResult = this._viewDataState.onValueCellChanged({
 				path: sPath,
 				column: sColumn,
