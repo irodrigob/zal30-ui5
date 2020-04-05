@@ -199,6 +199,9 @@ sap.ui.define([
 
 			// Se monta el path directo al campo que guarda el campo de actualización
 			var sPathUpdkz = sPath + "/" + constants.tableData.internalFields.updkz;
+			// Path del campo que indica el status de actualización a nivel de fila
+			var sPathUpdkzStatus = sPath + "/" + constants.tableData.internalFields.updkzStatus;
+			var sPathUpdkzStatusText = sPath + "/" + constants.tableData.internalFields.updkzStatusText;
 			switch (sUpdkz) {
 				case constants.tableData.fieldUpkzValues.update:
 
@@ -207,19 +210,24 @@ sap.ui.define([
 					if (oViewDataModel.getProperty(sPathUpdkz) == constants.tableData.fieldUpkzValues.update ||
 						oViewDataModel.getProperty(sPathUpdkz) == '') {
 						if (this._compareRowDataFromOriginal(sPath)) {
-							console.log("iguales");
 							oViewDataModel.setProperty(sPathUpdkz, '');
+							// Se le quita el status
+							oViewDataModel.setProperty(sPathUpdkzStatus, '');
 						} else {
-							console.log("diferentes");
 							oViewDataModel.setProperty(sPathUpdkz, sUpdkz);
+							// Se le pone el indicador del status
+							oViewDataModel.setProperty(sPathUpdkzStatus, constants.tableData.updkzSatusValues.update);
+
 
 						}
 					}
-
-
 					break;
 				case constants.tableData.fieldUpkzValues.delete:
+					oViewDataModel.setProperty(sPathUpdkz, sUpdkz);
+					break;
 				case constants.tableData.fieldUpkzValues.insert:
+					// Se le pone el indicador del status
+					oViewDataModel.setProperty(sPathUpdkzStatus, constants.tableData.updkzSatusValues.insert);
 					oViewDataModel.setProperty(sPathUpdkz, sUpdkz);
 					break;
 			}
@@ -283,7 +291,7 @@ sap.ui.define([
 			if (oViewDataModel.getProperty(sPath + "/" + constants.tableData.internalFields.isDict) == 'X') {
 				this.setRowUpdateIndicator(sPath, constants.tableData.fieldUpkzValues.delete);
 			} else { // Si no viene del diccionario se borra directamente
-				aValues = oViewDataModel.getProperty(sPath);
+				var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
 				aValues.splice(nRow, 1);
 				oViewDataModel.setProperty(sPath, aValues);
 			}
@@ -363,13 +371,22 @@ sap.ui.define([
 
 			return mFielCatalog.filter(field => field.checkBox == true)
 		},
-		// Añade campos de control al modelo de datos
-		_addeditFields: function (oData) {
+		// Añade campos de control al modelo de datos. Campos que se añaden:
+		// 1.- Campo que va a permitir controlar a nivel de celda si se puede editar o no.
+		// 2.- Campo para poder un status a nivel de fila si se ha modificado o no.
+		_addCustomFields: function (oData) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			var mFieldCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
 
 			// Se recorren los datos leídos
 			for (var z = 0; z < oData.oData.length; z++) {
+
+				// Se añade el campo que pinta el status según el valor del UPDKZ			
+				var sPathUpdkzStatusFieldname = "/" + z + "/" + constants.tableData.internalFields.updkzStatus;
+				oData.setProperty(sPathUpdkzStatusFieldname, '');
+				sPathUpdkzStatusFieldname = "/" + z + "/" + constants.tableData.internalFields.updkzStatusText;
+				oData.setProperty(sPathUpdkzStatusFieldname, '');
+
 				for (var x = 0; x < mFieldCatalog.length; x++) {
 					// Los campos técnicos no tendrán campo de edición porque nunca se muestran
 					if (this._isEditableFieldCatalog(mFieldCatalog[x])) {
@@ -395,6 +412,7 @@ sap.ui.define([
 				var sRow = oData.getProperty(sPath); // Recuperación del modelo
 				// Se llama a la función encarga de determinar que celdas son editables
 				sRow = this.detEditableCellValue(sRow);
+				sRow.ZAL30_UPDKZ_STATUS = 'Warning';
 				oData.setProperty(sPath, sRow); // Actualización del modelo
 
 			}
@@ -491,7 +509,7 @@ sap.ui.define([
 		// Proceso que adapta el modelo de datos que proviene de GW al modelo que se necesita en al aplicación
 		_processAdapModelDataFromGW(oData, bApplyFormat) {
 			// Se añaden los campos de control para poder determinar si un campo es editable o no.
-			oData = this._addeditFields(oData);
+			oData = this._addCustomFields(oData);
 
 			// Se establece a nivel de celda si el campo será editable o no
 			oData = this._setInitialEditCellValues(oData);

@@ -54,7 +54,13 @@ sap.ui.define([], function () {
 			internalFields: {
 				isDict: "ZAL30_IS_DICT",
 				tabix: "ZAL30_TABIX",
-				updkz: "ZAL30_UPDKZ"
+				updkz: "ZAL30_UPDKZ",
+				updkzStatus:"ZAL30_UPDKZ_STATUS",
+				updkzStatusText:"ZAL30_UPDKZ_STATUSTEXT"
+			},
+			updkzSatusValues:{
+				update: "Warning",
+				insert: "Information",
 			},
 			fieldUpkzValues: {
 				update: "U",

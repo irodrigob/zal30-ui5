@@ -11,8 +11,9 @@ sap.ui.define([
 	"sap/m/TimePicker",
 	"sap/m/CheckBox",
 	'sap/ui/model/Filter',
-	"com/ivancio/zal30-ui5/component/general/confirmDialog/ConfirmDialog"
-], function (BaseController, MessageToast, MessageBox, constants, logDialog, Column, Text, Input, DatePicker, TimePicker, CheckBox, Filter, ConfirmDialog) {
+	"com/ivancio/zal30-ui5/component/general/confirmDialog/ConfirmDialog",
+	"sap/ui/table/RowSettings"
+], function (BaseController, MessageToast, MessageBox, constants, logDialog, Column, Text, Input, DatePicker, TimePicker, CheckBox, Filter, ConfirmDialog,RowSettings) {
 	"use strict";
 
 	return BaseController.extend("com.ivancio.zal30-ui5.controller.ViewData", {
@@ -268,12 +269,6 @@ sap.ui.define([
 		// Se construye los datos para poder pintar los datos en la tabla
 		_buildTableData: function () {
 
-			// Se recuperarán las columnas
-			//this._oViewDataModel.setProperty("/columns", this._viewDataState.getColumnsTable());
-
-			// Se recuperarán los datos			
-			//this._oViewDataModel.setProperty("/values", this._viewDataState.getViewData());
-
 			// Se establece las propiedades del layout de la tabla
 			this._setInitialTableDataLayout();
 
@@ -282,6 +277,11 @@ sap.ui.define([
 
 			// Se establece el filtro de borrado. Es decir, no se ven los registros borrados
 			this._setFilterRowsDeleted();
+
+			/*var oTable = this.byId(constants.objectsId.viewData.tableData);
+			oTable.setRowSettingsTemplate(new RowSettings({
+				highlight: "{model:'viewData', path:'ZAL30_UPDKZ_STATUS'}"
+			}));*/
 		},
 		// Filtro de registros borrados
 		_setFilterRowsDeleted: function () {
