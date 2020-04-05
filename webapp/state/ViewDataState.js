@@ -156,8 +156,8 @@ sap.ui.define([
 
 			// Como se controla que el botón de borrar se habilite solo cuando se seleccionan registros, cuando llega a este método
 			// seguro que hay líneas seleccionadas
-			for (var x = 0; x < aRows.length; x++) {
-				this._oView.setRowUpdateIndicator(constants.tableData.path.values + "/" + aRows[x], constants.tableData.fieldUpkzValues.delete);
+			for (var x = 0; x < aRows.length; x++) {			
+				this._oView.deleteEntry(aRows[x]);				
 			}
 
 		},

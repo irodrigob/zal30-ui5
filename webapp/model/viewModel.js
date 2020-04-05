@@ -202,10 +202,10 @@ sap.ui.define([
 			switch (sUpdkz) {
 				case constants.tableData.fieldUpkzValues.update:
 
-				// Si el resgistro esta en blanco o tiene una actualización es cuando se hace la comparativa. Cualquier otro valor
-				// no se hace porque valor lo que tenga
-					if (oViewDataModel.getProperty(sPathUpdkz) == constants.tableData.fieldUpkzValues.update
-					    || oViewDataModel.getProperty(sPathUpdkz) == '') {
+					// Si el resgistro esta en blanco o tiene una actualización es cuando se hace la comparativa. Cualquier otro valor
+					// no se hace porque valor lo que tenga
+					if (oViewDataModel.getProperty(sPathUpdkz) == constants.tableData.fieldUpkzValues.update ||
+						oViewDataModel.getProperty(sPathUpdkz) == '') {
 						if (this._compareRowDataFromOriginal(sPath)) {
 							console.log("iguales");
 							oViewDataModel.setProperty(sPathUpdkz, '');
@@ -223,19 +223,6 @@ sap.ui.define([
 					oViewDataModel.setProperty(sPathUpdkz, sUpdkz);
 					break;
 			}
-			/*
-			// Se recupera la fila donde se ha hecho el cambio
-			var mRow = this._oViewData.getProperty(sPath);
-
-			// Si no hay indicador previo se informa el pasado
-			if (mRow[constants.tableData.internalFields.updkz] == "") {
-				mRow[constants.tableData.internalFields.updkz] = sUpdkz; //constants.tableData.fieldUpkzValues.update;
-			}
-
-
-			// Se actualiza en el modelo
-			this._oViewData.setProperty(sPath, mRow);
-*/
 		},
 		// Devuelve el número de campos clave. 		
 		getNumberKeyFields: function () {
@@ -284,6 +271,24 @@ sap.ui.define([
 
 			// Se marca la fila con el indicador de actualización
 			this.setRowUpdateIndicator(sPath, constants.tableData.fieldUpkzValues.insert);
+
+		},
+		// Borrr una entrada del modelo de datos
+		deleteEntry: function (nRow) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+
+			var sPath = constants.tableData.path.values + "/" + nRow;
+
+			// Si el registro a borrar proviene del diccionario entonces se marca como borrado
+			if (oViewDataModel.getProperty(sPath + "/" + constants.tableData.internalFields.isDict) == 'X') {
+				this.setRowUpdateIndicator(sPath, constants.tableData.fieldUpkzValues.delete);
+			} else { // Si no viene del diccionario se borra directamente
+				aValues = oViewDataModel.getProperty(sPath);
+				aValues.splice(nRow, 1);
+				oViewDataModel.setProperty(sPath, aValues);
+			}
+
+
 
 		},
 		//////////////////////////////////	
@@ -410,25 +415,35 @@ sap.ui.define([
 			var bRowsEqual = true; // Por defecto las líneas son iguales
 			// Se recupera el registro actual y el original para comparar
 			var mRow = oViewDataModel.getProperty(sPath);
-			var mOriginalRow = this._oOriginalViewData.getProperty(sPath);
 
-			// Solo se van a comparar registros cuyos campos sean editables y que n sean técnicos en el catalogo de campos
-			for (var x = 0; x < oViewDataModel.oData.columns.length; x++) {
-				if (this._isEditableFieldCatalog(oViewDataModel.getProperty(constants.tableData.path.columns + "/" + x))) {
-					// Nombre del campo a comparar
-					var sFieldName = oViewDataModel.getProperty(constants.tableData.path.columns + "/" + x + "/name");
+			//La obtención del registro original se podría haber hecho con el valor de sPath, porque luego de hacer algunas pruebas
+			// el modelo oData no cambia a pesar de quitar hacer ordenaciones. Pero, el problema puede venir si se borran líneas donde
+			// el path del registro original y el que viene sea de líneas distintas. Por lo tanto, la manera más sencilla es encontrar
+			// el registro por el valor del campo ZAL30_TABIX que es informado desde el backend.
+			var mOriginalRow = this._getRowOriginalData(mRow[constants.tableData.internalFields.tabix]);
 
-					// Ruta con el valor
-					var sPathField = sPath + "/" + sFieldName;
-					// Si no hay diferencias entonces se devuelve que no son iguales
-					if (oViewDataModel.getProperty(sPathField) != this._oOriginalViewData.getProperty(sPathField)) {
-						return false;
+			if (mOriginalRow) {
+
+				// Solo se van a comparar registros cuyos campos sean editables y que n sean técnicos en el catalogo de campos
+				for (var x = 0; x < oViewDataModel.oData.columns.length; x++) {
+					if (this._isEditableFieldCatalog(oViewDataModel.getProperty(constants.tableData.path.columns + "/" + x))) {
+						// Nombre del campo a comparar
+						var sFieldName = oViewDataModel.getProperty(constants.tableData.path.columns + "/" + x + "/name");
+
+						// Ruta con el valor
+						var sPathField = sPath + "/" + sFieldName;
+						// Si no hay diferencias entonces se devuelve que no son iguales
+						if (oViewDataModel.getProperty(sPathField) != this._oOriginalViewData.getProperty(sPathField)) {
+							return false;
+						}
 					}
-				}
 
+				}
+				// Si llega aquí es que los campos son iguales
+				return true;
+			} else { // Si no se encuentra el registro original claramente no son iguales
+				return false;
 			}
-			// Si llega aquí es que los campos son iguales
-			return true;
 
 		},
 		// Se aplica los formatos a los datos vienen del servicio
@@ -494,6 +509,12 @@ sap.ui.define([
 			});
 
 			return oData;
+		},
+		// Obtiene el registro de los datos originales a partir del valor del campo ZAL30_TABIX
+		_getRowOriginalData: function (nTabix) {
+			var mValues = this._oOriginalViewData.getProperty(constants.tableData.path.values);
+
+			return mValues.find(values => values[constants.tableData.internalFields.tabix] === nTabix);
 		}
 
 	});
