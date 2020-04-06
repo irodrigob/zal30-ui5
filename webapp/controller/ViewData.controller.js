@@ -143,6 +143,25 @@ sap.ui.define([
 		onSaveData: function (oEvent) {
 
 		},
+		// Devuelve el formato del RowSetting según el valor del campo ZAL30_ROW_STATUS
+		formatRowStatus: function (sStatus) {
+			
+			switch (sStatus) {
+				case constants.tableData.lineStatusValues.error:
+					return 'Error';					
+				case constants.tableData.lineStatusValues.valid:
+					return 'Success';					
+				default:
+					return 'None';
+
+			}
+		},
+		// Texto que tendrá el RowSettign en base a los valores del campo ZAL30_ROW_STATUS_MSG
+		formatRowStatusText:function(sStatus){
+			return '';
+
+		},
+
 		//////////////////////////////////
 		//                              //
 		//        Private methods       //
@@ -280,6 +299,16 @@ sap.ui.define([
 			// Se establece el filtro de borrado. Es decir, no se ven los registros borrados
 			this._setFilterRowsDeleted();
 
+			// El Row setting para hacer los highlight se hace por código porque en la vista XML View no funciona con la opción de formatter
+			var oTable = this.byId(constants.objectsId.viewData.tableData);
+			oTable.setRowSettingsTemplate(new RowSettings({
+				highlight: {
+					model: constants.jsonModel.viewData,
+					path: constants.tableData.internalFields.rowStatus,
+					formatter:this.formatRowStatus
+				}
+			}));
+
 		},
 		// Filtro de registros borrados
 		_setFilterRowsDeleted: function () {
@@ -301,7 +330,7 @@ sap.ui.define([
 
 				// Se usa los customData para tener información adicional en las celdas
 				var mCustomData = this._getCustomerDataCells(mColumn);
-				
+
 				switch (mColumn.type) {
 					case constants.columnTtype.char:
 						if (mColumn.checkBox == true) {
@@ -433,33 +462,33 @@ sap.ui.define([
 		// Campos de clientes para las celdas de la tabla. Los campos que se añaden son:
 		// 1) Nombre de la columna. Con el nombre de la columna se puede saber el tipo de campo
 		// 2) Tipo de objeto. Para saber como recuperar sus valore, sobretodo para los checkbox
-		_getCustomerDataCells:function(mColumn){
+		_getCustomerDataCells: function (mColumn) {
 			return [{
-				Type: "sap.ui.core.CustomData",
-				key: constants.tableData.customData.columnName,
-				value: mColumn.name,
-				writeToDom: false
-			},
-			{
-				Type: "sap.ui.core.CustomData",
-				key: constants.tableData.customData.objectType,
-				value: "",
-				writeToDom: false
-			},
-			{
-				Type: "sap.ui.core.CustomData",
-				key: constants.tableData.customData.changeRow,
-				value: {
-					model: constants.jsonModel.viewData,
-					path: constants.tableData.internalFields.updkz,
-					formatter: function (sUpdkz) {
-						return sUpdkz == constants.tableData.fieldUpkzValues.update || sUpdkz == constants.tableData.fieldUpkzValues.insert ? "true" : "false";
-					}
-
+					Type: "sap.ui.core.CustomData",
+					key: constants.tableData.customData.columnName,
+					value: mColumn.name,
+					writeToDom: false
 				},
-				writeToDom: true
-			}
-		];
+				{
+					Type: "sap.ui.core.CustomData",
+					key: constants.tableData.customData.objectType,
+					value: "",
+					writeToDom: false
+				},
+				{
+					Type: "sap.ui.core.CustomData",
+					key: constants.tableData.customData.changeRow,
+					value: {
+						model: constants.jsonModel.viewData,
+						path: constants.tableData.internalFields.updkz,
+						formatter: function (sUpdkz) {
+							return sUpdkz == constants.tableData.fieldUpkzValues.update || sUpdkz == constants.tableData.fieldUpkzValues.insert ? "true" : "false";
+						}
+
+					},
+					writeToDom: true
+				}
+			];
 		}
 
 

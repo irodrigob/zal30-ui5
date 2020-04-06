@@ -384,11 +384,6 @@ sap.ui.define([
 			// Se recorren los datos leídos
 			for (var z = 0; z < oData.oData.length; z++) {
 
-				// Se añade el campo que pinta el status según el valor del UPDKZ			
-				var sPathUpdkzStatusFieldname = "/" + z + "/" + constants.tableData.internalFields.updkzStatus;
-				oData.setProperty(sPathUpdkzStatusFieldname, '');
-				sPathUpdkzStatusFieldname = "/" + z + "/" + constants.tableData.internalFields.updkzStatusText;
-				oData.setProperty(sPathUpdkzStatusFieldname, '');
 
 				for (var x = 0; x < mFieldCatalog.length; x++) {
 					// Los campos técnicos no tendrán campo de edición porque nunca se muestran
@@ -414,9 +409,7 @@ sap.ui.define([
 				var sPath = "/" + z + "/"; // Path de acceso al modelo
 				var sRow = oData.getProperty(sPath); // Recuperación del modelo
 				// Se llama a la función encarga de determinar que celdas son editables
-				sRow = this.detEditableCellValue(sRow);				
-				// Se pone el valor por defecto en la columna que indica el status Updkz
-				sRow[constants.tableData.internalFields.updkzStatus] = constants.tableData.updkzSatusValues.empty;
+				sRow = this.detEditableCellValue(sRow);								
 
 				oData.setProperty(sPath, sRow); // Actualización del modelo								
 

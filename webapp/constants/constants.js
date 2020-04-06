@@ -55,13 +55,12 @@ sap.ui.define([], function () {
 				isDict: "ZAL30_IS_DICT",
 				tabix: "ZAL30_TABIX",
 				updkz: "ZAL30_UPDKZ",
-				updkzStatus: "ZAL30_UPDKZ_STATUS",
-				updkzStatusText: "ZAL30_UPDKZ_STATUSTEXT"
+				rowStatus: "ZAL30_ROW_STATUS",
+				rowtatusMsg: "ZAL30_ROW_STATUS_MSG"
 			},
-			updkzSatusValues: {
-				update: "Warning",
-				insert: "Information",
-				empty: "None",
+			lineStatusValues: {
+				error: "ERROR",
+				valid: "VALID"				
 			},
 			fieldUpkzValues: {
 				update: "U",
