@@ -32,8 +32,9 @@
                 ariaLabelledBy="title" 
                 width="100%" 
                 showColumnVisibilityMenu="true" 
-                visibleRowCountMode="Auto" 
-                rowSelectionChange="onRowSelectionChange">
+                visibleRowCountMode="Fixed" 
+                rowSelectionChange="onRowSelectionChange"
+                class="tableData">
                 <table:extension>
                     <OverflowToolbar>
                         <ToolbarSpacer/>
@@ -52,13 +53,23 @@
                     <table:RowSettings highlight="{model:'viewData', path:'ZAL30_UPDKZ_STATUS'}" 
                         highlightText="{model:'viewData', path:'ZAL30_UPDKZ_STATUSTEXT'}"/> 
                 </table:rowSettingsTemplate>
+             <table:footer>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+						<Button
+							icon="sap-icon://save"
+							tooltip="{i18n>ViewData.tooltipBtnSave}" 
+                            enabled="{model:'viewData', path:'/btnSaveEnabled'}" 
+                            visible="{model:'viewData', path:'/btnSaveVisible'}"
+							press="onSaveData"/>
+					</OverflowToolbar>
+				</table:footer>   
             </table:Table>
             <Button press="onTesting" 
                 icon="sap-icon://navigation-right-arrow" 
                 text="Testing" 
-                enabled="{model:'ViewSelectModel', path:'/viewSelected'}">
-
-            </Button>
+                enabled="{model:'ViewSelectModel', path:'/viewSelected'}"
+                ariaDescribedBy="acceptButtonDescription genericButtonDescription"/>            
         </content>
     </Page>
 </mvc:View>     

@@ -212,11 +212,13 @@ sap.ui.define([
 						if (this._compareRowDataFromOriginal(sPath)) {
 							oViewDataModel.setProperty(sPathUpdkz, '');
 							// Se le quita el status
-							oViewDataModel.setProperty(sPathUpdkzStatus, '');
+							oViewDataModel.setProperty(sPathUpdkzStatus, constants.tableData.updkzSatusValues.empty);
+							oViewDataModel.setProperty(sPathUpdkzStatusText, '');					
 						} else {
 							oViewDataModel.setProperty(sPathUpdkz, sUpdkz);
 							// Se le pone el indicador del status
 							oViewDataModel.setProperty(sPathUpdkzStatus, constants.tableData.updkzSatusValues.update);
+							oViewDataModel.setProperty(sPathUpdkzStatusText, this._oI18nResource.getText("ViewData.statusUpdzkTextInsert"));					
 
 
 						}
@@ -224,6 +226,7 @@ sap.ui.define([
 					break;
 				case constants.tableData.fieldUpkzValues.delete:
 					oViewDataModel.setProperty(sPathUpdkz, sUpdkz);
+					oViewDataModel.setProperty(sPathUpdkzStatusText, this._oI18nResource.getText("ViewData.statusUpdzkTextUpdate"));					
 					break;
 				case constants.tableData.fieldUpkzValues.insert:
 					// Se le pone el indicador del status
@@ -403,7 +406,7 @@ sap.ui.define([
 		},
 		// Establece la edición inicial de las celdas según sus valores. 
 		// Esta función solo se usará en la lectura inicial
-		_setInitialEditCellValues: function (oData) {
+		_setInitialCellValues: function (oData) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			// Se recorren los datos leídos
 			for (var z = 0; z < oData.oData.length; z++) {
@@ -411,9 +414,11 @@ sap.ui.define([
 				var sPath = "/" + z + "/"; // Path de acceso al modelo
 				var sRow = oData.getProperty(sPath); // Recuperación del modelo
 				// Se llama a la función encarga de determinar que celdas son editables
-				sRow = this.detEditableCellValue(sRow);
-				sRow.ZAL30_UPDKZ_STATUS = 'Warning';
-				oData.setProperty(sPath, sRow); // Actualización del modelo
+				sRow = this.detEditableCellValue(sRow);				
+				// Se pone el valor por defecto en la columna que indica el status Updkz
+				sRow[constants.tableData.internalFields.updkzStatus] = constants.tableData.updkzSatusValues.empty;
+
+				oData.setProperty(sPath, sRow); // Actualización del modelo								
 
 			}
 			return oData;
@@ -512,7 +517,7 @@ sap.ui.define([
 			oData = this._addCustomFields(oData);
 
 			// Se establece a nivel de celda si el campo será editable o no
-			oData = this._setInitialEditCellValues(oData);
+			oData = this._setInitialCellValues(oData);
 
 			// Se adapta los valores según los tipos de campos pasados. Ejemplo: los campos checkbox que hay que cambiar la 'X'/'' por true/false.			
 			//oData = this._convValuesFromService(oData);

@@ -55,21 +55,27 @@ sap.ui.define([], function () {
 				isDict: "ZAL30_IS_DICT",
 				tabix: "ZAL30_TABIX",
 				updkz: "ZAL30_UPDKZ",
-				updkzStatus:"ZAL30_UPDKZ_STATUS",
-				updkzStatusText:"ZAL30_UPDKZ_STATUSTEXT"
+				updkzStatus: "ZAL30_UPDKZ_STATUS",
+				updkzStatusText: "ZAL30_UPDKZ_STATUSTEXT"
 			},
-			updkzSatusValues:{
+			updkzSatusValues: {
 				update: "Warning",
 				insert: "Information",
+				empty: "None",
 			},
 			fieldUpkzValues: {
 				update: "U",
 				insert: "I",
 				delete: "D"
 			},
-			path:{
-				values:"/values",
-				columns:"/columns"
+			path: {
+				values: "/values",
+				columns: "/columns"
+			},
+			customData: {
+				columnName: "columnName",
+				objectType: "objectType",
+				changeRow:"changeRow"
 			}
 
 		}

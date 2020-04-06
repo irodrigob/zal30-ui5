@@ -1,1 +1,6 @@
-/* Enter your custom styles here */
+.tableData a[data-changeRow="true"],
+.tableData span[data-changeRow="true"],
+.tableData [data-changeRow="true"] input{
+  font-weight: bold;
+}
+

@@ -13,7 +13,7 @@ sap.ui.define([
 	'sap/ui/model/Filter',
 	"com/ivancio/zal30-ui5/component/general/confirmDialog/ConfirmDialog",
 	"sap/ui/table/RowSettings"
-], function (BaseController, MessageToast, MessageBox, constants, logDialog, Column, Text, Input, DatePicker, TimePicker, CheckBox, Filter, ConfirmDialog,RowSettings) {
+], function (BaseController, MessageToast, MessageBox, constants, logDialog, Column, Text, Input, DatePicker, TimePicker, CheckBox, Filter, ConfirmDialog, RowSettings) {
 	"use strict";
 
 	return BaseController.extend("com.ivancio.zal30-ui5.controller.ViewData", {
@@ -89,16 +89,17 @@ sap.ui.define([
 			var sPath = oRow.getBindingContext(constants.jsonModel.viewData).getPath();
 
 			// Columna donde se ha cambiado el valor
-			var sColumn = oSource.getAggregation("customData")[0].getValue().columnName;
+
+			var sColumn = this._getCustomDataValue(oSource, constants.tableData.customData.columnName); // oSource.getAggregation("customData")[0].getValue().columnName;
 
 			// tipo de objeto usado en la celda
-			var sObjectTypeCell = oSource.getAggregation("customData")[0].getValue().objectType;			
+			var sObjectTypeCell = this._getCustomDataValue(oSource, constants.tableData.customData.objectType); // oSource.getAggregation("customData")[0].getValue().objectType;
 			var mResult = this._viewDataState.onValueCellChanged({
 				path: sPath,
 				column: sColumn,
 				objetType: sObjectTypeCell,
 				value: sObjectTypeCell == constants.tableData.columnObjectType.checkbox ? oSource.getSelected() : oSource.getValue()
-			});			
+			});
 			oEvent.getSource().setValue(mResult.value);
 
 		},
@@ -128,7 +129,7 @@ sap.ui.define([
 		},
 		// Evento que se alnza cuando se pulsa el botón de añadir nueva entrada
 		onAddEntry: function (oEvent) {
-			this._viewDataState.onAddEntry();			
+			this._viewDataState.onAddEntry();
 		},
 		onRowSelectionChange: function (oEvent) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
@@ -138,6 +139,9 @@ sap.ui.define([
 
 			var bEnabled = this.byId(constants.objectsId.viewData.tableData).getSelectedIndices().length ? true : false;
 			oViewDataModel.setProperty("/btnDeletedEnabled", bEnabled);
+		},
+		onSaveData: function (oEvent) {
+
 		},
 		//////////////////////////////////
 		//                              //
@@ -220,10 +224,11 @@ sap.ui.define([
 		// Reset del modelo de datos
 		_resetModel: function () {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			//this._oViewDataModel.setData({
+
 			oViewDataModel.setProperty("/viewName", '');
 			oViewDataModel.setProperty("/viewDesc", '');
 			oViewDataModel.setProperty("/btnDeletedEnabled", false);
+			oViewDataModel.setProperty("/btnSaveEnabled", false);
 			// Los botones de edición no se visualizan por defecto
 			this._viewDataState.setVisibleEditButtons(false);
 		},
@@ -272,16 +277,9 @@ sap.ui.define([
 			// Se establece las propiedades del layout de la tabla
 			this._setInitialTableDataLayout();
 
-			// Establece el modo de edición de las celdas de la tabla
-			this._setEditCellTable();
-
 			// Se establece el filtro de borrado. Es decir, no se ven los registros borrados
 			this._setFilterRowsDeleted();
 
-			/*var oTable = this.byId(constants.objectsId.viewData.tableData);
-			oTable.setRowSettingsTemplate(new RowSettings({
-				highlight: "{model:'viewData', path:'ZAL30_UPDKZ_STATUS'}"
-			}));*/
 		},
 		// Filtro de registros borrados
 		_setFilterRowsDeleted: function () {
@@ -301,21 +299,13 @@ sap.ui.define([
 				// Devuelve si se puede editar la vista	
 				var bEdit = this._viewDataState.isViewEditable();
 
-				// Se usa los customData para pasar información. La general será la del nombre de la columna. Despuées
-				// hay especificas a nivel de objeto, que aun inicializandose aquí se informarán segun el objeto
-				var mCustomData = {
-					Type: "sap.ui.core.CustomData",
-					key: "customValues",
-					value: {
-						columnName: mColumn.name,
-						objectType: ""
-					}
-				};
-
+				// Se usa los customData para tener información adicional en las celdas
+				var mCustomData = this._getCustomerDataCells(mColumn);
+				
 				switch (mColumn.type) {
 					case constants.columnTtype.char:
 						if (mColumn.checkBox == true) {
-							mCustomData.value.objectType = constants.tableData.columnObjectType.checkbox;
+							mCustomData[1].value = constants.tableData.columnObjectType.checkbox;
 							return new CheckBox({
 								selected: {
 									model: constants.jsonModel.viewData,
@@ -329,7 +319,7 @@ sap.ui.define([
 								customData: mCustomData
 							})
 						} else {
-							mCustomData.value.objectType = constants.tableData.columnObjectType.input;
+							mCustomData[1].value = constants.tableData.columnObjectType.input;
 							return new Input({
 								value: {
 									model: constants.jsonModel.viewData,
@@ -351,7 +341,7 @@ sap.ui.define([
 
 						break;
 					case constants.columnTtype.date:
-						mCustomData.value.objectType = constants.tableData.columnObjectType.datePicker;
+						mCustomData[1].value = constants.tableData.columnObjectType.datePicker;
 						return new DatePicker({
 							value: {
 								model: constants.jsonModel.viewData,
@@ -372,7 +362,7 @@ sap.ui.define([
 						})
 						break;
 					case constants.columnTtype.time:
-						mCustomData.value.objectType = constants.tableData.columnObjectType.timePicker;
+						mCustomData[1].value = constants.tableData.columnObjectType.timePicker;
 						return new TimePicker({
 							value: {
 								model: constants.jsonModel.viewData,
@@ -393,7 +383,7 @@ sap.ui.define([
 						})
 						break;
 					case constants.columnTtype.packed:
-						mCustomData.value.objectType = constants.tableData.columnObjectType.input;
+						mCustomData[1].value = constants.tableData.columnObjectType.input;
 						return new Input({
 							value: {
 								model: constants.jsonModel.viewData,
@@ -432,17 +422,46 @@ sap.ui.define([
 			// aunque no se pinte. Creo que es debido a que si que esta en el modelo de columnas.			
 			oTable.setFixedColumnCount(this._viewDataState.getNumberKeyFields());
 		},
-		// Establece la edición de campos a nivel de celda
-		_setEditCellTable: function () {
-			var oTable = this.byId(constants.objectsId.viewData.tableData);
+		// Devuelve el valor de una propieda customData de un objeto
+		_getCustomDataValue: function (oObject, skey) {
+			var aCustomData = oObject.getAggregation("customData"); // Se recupera los valores
 
-			var oRows = oTable.getBinding("rows");
+			var oCustomData = aCustomData.find(values => values.getKey() === skey);
 
-			/*var oRow = oSource.getParent();
-			var sPath = oRow.getBindingContext("ViewData").getPath();
-			var mRow = this._oViewDataModel.getProperty(sPath);*/
+			return oCustomData.getValue();
+		},
+		// Campos de clientes para las celdas de la tabla. Los campos que se añaden son:
+		// 1) Nombre de la columna. Con el nombre de la columna se puede saber el tipo de campo
+		// 2) Tipo de objeto. Para saber como recuperar sus valore, sobretodo para los checkbox
+		_getCustomerDataCells:function(mColumn){
+			return [{
+				Type: "sap.ui.core.CustomData",
+				key: constants.tableData.customData.columnName,
+				value: mColumn.name,
+				writeToDom: false
+			},
+			{
+				Type: "sap.ui.core.CustomData",
+				key: constants.tableData.customData.objectType,
+				value: "",
+				writeToDom: false
+			},
+			{
+				Type: "sap.ui.core.CustomData",
+				key: constants.tableData.customData.changeRow,
+				value: {
+					model: constants.jsonModel.viewData,
+					path: constants.tableData.internalFields.updkz,
+					formatter: function (sUpdkz) {
+						return sUpdkz == constants.tableData.fieldUpkzValues.update || sUpdkz == constants.tableData.fieldUpkzValues.insert ? "true" : "false";
+					}
 
+				},
+				writeToDom: true
+			}
+		];
 		}
+
 
 	});
 });

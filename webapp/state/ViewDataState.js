@@ -135,7 +135,7 @@ sap.ui.define([
 			// Se quitan cáracteres extraños o no validos. Ejemplo, en los campos númericos que no se pueda poner carácteres que no sea numéros o separador de miles o decimal.
 			mParamsOutput.value = this._oView.replaceStrangeChar(mParams.column, mParams.value);
 
-			// Se quita el formato que tiene el campo, necesario para poder grabar en el modelo y luego comparar
+			// Se quita el formato que tiene el campo, necesario para poder grabar en el modelo y luego comparar si los datos han cambiado
 			mParamsOutput.value = this._oView.ParseValue(mParams.column, mParamsOutput.value);
 
 			// Se guarda el valor en el modelo propio. Realmente este paso es necesario por dos motivos:
@@ -143,10 +143,10 @@ sap.ui.define([
 			// 2) Para poder hacer comparaciones entre modelo original y el nuevo. Básico para saber el modo de actualización correcto. Sin el paso anterior hacer la comparación no sería posible			
 			this._oView.updateValueModel(mParams.column, mParams.path, mParamsOutput.value);
 
-
-			// Se informa en que línea se ha hecho el cambio
+   			// Se informa en que línea se ha hecho el cambio
 			this._oView.setRowUpdateIndicator(mParams.path, constants.tableData.fieldUpkzValues.update);
 
+			// Se aplica el formato para que pueda ser devuelto y se grabe correctamente en el campo.
 			mParamsOutput.value = this._oView.formatterValue(mParams.column, mParamsOutput.value);
 
 			return mParamsOutput;
@@ -170,6 +170,7 @@ sap.ui.define([
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			oViewDataModel.setProperty("/btnDeletedVisible", bVisible);
 			oViewDataModel.setProperty("/btnAddVisible", bVisible);
+			oViewDataModel.setProperty("/btnSaveVisible", bVisible);
 		},
 		// Evento que se produce al añadir una entrada
 		onAddEntry: function () {
