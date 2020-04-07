@@ -11,7 +11,7 @@ sap.ui.define([], function () {
 			edit: "U",
 			view: "V"
 		},
-		mMessageType: {
+		messageType: {
 			error: "E",
 			success: "S",
 			warning: "W"
@@ -56,9 +56,9 @@ sap.ui.define([], function () {
 				tabix: "ZAL30_TABIX",
 				updkz: "ZAL30_UPDKZ",
 				rowStatus: "ZAL30_ROW_STATUS",
-				rowtatusMsg: "ZAL30_ROW_STATUS_MSG"
+				rowStatusMsg: "ZAL30_ROW_STATUS_MSG"
 			},
-			lineStatusValues: {
+			rowStatusValues: {
 				error: "ERROR",
 				valid: "VALID"				
 			},

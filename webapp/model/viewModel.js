@@ -35,8 +35,7 @@ sap.ui.define([
 		// Guarda el catalogo de campos de la vista. El catalogo se convierte para adaptarlo a la vista
 		setFieldCatalogFromService: function (mFieldCatalog) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-
-			this._fieldCatalog = this._convertServiceFieldCatalog2Intern(mFieldCatalog);
+			
 			oViewDataModel.setProperty(constants.tableData.path.columns, this._convertServiceFieldCatalog2Intern(mFieldCatalog));
 		},
 		// Devuelve el catalogo de campos
@@ -210,27 +209,14 @@ sap.ui.define([
 					if (oViewDataModel.getProperty(sPathUpdkz) == constants.tableData.fieldUpkzValues.update ||
 						oViewDataModel.getProperty(sPathUpdkz) == '') {
 						if (this._compareRowDataFromOriginal(sPath)) {
-							oViewDataModel.setProperty(sPathUpdkz, '');
-							// Se le quita el status
-							oViewDataModel.setProperty(sPathUpdkzStatus, constants.tableData.updkzSatusValues.empty);
-							oViewDataModel.setProperty(sPathUpdkzStatusText, '');					
+							oViewDataModel.setProperty(sPathUpdkz, '');							
 						} else {
-							oViewDataModel.setProperty(sPathUpdkz, sUpdkz);
-							// Se le pone el indicador del status
-							oViewDataModel.setProperty(sPathUpdkzStatus, constants.tableData.updkzSatusValues.update);
-							oViewDataModel.setProperty(sPathUpdkzStatusText, this._oI18nResource.getText("ViewData.statusUpdzkTextInsert"));					
-
-
+							oViewDataModel.setProperty(sPathUpdkz, sUpdkz);							
 						}
 					}
 					break;
-				case constants.tableData.fieldUpkzValues.delete:
-					oViewDataModel.setProperty(sPathUpdkz, sUpdkz);
-					oViewDataModel.setProperty(sPathUpdkzStatusText, this._oI18nResource.getText("ViewData.statusUpdzkTextUpdate"));					
-					break;
-				case constants.tableData.fieldUpkzValues.insert:
-					// Se le pone el indicador del status
-					oViewDataModel.setProperty(sPathUpdkzStatus, constants.tableData.updkzSatusValues.insert);
+				case constants.tableData.fieldUpkzValues.delete:					
+				case constants.tableData.fieldUpkzValues.insert:					
 					oViewDataModel.setProperty(sPathUpdkz, sUpdkz);
 					break;
 			}
@@ -241,8 +227,8 @@ sap.ui.define([
 			var mFielCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
 			var nNumber = 0;
 
-			for (var x = 0; x < this._fieldCatalog.length; x++) {
-				// && !this._fieldCatalog[x].tech && !this._fieldCatalog[x].noOutput
+			for (var x = 0; x < mFielCatalog.length; x++) {
+				// && !mFielCatalog[x].tech && !mFielCatalog[x].noOutput
 				if (mFielCatalog[x].keyDDIC)
 					nNumber = nNumber + 1;
 			}
@@ -253,7 +239,7 @@ sap.ui.define([
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			var mFielCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
 			// Se recorren todos los campos del catalogo para poder acceder a cada campo de manera individual
-			for (var x = 0; x < this._fieldCatalog.length; x++) {
+			for (var x = 0; x < mFielCatalog.length; x++) {
 
 				// Si el campo de edición existe se continua el proceso. El IF lo hago en dos pasos para que quede más claro su funcionamiento
 				if (mRow[mFielCatalog[x].name + constants.tableData.suffix_edit_field]) {
@@ -277,11 +263,18 @@ sap.ui.define([
 			// El nuevo registro se añadira al final, para ello tengo que saber el número total de registros
 			var sPath = constants.tableData.path.values + "/" + oViewDataModel.oData.values.length;
 
+			// Validación de campos, aunque en una inserción no se ha introducido valores servirá para marcar sobretodo los campos
+			// obligatorios	
+			this.validateRow(mNewRow, {
+				mandatory: true
+			});
 			// Se añade el registro
 			oViewDataModel.setProperty(sPath, mNewRow);
 
 			// Se marca la fila con el indicador de actualización
 			this.setRowUpdateIndicator(sPath, constants.tableData.fieldUpkzValues.insert);
+
+
 
 		},
 		// Borrr una entrada del modelo de datos
@@ -298,8 +291,54 @@ sap.ui.define([
 				aValues.splice(nRow, 1);
 				oViewDataModel.setProperty(sPath, aValues);
 			}
+		},
+		// Validación de los datos a nivel de fila
+		validateRow: function (mRow, mOptions) {
+
+			// Al iniciaio del proceso se inicializan los camops del control de la fila. Para que los errores anterior no se queden			
+			mRow[constants.tableData.internalFields.rowStatus] = '';
+			mRow[constants.tableData.internalFields.rowStatusMsg] = [];
+
+			// Campos obligatorios
+			if (mOptions.mandatory) {
+				this.validateRowMandatoryFields(mRow);
+			}
 
 
+
+		},
+		// Validación de campos obligatorios
+		validateRowMandatoryFields: function (mRow) {
+			var bError = false; // Por defecto no hay errores
+
+			var aFieldsMandatory = this._getMandatoryFields(); // Campos obligatorios
+
+			for (var x = 0; x < aFieldsMandatory.length; x++) {
+				switch (aFieldsMandatory[x].type) {
+					case constants.columnTtype.char:
+						var text = this._oI18nResource.getText("ViewData.validateRow.fieldMandatory",[aFieldsMandatory[x].headerText]);
+						if (mRow[aFieldsMandatory[x].name] == ''){
+							mRow[constants.tableData.internalFields.rowStatus] = constants.tableData.rowStatusValues.error;
+							mRow[constants.tableData.internalFields.rowStatusMsg].push({
+								TYPE: constants.messageType.error,
+								MESSAGE: text
+							});
+						}
+
+						
+						break;
+					case constants.columnTtype.date:
+						
+						break;
+					case constants.columnTtype.time:
+						
+						break;
+					case constants.columnTtype.packed:
+						
+						break;
+				}
+
+			}
 
 		},
 		//////////////////////////////////	
@@ -314,6 +353,12 @@ sap.ui.define([
 			this._oOriginalViewData = '';
 
 
+		},
+		// Devuelve los campos obligatorios
+		_getMandatoryFields: function () {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var aFielCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
+			return aFielCatalog.filter(field => field.mandatory == true)
 		},
 		// Se convierte el catalogo del servicio en el formato propio de la aplicación
 		_convertServiceFieldCatalog2Intern: function (mFieldCatalog) {
@@ -409,7 +454,7 @@ sap.ui.define([
 				var sPath = "/" + z + "/"; // Path de acceso al modelo
 				var sRow = oData.getProperty(sPath); // Recuperación del modelo
 				// Se llama a la función encarga de determinar que celdas son editables
-				sRow = this.detEditableCellValue(sRow);								
+				sRow = this.detEditableCellValue(sRow);
 
 				oData.setProperty(sPath, sRow); // Actualización del modelo								
 

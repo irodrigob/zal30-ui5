@@ -147,9 +147,9 @@ sap.ui.define([
 		formatRowStatus: function (sStatus) {
 			
 			switch (sStatus) {
-				case constants.tableData.lineStatusValues.error:
+				case constants.tableData.rowStatusValues.error:
 					return 'Error';					
-				case constants.tableData.lineStatusValues.valid:
+				case constants.tableData.rowStatusValues.valid:
 					return 'Success';					
 				default:
 					return 'None';
