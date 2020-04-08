@@ -33,10 +33,16 @@ sap.ui.define([
 			});
 		},
 		// Guarda el catalogo de campos de la vista. El catalogo se convierte para adaptarlo a la vista
-		setFieldCatalogFromService: function (mFieldCatalog) {
+		setFieldCatalogFromService: function (aFieldCatalog) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			
-			oViewDataModel.setProperty(constants.tableData.path.columns, this._convertServiceFieldCatalog2Intern(mFieldCatalog));
+			// se convierte el catalogo del servicio al interno	
+			var aInteralFieldCatalog = this._convertServiceFieldCatalog2Intern(aFieldCatalog);
+
+			// Se añaden los camps fijo propios de la aplicación
+			aInteralFieldCatalog = this._addFixedColumnsFieldCatalog(aInteralFieldCatalog);
+
+			// Se guarda en el modelo
+			oViewDataModel.setProperty(constants.tableData.path.columns, aInteralFieldCatalog);
 		},
 		// Devuelve el catalogo de campos
 		getFieldCatalog: function () {
@@ -209,14 +215,14 @@ sap.ui.define([
 					if (oViewDataModel.getProperty(sPathUpdkz) == constants.tableData.fieldUpkzValues.update ||
 						oViewDataModel.getProperty(sPathUpdkz) == '') {
 						if (this._compareRowDataFromOriginal(sPath)) {
-							oViewDataModel.setProperty(sPathUpdkz, '');							
+							oViewDataModel.setProperty(sPathUpdkz, '');
 						} else {
-							oViewDataModel.setProperty(sPathUpdkz, sUpdkz);							
+							oViewDataModel.setProperty(sPathUpdkz, sUpdkz);
 						}
 					}
 					break;
-				case constants.tableData.fieldUpkzValues.delete:					
-				case constants.tableData.fieldUpkzValues.insert:					
+				case constants.tableData.fieldUpkzValues.delete:
+				case constants.tableData.fieldUpkzValues.insert:
 					oViewDataModel.setProperty(sPathUpdkz, sUpdkz);
 					break;
 			}
@@ -316,8 +322,8 @@ sap.ui.define([
 			for (var x = 0; x < aFieldsMandatory.length; x++) {
 				switch (aFieldsMandatory[x].type) {
 					case constants.columnTtype.char:
-						var text = this._oI18nResource.getText("ViewData.validateRow.fieldMandatory",[aFieldsMandatory[x].headerText]);
-						if (mRow[aFieldsMandatory[x].name] == ''){
+						var text = this._oI18nResource.getText("ViewData.validateRow.fieldMandatory", [aFieldsMandatory[x].headerText]);
+						if (mRow[aFieldsMandatory[x].name] == '') {
 							mRow[constants.tableData.internalFields.rowStatus] = constants.tableData.rowStatusValues.error;
 							mRow[constants.tableData.internalFields.rowStatusMsg].push({
 								TYPE: constants.messageType.error,
@@ -325,16 +331,16 @@ sap.ui.define([
 							});
 						}
 
-						
+
 						break;
 					case constants.columnTtype.date:
-						
+
 						break;
 					case constants.columnTtype.time:
-						
+
 						break;
 					case constants.columnTtype.packed:
-						
+
 						break;
 				}
 
@@ -385,6 +391,15 @@ sap.ui.define([
 				aColumns.push(mColumn);
 			};
 			return (aColumns);
+
+		},
+		// Se añaden las columnas fijas al catalogo existente. Estas columas se pondrán al principio
+		// de todo para que se vean en la aplicación
+		// NOTA IVÁN: He visto que con las row actions de la tabla no necesito tener columnas fijas,
+		// pero dejo el método por si lo necesito en un futuro. 
+		_addFixedColumnsFieldCatalog: function (aFieldCatalog) {
+
+			return aFieldCatalog;
 
 		},
 		// Conversion de los datos procedentes del servicios

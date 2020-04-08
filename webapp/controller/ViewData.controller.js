@@ -145,20 +145,25 @@ sap.ui.define([
 		},
 		// Devuelve el formato del RowSetting según el valor del campo ZAL30_ROW_STATUS
 		formatRowStatus: function (sStatus) {
-			
+
 			switch (sStatus) {
 				case constants.tableData.rowStatusValues.error:
-					return 'Error';					
+					return 'Error';
 				case constants.tableData.rowStatusValues.valid:
-					return 'Success';					
+					return 'Success';
 				default:
 					return 'None';
 
 			}
 		},
 		// Texto que tendrá el RowSettign en base a los valores del campo ZAL30_ROW_STATUS_MSG
-		formatRowStatusText:function(sStatus){
-			return '';
+		formatRowStatusMsg: function (aMsg) {
+			if (aMsg && aMsg.length > 0) {
+				return aMsg.join();
+			} else {
+				return '';
+			}
+
 
 		},
 
@@ -299,16 +304,56 @@ sap.ui.define([
 			// Se establece el filtro de borrado. Es decir, no se ven los registros borrados
 			this._setFilterRowsDeleted();
 
+			// Se define los row settings de la columna
 			// El Row setting para hacer los highlight se hace por código porque en la vista XML View no funciona con la opción de formatter
+			this._setRowSettings();
+
+			// Se definen las rowAction de la tabla. Inicialmente solo contendrá la visualización de mensajes de error
+			this._setRowActions();
+
+		},
+		// Se define los row setting de la tabla
+		_setRowSettings: function () {
 			var oTable = this.byId(constants.objectsId.viewData.tableData);
 			oTable.setRowSettingsTemplate(new RowSettings({
 				highlight: {
 					model: constants.jsonModel.viewData,
 					path: constants.tableData.internalFields.rowStatus,
-					formatter:this.formatRowStatus
+					formatter: this.formatRowStatus
+				},
+				highlightText: {
+					model: constants.jsonModel.viewData,
+					path: constants.tableData.internalFields.rowStatusMsg,
+					formatter: this.formatRowStatusMsg
 				}
 			}));
 
+		},
+		// Row actions de la tabla
+		_setRowActions: function () {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			// se guarda el modelo el número de acciones que se mostrarán. Con un máximo de 2 que se pueden visualizar a la vez.
+			oViewDataModel.setProperty(constants.tableData.path.tableRowActionCount, 1);
+
+			// Array con los items
+			var oItems = [];
+
+			// 1.- Visualización de los mensajes de status
+			var fnShowStatusMsg = this._onShowStatusMsg.bind(this);
+			var oShowStatusMsg = new sap.ui.table.RowActionItem({
+				icon: "sap-icon://search",
+				text: this._oI18nResource.getText("ViewData.rowAction.showStatusMsg"),
+				press: fnShowStatusMsg
+			});
+			oItems.push(oShowStatusMsg);
+
+			var oRowAction = new sap.ui.table.RowAction({
+				items: oItems
+			});
+
+			var oTable = this.byId(constants.objectsId.viewData.tableData);
+			oTable.setRowActionTemplate(oRowAction);
+			//oTable.setRowActionCount({"viewData>tableRowActionCount"});
 		},
 		// Filtro de registros borrados
 		_setFilterRowsDeleted: function () {
@@ -489,6 +534,14 @@ sap.ui.define([
 					writeToDom: true
 				}
 			];
+		},
+		// Evento cuando se pulsa en la row action de visualizar los mensajes
+		_onShowStatusMsg: function (oEvent) {
+			var oRow = oEvent.getParameter("row");
+			var oItem = oEvent.getParameter("item");
+			/*MessageToast.show("Item " + (oItem.getText() || oItem.getType()) + " pressed for product with id " +
+				this.getView().getModel().getProperty("ProductId", oRow.getBindingContext()));*/
+			debugger;
 		}
 
 

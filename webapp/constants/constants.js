@@ -58,6 +58,9 @@ sap.ui.define([], function () {
 				rowStatus: "ZAL30_ROW_STATUS",
 				rowStatusMsg: "ZAL30_ROW_STATUS_MSG"
 			},
+			fixedColumns:{
+				states:'ZAL30_FIX_STATES',
+			},
 			rowStatusValues: {
 				error: "ERROR",
 				valid: "VALID"				
@@ -69,7 +72,8 @@ sap.ui.define([], function () {
 			},
 			path: {
 				values: "/values",
-				columns: "/columns"
+				columns: "/columns",
+				tableRowActionCount:"/tableRowActionCount"
 			},
 			customData: {
 				columnName: "columnName",

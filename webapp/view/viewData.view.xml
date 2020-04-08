@@ -27,14 +27,14 @@
                 columns="{
 					model: 'viewData', 
                     path:'/columns',
-					factory: '.columnFactory'
-				}" 
+					factory: '.columnFactory' }" 
                 ariaLabelledBy="title" 
                 width="100%" 
                 showColumnVisibilityMenu="true" 
                 visibleRowCountMode="Fixed" 
                 rowSelectionChange="onRowSelectionChange" 
-                class="tableData">
+                class="tableData" 
+                rowActionCount="{model: 'viewData', path:'/tableRowActionCount' }">
                 <table:extension>
                     <OverflowToolbar>
                         <ToolbarSpacer/>
@@ -50,8 +50,7 @@
                     </OverflowToolbar>
                 </table:extension>
                 <!-- <table:rowSettingsTemplate>
-                    <table:RowSettings highlight="{model:'viewData', path:'ZAL30_ROW_STATUS', formatter:'formatRowStatus}" 
-                        highlightText="{model:'viewData', path:'/ZAL30_UPDKZ_STATUSTEXT', formatter:'formatRowStatusText}"/>
+                    <table:RowSettings highlight="{model:'viewData', path:'ZAL30_ROW_STATUS', formatter:'formatRowStatus}" highlightText="{model:'viewData', path:'/ZAL30_UPDKZ_STATUSTEXT', formatter:'formatRowStatusText}"/>
                 </table:rowSettingsTemplate>-->
                 <table:footer>
                     <OverflowToolbar>
