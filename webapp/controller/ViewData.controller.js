@@ -12,8 +12,9 @@ sap.ui.define([
 	"sap/m/CheckBox",
 	'sap/ui/model/Filter',
 	"com/ivancio/zal30-ui5/component/general/confirmDialog/ConfirmDialog",
-	"sap/ui/table/RowSettings"
-], function (BaseController, MessageToast, MessageBox, constants, logDialog, Column, Text, Input, DatePicker, TimePicker, CheckBox, Filter, ConfirmDialog, RowSettings) {
+	"sap/ui/table/RowSettings",
+	"sap/ui/core/Icon"
+], function (BaseController, MessageToast, MessageBox, constants, logDialog, Column, Text, Input, DatePicker, TimePicker, CheckBox, Filter, ConfirmDialog, RowSettings, Icon) {
 	"use strict";
 
 	return BaseController.extend("com.ivancio.zal30-ui5.controller.ViewData", {
@@ -57,20 +58,43 @@ sap.ui.define([
 		// Construcción de las columnas
 		columnFactory: function (sId, oContext) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-
+			var that = this;
 			var mColumn = oViewDataModel.getProperty(oContext.sPath);
 
-			return new Column(sId, {
-				visible: true,
-				sortProperty: mColumn.name,
-				filterProperty: mColumn.name,
-				width: "auto",
-				label: new sap.m.Label({
-					text: mColumn.headerText
-				}),
-				hAlign: "Begin",
-				template: this._getTemplateObjectforTableColumn(mColumn)
-			});
+			// Las columnas fijas se crean con ciertas peculiaridad que hace que haya que gestionr ciertos atributos de manera individual
+			if (mColumn.fixColumn) {
+				switch (mColumn.name) {
+					case constants.tableData.fixedColumns.actions:
+						return new Column(sId, {
+							visible: {
+								model: constants.jsonModel.viewData,
+								path: constants.tableData.path.visibleFixColumnAction
+							},
+							sortProperty: mColumn.name,
+							filterProperty: mColumn.name,
+							width: "3em",
+							label: new sap.m.Label({
+								text: mColumn.headerText
+							}),
+							hAlign: "Begin",
+							template: this._getTemplateObjectforTableColumn(mColumn)
+						});
+
+				};
+			} else {
+				return new Column(sId, {
+					visible: true,
+					sortProperty: mColumn.name,
+					filterProperty: mColumn.name,
+					width: "auto",
+					label: new sap.m.Label({
+						text: mColumn.headerText
+					}),
+					hAlign: "Begin",
+					template: this._getTemplateObjectforTableColumn(mColumn)
+				});
+			}
+
 
 		},
 		onTesting: function (oEvent) {
@@ -130,6 +154,10 @@ sap.ui.define([
 		// Evento que se alnza cuando se pulsa el botón de añadir nueva entrada
 		onAddEntry: function (oEvent) {
 			this._viewDataState.onAddEntry();
+
+			// Se determina si la columna de acciones se mostrará
+			this._determineShowFixColumnactions();
+
 		},
 		onRowSelectionChange: function (oEvent) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
@@ -166,7 +194,10 @@ sap.ui.define([
 
 
 		},
-
+		// Evento al pulsar el objeto de la columna fija de accion
+		onActionFixColumn: function (oEvent) {
+			debugger;
+		},
 		//////////////////////////////////
 		//                              //
 		//        Private methods       //
@@ -174,6 +205,8 @@ sap.ui.define([
 		//////////////////////////////////
 		// Método que entra cuando se hace a la página desde la routing
 		_onRouteMatched: function (oEvent) {
+			var that = this;
+
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 
 			// Se recupera si se ha entrado por la vista de selección de vistas			
@@ -190,9 +223,7 @@ sap.ui.define([
 
 			// Se muestra el loader para toda la aplicación porque se van a empezar a llamar servicios y puede demorarse un poco
 			this._oOwnerComponent.showBusyDialog();
-
-			var that = this;
-
+			
 			// Si la página viene de la selección de vista se valida que la vista pasada por parametro es valida y no se ha
 			// modificado
 			if (viewSelect) {
@@ -297,6 +328,7 @@ sap.ui.define([
 		},
 		// Se construye los datos para poder pintar los datos en la tabla
 		_buildTableData: function () {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 
 			// Se establece las propiedades del layout de la tabla
 			this._setInitialTableDataLayout();
@@ -310,6 +342,10 @@ sap.ui.define([
 
 			// Se definen las rowAction de la tabla. Inicialmente solo contendrá la visualización de mensajes de error
 			this._setRowActions();
+
+			// La columna fija de accion por defecto se oculta
+			oViewDataModel.setProperty(constants.tableData.path.visibleFixColumnAction, false);
+
 
 		},
 		// Se define los row setting de la tabla
@@ -332,10 +368,11 @@ sap.ui.define([
 		// Row actions de la tabla
 		_setRowActions: function () {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			
 			// se guarda el modelo el número de acciones que se mostrarán. Con un máximo de 2 que se pueden visualizar a la vez.
-			oViewDataModel.setProperty(constants.tableData.path.tableRowActionCount, 1);
+			oViewDataModel.setProperty(constants.tableData.path.tableRowActionCount, 0);
 
-			// Array con los items
+			/*// Array con los items
 			var oItems = [];
 
 			// 1.- Visualización de los mensajes de status
@@ -352,8 +389,7 @@ sap.ui.define([
 			});
 
 			var oTable = this.byId(constants.objectsId.viewData.tableData);
-			oTable.setRowActionTemplate(oRowAction);
-			//oTable.setRowActionCount({"viewData>tableRowActionCount"});
+			oTable.setRowActionTemplate(oRowAction);*/
 		},
 		// Filtro de registros borrados
 		_setFilterRowsDeleted: function () {
@@ -376,25 +412,59 @@ sap.ui.define([
 				// Se usa los customData para tener información adicional en las celdas
 				var mCustomData = this._getCustomerDataCells(mColumn);
 
-				switch (mColumn.type) {
-					case constants.columnTtype.char:
-						if (mColumn.checkBox == true) {
-							mCustomData[1].value = constants.tableData.columnObjectType.checkbox;
-							return new CheckBox({
-								selected: {
-									model: constants.jsonModel.viewData,
-									path: mColumn.name
-								},
-								editable: {
-									model: constants.jsonModel.viewData,
-									path: mColumn.name + constants.tableData.suffix_edit_field,
-								},
-								select: [this.onValueChange, this],
-								customData: mCustomData
-							})
-						} else {
-							mCustomData[1].value = constants.tableData.columnObjectType.input;
-							return new Input({
+				// Las columnas fijas se crean con otros objetos
+				if (mColumn.fixColumn) {
+
+					switch (mColumn.name) {
+
+						case constants.tableData.fixedColumns.actions:
+							return this._addActionFixColum();
+							break;
+					};
+
+				} else {
+
+					switch (mColumn.type) {
+						case constants.columnTtype.char:
+							if (mColumn.checkBox == true) {
+								mCustomData[1].value = constants.tableData.columnObjectType.checkbox;
+								return new CheckBox({
+									selected: {
+										model: constants.jsonModel.viewData,
+										path: mColumn.name
+									},
+									editable: {
+										model: constants.jsonModel.viewData,
+										path: mColumn.name + constants.tableData.suffix_edit_field,
+									},
+									select: [this.onValueChange, this],
+									customData: mCustomData
+								})
+							} else {
+								mCustomData[1].value = constants.tableData.columnObjectType.input;
+								return new Input({
+									value: {
+										model: constants.jsonModel.viewData,
+										path: mColumn.name
+									},
+									editable: {
+										model: constants.jsonModel.viewData,
+										path: mColumn.name + constants.tableData.suffix_edit_field,
+										formatter: function (bValue) {
+											return bValue;
+										}
+									},
+									required: mColumn.mandatory,
+									maxLength: mColumn.len,
+									change: [this.onValueChange, this],
+									customData: mCustomData
+								})
+							}
+
+							break;
+						case constants.columnTtype.date:
+							mCustomData[1].value = constants.tableData.columnObjectType.datePicker;
+							return new DatePicker({
 								value: {
 									model: constants.jsonModel.viewData,
 									path: mColumn.name
@@ -407,84 +477,82 @@ sap.ui.define([
 									}
 								},
 								required: mColumn.mandatory,
-								maxLength: mColumn.len,
+								valueFormat: this._oOwnerComponent.getUserConfig().dateFormat,
+								displayFormat: this._oOwnerComponent.getUserConfig().displayDateFormat,
 								change: [this.onValueChange, this],
 								customData: mCustomData
 							})
-						}
-
-						break;
-					case constants.columnTtype.date:
-						mCustomData[1].value = constants.tableData.columnObjectType.datePicker;
-						return new DatePicker({
-							value: {
-								model: constants.jsonModel.viewData,
-								path: mColumn.name
-							},
-							editable: {
-								model: constants.jsonModel.viewData,
-								path: mColumn.name + constants.tableData.suffix_edit_field,
-								formatter: function (bValue) {
-									return bValue;
-								}
-							},
-							required: mColumn.mandatory,
-							valueFormat: this._oOwnerComponent.getUserConfig().dateFormat,
-							displayFormat: this._oOwnerComponent.getUserConfig().displayDateFormat,
-							change: [this.onValueChange, this],
-							customData: mCustomData
-						})
-						break;
-					case constants.columnTtype.time:
-						mCustomData[1].value = constants.tableData.columnObjectType.timePicker;
-						return new TimePicker({
-							value: {
-								model: constants.jsonModel.viewData,
-								path: mColumn.name
-							},
-							editable: {
-								model: constants.jsonModel.viewData,
-								path: mColumn.name + constants.tableData.suffix_edit_field,
-								formatter: function (bValue) {
-									return bValue;
-								}
-							},
-							required: mColumn.mandatory,
-							valueFormat: this._oOwnerComponent.getUserConfig().timeFormat,
-							displayFormat: this._oOwnerComponent.getUserConfig().displayTimeFormat,
-							customData: mCustomData,
-							change: [this.onValueChange, this]
-						})
-						break;
-					case constants.columnTtype.packed:
-						mCustomData[1].value = constants.tableData.columnObjectType.input;
-						return new Input({
-							value: {
-								model: constants.jsonModel.viewData,
-								path: mColumn.name,
-								type: 'sap.ui.model.type.Float',
-								formatOptions: {
-									decimals: mColumn.decimals,
-									groupingSeparator: this._oOwnerComponent.getUserConfig().thousandSeparator,
-									decimalSeparator: this._oOwnerComponent.getUserConfig().decimalSeparator,
-									maxFractionDigits: this._oOwnerComponent.getUserConfig().decimalSeparator
-								}
-							},
-							editable: {
-								model: constants.jsonModel.viewData,
-								path: mColumn.name + constants.tableData.suffix_edit_field,
-								formatter: function (bValue) {
-									return bValue;
-								}
-							},
-							required: mColumn.mandatory,
-							maxLength: mColumn.len,
-							change: [this.onValueChange, this],
-							customData: mCustomData
-						});
-						break;
+							break;
+						case constants.columnTtype.time:
+							mCustomData[1].value = constants.tableData.columnObjectType.timePicker;
+							return new TimePicker({
+								value: {
+									model: constants.jsonModel.viewData,
+									path: mColumn.name
+								},
+								editable: {
+									model: constants.jsonModel.viewData,
+									path: mColumn.name + constants.tableData.suffix_edit_field,
+									formatter: function (bValue) {
+										return bValue;
+									}
+								},
+								required: mColumn.mandatory,
+								valueFormat: this._oOwnerComponent.getUserConfig().timeFormat,
+								displayFormat: this._oOwnerComponent.getUserConfig().displayTimeFormat,
+								customData: mCustomData,
+								change: [this.onValueChange, this]
+							})
+							break;
+						case constants.columnTtype.packed:
+							mCustomData[1].value = constants.tableData.columnObjectType.input;
+							return new Input({
+								value: {
+									model: constants.jsonModel.viewData,
+									path: mColumn.name,
+									type: 'sap.ui.model.type.Float',
+									formatOptions: {
+										decimals: mColumn.decimals,
+										groupingSeparator: this._oOwnerComponent.getUserConfig().thousandSeparator,
+										decimalSeparator: this._oOwnerComponent.getUserConfig().decimalSeparator,
+										maxFractionDigits: this._oOwnerComponent.getUserConfig().decimalSeparator
+									}
+								},
+								editable: {
+									model: constants.jsonModel.viewData,
+									path: mColumn.name + constants.tableData.suffix_edit_field,
+									formatter: function (bValue) {
+										return bValue;
+									}
+								},
+								required: mColumn.mandatory,
+								maxLength: mColumn.len,
+								change: [this.onValueChange, this],
+								customData: mCustomData
+							});
+							break;
+					}
 				}
 			}
+
+		},
+		// Columna fija de acciones
+		_addActionFixColum: function () {
+
+			return new Icon({
+				src: "sap-icon://search",
+				press: [this.onActionFixColumn, this],
+				visible: {
+					model: constants.jsonModel.viewData,
+					path: constants.tableData.internalFields.rowStatus,
+					formatter: function (sStatus) {
+						if (sStatus == constants.tableData.rowStatusValues.error)
+							return true;
+						else
+							return false;
+					}
+				}
+			});
 
 		},
 		// Establece el layout inicial de la tabla de datos
@@ -542,7 +610,14 @@ sap.ui.define([
 			/*MessageToast.show("Item " + (oItem.getText() || oItem.getType()) + " pressed for product with id " +
 				this.getView().getModel().getProperty("ProductId", oRow.getBindingContext()));*/
 			debugger;
+		},
+		_determineShowFixColumnactions: function () {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+
+			// La columna de acciones solo se muestra si hay errors
+			oViewDataModel.setProperty(constants.tableData.path.visibleFixColumnAction, this._viewDataState.isDataWithErrors());
 		}
+
 
 
 	});

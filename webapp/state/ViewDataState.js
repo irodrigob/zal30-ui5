@@ -143,7 +143,7 @@ sap.ui.define([
 			// 2) Para poder hacer comparaciones entre modelo original y el nuevo. Básico para saber el modo de actualización correcto. Sin el paso anterior hacer la comparación no sería posible			
 			this._oView.updateValueModel(mParams.column, mParams.path, mParamsOutput.value);
 
-   			// Se informa en que línea se ha hecho el cambio
+			// Se informa en que línea se ha hecho el cambio
 			this._oView.setRowUpdateIndicator(mParams.path, constants.tableData.fieldUpkzValues.update);
 
 			// Se aplica el formato para que pueda ser devuelto y se grabe correctamente en el campo.
@@ -156,8 +156,8 @@ sap.ui.define([
 
 			// Como se controla que el botón de borrar se habilite solo cuando se seleccionan registros, cuando llega a este método
 			// seguro que hay líneas seleccionadas
-			for (var x = 0; x < aRows.length; x++) {			
-				this._oView.deleteEntry(aRows[x]);				
+			for (var x = 0; x < aRows.length; x++) {
+				this._oView.deleteEntry(aRows[x]);
 			}
 
 		},
@@ -175,6 +175,11 @@ sap.ui.define([
 		// Evento que se produce al añadir una entrada
 		onAddEntry: function () {
 			this._oView.addEmptyRow();
+		},
+		// Devuelve si hay registros erroneos
+		isDataWithErrors: function () {
+			return this._oView.isDataWithErrors();
+
 		},
 		//////////////////////////////////	
 		//        Private methods       //	

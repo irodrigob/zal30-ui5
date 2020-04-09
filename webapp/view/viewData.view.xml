@@ -33,8 +33,9 @@
                 showColumnVisibilityMenu="true" 
                 visibleRowCountMode="Fixed" 
                 rowSelectionChange="onRowSelectionChange" 
-                class="tableData" 
-                rowActionCount="{model: 'viewData', path:'/tableRowActionCount' }">
+                rowActionCount="{model: 'viewData', path:'/tableRowActionCount'}" 
+                class="tableData">
+                
                 <table:extension>
                     <OverflowToolbar>
                         <ToolbarSpacer/>

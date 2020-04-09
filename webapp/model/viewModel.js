@@ -315,8 +315,6 @@ sap.ui.define([
 		},
 		// Validación de campos obligatorios
 		validateRowMandatoryFields: function (mRow) {
-			var bError = false; // Por defecto no hay errores
-
 			var aFieldsMandatory = this._getMandatoryFields(); // Campos obligatorios
 
 			for (var x = 0; x < aFieldsMandatory.length; x++) {
@@ -346,6 +344,16 @@ sap.ui.define([
 
 			}
 
+		},
+		// Devuelve si hay datos erróneos en los datos		
+		isDataWithErrors: function () {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
+
+			if (aValues.find(values => values[constants.tableData.fixedColumns.actions] == constants.tableData.rowStatusValues.error))
+				return true;
+			else
+				return false;
 		},
 		//////////////////////////////////	
 		//        Private methods       //	
@@ -386,7 +394,8 @@ sap.ui.define([
 					len: mFieldCatalog[x].LEN,
 					decimals: mFieldCatalog[x].DECIMALS,
 					lowerCase: mFieldCatalog[x].LOWERCASE,
-					tech: mFieldCatalog[x].TECH
+					tech: mFieldCatalog[x].TECH,
+					fixColumn: false
 				};
 				aColumns.push(mColumn);
 			};
@@ -394,12 +403,36 @@ sap.ui.define([
 
 		},
 		// Se añaden las columnas fijas al catalogo existente. Estas columas se pondrán al principio
-		// de todo para que se vean en la aplicación
-		// NOTA IVÁN: He visto que con las row actions de la tabla no necesito tener columnas fijas,
-		// pero dejo el método por si lo necesito en un futuro. 
+		// de todo para que se vean en la aplicación		
 		_addFixedColumnsFieldCatalog: function (aFieldCatalog) {
+			var aNewFieldCatalog = [];
 
-			return aFieldCatalog;
+			// Columna de acciones, que contendra acciones individuales
+			aNewFieldCatalog.push({
+				name: constants.tableData.fixedColumns.actions,
+				shortText: this._oI18nResource.getText('ViewData.fix.Column.state'),
+				mediumText: this._oI18nResource.getText('ViewData.fix.Column.state'),
+				longText: this._oI18nResource.getText('ViewData.fix.Column.state'),
+				headerText: this._oI18nResource.getText('ViewData.fix.Column.state'),
+				mandatory: false,
+				noOutput: false,
+				checkBox: false,
+				keyDDIC: false,
+				edit: false,
+				type: 'C',
+				len: 0,
+				decimals: 0,
+				lowerCase: false,
+				tech: false,
+				fixColumn: true
+			});
+
+			// Se añaden campos que provienen del servicio
+			for (var x = 0; x < aFieldCatalog.length; x++) {
+				aNewFieldCatalog.push(aFieldCatalog[x]);
+			}
+
+			return aNewFieldCatalog;
 
 		},
 		// Conversion de los datos procedentes del servicios
@@ -462,7 +495,7 @@ sap.ui.define([
 		// Establece la edición inicial de las celdas según sus valores. 
 		// Esta función solo se usará en la lectura inicial
 		_setInitialCellValues: function (oData) {
-			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+
 			// Se recorren los datos leídos
 			for (var z = 0; z < oData.oData.length; z++) {
 				// constants.tableData.path.values
@@ -488,7 +521,6 @@ sap.ui.define([
 		_compareRowDataFromOriginal: function (sPath) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 
-			var bRowsEqual = true; // Por defecto las líneas son iguales
 			// Se recupera el registro actual y el original para comparar
 			var mRow = oViewDataModel.getProperty(sPath);
 
