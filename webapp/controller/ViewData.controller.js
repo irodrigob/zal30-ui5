@@ -3,7 +3,7 @@ sap.ui.define([
 	"sap/m/MessageToast",
 	"sap/m/MessageBox",
 	"com/ivancio/zal30-ui5/constants/constants",
-	"com/ivancio/zal30-ui5/component/general/LogDialog/logDialog",
+	"com/ivancio/zal30-ui5/component/general/logDialog/LogDialog",
 	"sap/ui/table/Column",
 	"sap/m/Text",
 	"sap/m/Input",
@@ -14,7 +14,7 @@ sap.ui.define([
 	"com/ivancio/zal30-ui5/component/general/confirmDialog/ConfirmDialog",
 	"sap/ui/table/RowSettings",
 	"sap/ui/core/Icon"
-], function (BaseController, MessageToast, MessageBox, constants, logDialog, Column, Text, Input, DatePicker, TimePicker, CheckBox, Filter, ConfirmDialog, RowSettings, Icon) {
+], function (BaseController, MessageToast, MessageBox, constants, LogDialog, Column, Text, Input, DatePicker, TimePicker, CheckBox, Filter, ConfirmDialog, RowSettings, Icon) {
 	"use strict";
 
 	return BaseController.extend("com.ivancio.zal30-ui5.controller.ViewData", {
@@ -39,7 +39,7 @@ sap.ui.define([
 
 			// Se instancia el control LogDialog
 			if (!this._oLogDialog) {
-				this._oLogDialog = new logDialog();
+				this._oLogDialog = new LogDialog();
 				this.getView().addDependent(this._oLogDialog);
 			}
 
@@ -194,9 +194,31 @@ sap.ui.define([
 
 
 		},
-		// Evento al pulsar el objeto de la columna fija de accion
-		onActionFixColumn: function (oEvent) {
-			debugger;
+		// Evento al pulsar el icono de ver el detalle de los mensajes de la fila
+		onShowRowStatusMsg: function (oEvent) {
+			var oSource = oEvent.getSource();
+
+			// Registro de la tabla donde se 
+			var oRow = oSource.getParent();
+			var sPath = oRow.getBindingContext(constants.jsonModel.viewData).getPath();
+
+			// Se recuperan los mensajes de la fila seleccionada
+			var aMsg = this._viewDataState.getRowStatusMsg(sPath);
+
+			// Se pasa los datos al formato que necesita el componente del logDialog
+			var aMsgLogDialog = [];
+			for (var x = 0; x < aMsg.length; x++) {
+				aMsgLogDialog.push({
+					TYPE: aMsg[0].TYPE,
+					MESSAGE: aMsg[x].MESSAGE
+				});
+			};
+			this._oLogDialog.setValues(this._oI18nResource.getText("ViewData.logDialog.RowStatusMsg.Title"), [{
+				type:"E",
+				message:"HOLA"
+			}]);
+			this._oLogDialog.openDialog();
+
 		},
 		//////////////////////////////////
 		//                              //
@@ -223,7 +245,7 @@ sap.ui.define([
 
 			// Se muestra el loader para toda la aplicación porque se van a empezar a llamar servicios y puede demorarse un poco
 			this._oOwnerComponent.showBusyDialog();
-			
+
 			// Si la página viene de la selección de vista se valida que la vista pasada por parametro es valida y no se ha
 			// modificado
 			if (viewSelect) {
@@ -368,7 +390,7 @@ sap.ui.define([
 		// Row actions de la tabla
 		_setRowActions: function () {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			
+
 			// se guarda el modelo el número de acciones que se mostrarán. Con un máximo de 2 que se pueden visualizar a la vez.
 			oViewDataModel.setProperty(constants.tableData.path.tableRowActionCount, 0);
 
@@ -541,7 +563,7 @@ sap.ui.define([
 
 			return new Icon({
 				src: "sap-icon://search",
-				press: [this.onActionFixColumn, this],
+				press: [this.onShowRowStatusMsg, this],
 				visible: {
 					model: constants.jsonModel.viewData,
 					path: constants.tableData.internalFields.rowStatus,
@@ -614,7 +636,7 @@ sap.ui.define([
 		_determineShowFixColumnactions: function () {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 
-			// La columna de acciones solo se muestra si hay errors
+			// La columna de acciones solo se muestra si hay errors			
 			oViewDataModel.setProperty(constants.tableData.path.visibleFixColumnAction, this._viewDataState.isDataWithErrors());
 		}
 

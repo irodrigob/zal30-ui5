@@ -4,7 +4,7 @@ sap.ui.define([
 ], function (Control, Fragment) {
 	"use strict";
 
-	var oConfirmDialog = Control.extend("com.ivancio.zal30-ui5.component.general.ConfirmDialog.ConfirmDialog", {
+	var oConfirmDialog = Control.extend("com.ivancio.zal30-ui5.component.general.confirmDialog.ConfirmDialog", {
 
 		metadata: {
 			properties: {
@@ -38,9 +38,7 @@ sap.ui.define([
 			this._oController = oController;
 			var that = this;
 
-			if (!this._oDialog) {
-				//this._oDialog = sap.ui.xmlfragment(this.getId() + "--logDialog", "com.daufood.sat.component.general.LogDialog.MessageViewDialog", this);
-				//this.addDependent(this._oDialog);
+			if (!this._oDialog) {				
 				Fragment.load({
 					id: this.getId() + "--ConfirmDialog",
 					name: "com.ivancio.zal30-ui5.component.general.ConfirmDialog.ConfirmDialog",

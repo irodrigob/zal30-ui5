@@ -350,10 +350,15 @@ sap.ui.define([
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
 
-			if (aValues.find(values => values[constants.tableData.fixedColumns.actions] == constants.tableData.rowStatusValues.error))
+			if (aValues.find(values => values[constants.tableData.internalFields.rowStatus] == constants.tableData.rowStatusValues.error))
 				return true;
 			else
 				return false;
+		},
+		// Devuelve los mensajes de error de una fila de datos
+		getRowStatusMsg: function (sPath) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			return oViewDataModel.getProperty(sPath + "/" + constants.tableData.internalFields.rowStatusMsg);
 		},
 		//////////////////////////////////	
 		//        Private methods       //	

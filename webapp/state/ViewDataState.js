@@ -181,6 +181,10 @@ sap.ui.define([
 			return this._oView.isDataWithErrors();
 
 		},
+		// Devuelve los mensajes de error de una fila de datos
+		getRowStatusMsg: function (sPath) {
+			return this._oView.getRowStatusMsg(sPath);
+		},
 		//////////////////////////////////	
 		//        Private methods       //	
 		//////////////////////////////////	

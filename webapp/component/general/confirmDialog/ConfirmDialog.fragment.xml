@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" 
     xmlns:core="sap.ui.core">
-    <Dialog title="{model:'ConfirmDialogModel', path:'/title'}" class="sapUiSizeCompact logDialog" draggable="true">
+    <Dialog title="{model:'ConfirmDialogModel', path:'/title'}" class="sapUiSizeCompact" draggable="true">
         <content>
             <Text text="{model:'ConfirmDialogModel', path:'/textMessage'}" class="sapUiSmallMargin"/>
         </content>

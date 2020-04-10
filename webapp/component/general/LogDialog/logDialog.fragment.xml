@@ -1,0 +1,25 @@
+<core:FragmentDefinition xmlns="sap.m" 
+    xmlns:core="sap.ui.core">
+    <Dialog title="{model:'logDialogModel', path:'/title'}" 
+        class="sapUiSizeCompact" 
+        draggable="true" 
+        contentHeight="50%" 
+        contentWidth="35%">
+        <content>
+           <!-- <List headerText="Products" 
+                items="{model: 'logDialogModel', path: '/messages'}">
+                <StandardListItem title="{logDialogModel>message}"/>
+            </List>
+             <Text text="Message view" class="sapUiSmallMargin"/> -->
+            <MessageView items="{model: 'logDialogModel', path: '/messages', factory:'.factoryItems'}" id="messageView">         
+             <MessageItem title="{logDialogModel>MESSAGE}" 
+                    type="{model: 'logDialogModel', path: 'TYPE', formatter: '.formatterMessageType'}"/>       
+            </MessageView>
+        </content>
+        <beginButton>
+            <Button text="{i18n>Button.Close}" 
+                press="onCloseDialog"/>
+        </beginButton>
+
+    </Dialog>
+</core:FragmentDefinition>
