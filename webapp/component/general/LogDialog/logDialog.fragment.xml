@@ -6,14 +6,14 @@
         contentHeight="50%" 
         contentWidth="35%">
         <content>
-           <!-- <List headerText="Products" 
-                items="{model: 'logDialogModel', path: '/messages'}">
+            <!-- <List headerText="Products" items="{model: 'logDialogModel', path: '/messages'}">
                 <StandardListItem title="{logDialogModel>message}"/>
             </List>
              <Text text="Message view" class="sapUiSmallMargin"/> -->
-            <MessageView items="{model: 'logDialogModel', path: '/messages', factory:'.factoryItems'}" id="messageView">         
-             <MessageItem title="{logDialogModel>MESSAGE}" 
-                    type="{model: 'logDialogModel', path: 'TYPE', formatter: '.formatterMessageType'}"/>       
+            <MessageView items="{model: 'logDialogModel', path: '/messages'}">
+                <MessageItem title="{message}" 
+                    description="{logDialogModel>message}" 
+                    type="{model: 'logDialogModel', path: 'TYPE', formatter: '.formatterMessageType'}"/>
             </MessageView>
         </content>
         <beginButton>

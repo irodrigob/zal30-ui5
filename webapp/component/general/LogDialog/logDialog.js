@@ -53,14 +53,14 @@ sap.ui.define([
 		},
 		// Establece el titulo de la ventana
 		setTitle: function (sTitle) {
-			this._oLogDialogModel.setProperty("/title", sTitle);
+			this._title = sTitle;
 		},
 		// Añade un mensaje de manera individual
 		addMessage: function (sType, sMessage) {
 			var aMessages = this._oLogDialogModel.getProperty("/messages");
 
 			aMessages.push({
-				type: sType,
+				type: this.formatterMessageType(sType),
 				message: sMessage
 			});
 			this._oLogDialogModel.setProperty("/messages", aMessages);
@@ -69,14 +69,19 @@ sap.ui.define([
 		// Los campos de la estructura de datos deben ser:
 		// type: que puede tener los valores S, W, E. Tal como se indica en la variable _mTypeCode
 		// message: Mensaje a mostrar
-		addMessages: function (aParamMessages) {
-			this._oLogDialogModel.setProperty("/", aParamMessages);
+		addMessages: function (aMessages) {
+			// Se formatea el campo type
+			for (var x = 0; x < aMessages.length; x++) {
+				aMessages[x].type = this.formatterMessageType(aMessages[x].type);
+			}
+
+			this._oLogDialogModel.setProperty("/messages", aMessages);
 		},
 		// Función que permite pasar todos los valores de golpe. Este método 
 		// siempre hará un reset de los valores precios
 		setValues: function (sTitle, aMessages) {
 
-			//this.setTitle(sTitle); // Título
+			this.setTitle(sTitle); // Título
 			this.addMessages(aMessages, true); // Se pasan los mensaje y se indica que se reseteen los valores
 
 		},
@@ -88,9 +93,10 @@ sap.ui.define([
 			this._oController = oController;
 			var that = this;
 
-			this._sId = this.getId() + "--LogDialog";
-
-			/*if (!this._oDialog) {
+			// NOTA IVAN: No hay manera de hacer funcionar el messageview con una dialogo en XML. Pero si que funciona, con javascript. Por
+			// lo tanto uso ese camino
+			/*this._sId = this.getId() + "--LogDialog";
+			if (!this._oDialog) {
 				Fragment.load({
 					id: this._sId,
 					name: "com.ivancio.zal30-ui5.component.general.logDialog.LogDialog",
@@ -102,16 +108,16 @@ sap.ui.define([
 				});
 			} else {
 				this._oDialog.open();
-			}*/
+			};*/
 
 			var oMessageTemplate = new MessageItem({
-				type: "Error",
+				type: "{type}",
 				title: "{message}"
 			});
 
 			this.oMessageView = new MessageView({
 				items: {
-					path: "/",
+					path: "/messages",
 					template: oMessageTemplate
 				}
 			});
@@ -120,19 +126,12 @@ sap.ui.define([
 			this.oDialog = new Dialog({
 				resizable: true,
 				content: this.oMessageView,
-				state: 'Error',
+				title: this._title,
 				beginButton: new Button({
 					press: function () {
 						this.getParent().close();
 					},
 					text: "Close"
-				}),
-				customHeader: new Bar({
-					contentMiddle: [
-						new Text({
-							text: "Error"
-						})
-					]
 				}),
 				contentHeight: "50%",
 				contentWidth: "35%",

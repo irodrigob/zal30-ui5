@@ -31,6 +31,9 @@ sap.ui.define([
 				decimalSeparator: this._oOwnerComponent.getUserConfig().decimalSeparator,
 				thousandSeparator: this._oOwnerComponent.getUserConfig().thousandSeparator
 			});
+
+			// Contador internos de registros
+			this._lastTabix = 0;
 		},
 		// Guarda el catalogo de campos de la vista. El catalogo se convierte para adaptarlo a la vista
 		setFieldCatalogFromService: function (aFieldCatalog) {
@@ -71,6 +74,10 @@ sap.ui.define([
 			oData.setJSON(oDataGW.DATA);
 			// Los datos originales no se formatean porque lo hará los propios controles de ui5
 			oData = this._processAdapModelDataFromGW(oData, false);
+
+			// Guardo el número de registros
+			this._lastTabix = oData.oData.length;
+
 			// Se guardado los valores en el modelo original
 			oViewDataModel.setProperty(constants.tableData.path.values, oData.getData());
 
@@ -85,6 +92,7 @@ sap.ui.define([
 			this._oDataTemplate = new sap.ui.model.json.JSONModel();
 			this._oDataTemplate.setJSON(oDataGW.DATA_TEMPLATE);
 			this._oDataTemplate = this._processAdapModelDataFromGW(this._oDataTemplate, false);
+			
 
 		},
 		// Devuelve los datos de la vista
@@ -262,6 +270,11 @@ sap.ui.define([
 
 			// En el template solo habra un registro
 			var mNewRow = this._oDataTemplate.getProperty("/0");
+
+			// Se informa el campo ZAL30_TABIX con el valor siguiente al último calculado.  Este campo se usa
+			// para control, validaciones, etc.
+			this._lastTabix = this._lastTabix + 1;
+			mNewRow[constants.tableData.internalFields.tabix] = this._lastTabix;
 
 			// Se recupera el modelo
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);

@@ -209,14 +209,11 @@ sap.ui.define([
 			var aMsgLogDialog = [];
 			for (var x = 0; x < aMsg.length; x++) {
 				aMsgLogDialog.push({
-					TYPE: aMsg[0].TYPE,
-					MESSAGE: aMsg[x].MESSAGE
+					type: aMsg[0].TYPE,
+					message: aMsg[x].MESSAGE
 				});
 			};
-			this._oLogDialog.setValues(this._oI18nResource.getText("ViewData.logDialog.RowStatusMsg.Title"), [{
-				type:"E",
-				message:"HOLA"
-			}]);
+			this._oLogDialog.setValues(this._oI18nResource.getText("ViewData.logDialog.RowStatusMsg.Title"), aMsgLogDialog);
 			this._oLogDialog.openDialog();
 
 		},
