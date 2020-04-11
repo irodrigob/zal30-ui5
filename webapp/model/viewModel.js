@@ -92,7 +92,7 @@ sap.ui.define([
 			this._oDataTemplate = new sap.ui.model.json.JSONModel();
 			this._oDataTemplate.setJSON(oDataGW.DATA_TEMPLATE);
 			this._oDataTemplate = this._processAdapModelDataFromGW(this._oDataTemplate, false);
-			
+
 
 		},
 		// Devuelve los datos de la vista
@@ -212,9 +212,6 @@ sap.ui.define([
 
 			// Se monta el path directo al campo que guarda el campo de actualización
 			var sPathUpdkz = sPath + "/" + constants.tableData.internalFields.updkz;
-			// Path del campo que indica el status de actualización a nivel de fila
-			var sPathUpdkzStatus = sPath + "/" + constants.tableData.internalFields.updkzStatus;
-			var sPathUpdkzStatusText = sPath + "/" + constants.tableData.internalFields.updkzStatusText;
 			switch (sUpdkz) {
 				case constants.tableData.fieldUpkzValues.update:
 
@@ -285,7 +282,8 @@ sap.ui.define([
 			// Validación de campos, aunque en una inserción no se ha introducido valores servirá para marcar sobretodo los campos
 			// obligatorios	
 			this.validateRow(mNewRow, {
-				mandatory: true
+				mandatory: true,
+				duplicateKeyFields: true
 			});
 			// Se añade el registro
 			oViewDataModel.setProperty(sPath, mNewRow);
@@ -319,10 +317,12 @@ sap.ui.define([
 			mRow[constants.tableData.internalFields.rowStatusMsg] = [];
 
 			// Campos obligatorios
-			if (mOptions.mandatory) {
+			if (mOptions.mandatory)
 				this.validateRowMandatoryFields(mRow);
-			}
 
+			// Duplicidad de campos clave
+			if (mOptions.duplicateKeyFields)
+				this.validateDuplicateKeyFields(mRow);
 
 
 		},
@@ -342,7 +342,6 @@ sap.ui.define([
 							});
 						}
 
-
 						break;
 					case constants.columnTtype.date:
 
@@ -353,6 +352,25 @@ sap.ui.define([
 					case constants.columnTtype.packed:
 
 						break;
+				}
+
+			}
+
+		},
+		// Validación de campos duplicados
+		validateDuplicateKeyFields: function (mRow) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
+			var aFielCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
+
+			debugger;
+
+			// Se leen todo los registros
+			for (var x = 0; x < aValues.length; x++) {
+				var mRowValue = aValues[x];
+				// Se ignora el registro que se esta validando
+				if (mRowValue[constants.tableData.internalFields.tabix] != mRow[constants.tableData.internalFields.tabix]) {
+
 				}
 
 			}

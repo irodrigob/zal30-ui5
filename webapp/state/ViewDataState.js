@@ -75,8 +75,6 @@ sap.ui.define([
 					// En el registro 1 esta los datos y el template
 					that._oView.setViewDataFromService(result[1]);
 
-
-
 					// Si se esta editando hay que mirar el resultado del bloqueo. Si esta bloqueado la tabla no podrá ser editada
 					if (that._editMode == constants.editMode.edit)
 						that._determineEdtModelAccordingLockView(result[2]);
@@ -165,13 +163,6 @@ sap.ui.define([
 		getNumberKeyFields: function () {
 			return this._oView.getNumberKeyFields();
 		},
-		// Establece la visibilidad de los objetos asociados a la edición, como los botones de añadir y borrar
-		setVisibleEditButtons(bVisible) {
-			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			oViewDataModel.setProperty("/btnDeletedVisible", bVisible);
-			oViewDataModel.setProperty("/btnAddVisible", bVisible);
-			oViewDataModel.setProperty("/btnSaveVisible", bVisible);
-		},
 		// Evento que se produce al añadir una entrada
 		onAddEntry: function () {
 			this._oView.addEmptyRow();
@@ -202,11 +193,6 @@ sap.ui.define([
 			if (this._alreadyBlocked) {
 				// Con bloqueo la vista solo se puede visualizar
 				this._editMode = constants.editMode.view;
-
-				// Además se ocultan los botones asociados a la edición
-				this.setVisibleEditButtons(false);
-			} else {
-				this.setVisibleEditButtons(true);
 			}
 		},
 		_initModel: function () {

@@ -126,6 +126,12 @@ sap.ui.define([
 			});
 			oEvent.getSource().setValue(mResult.value);
 
+			// Se valida si hay errores en los datos, si no los hay entonces el botón de grabar se habilita
+			if (this._viewDataState.isDataWithErrors())
+				this._setEnabledBtnSaved(false);
+			else
+				this._setEnabledBtnSaved(true);
+
 		},
 		// Evento que se lanza cuando se pulsa el boton de borrar entradas 
 		onDeleteEntries: function (oEvent) {
@@ -153,10 +159,18 @@ sap.ui.define([
 		},
 		// Evento que se alnza cuando se pulsa el botón de añadir nueva entrada
 		onAddEntry: function (oEvent) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+
 			this._viewDataState.onAddEntry();
 
 			// Se determina si la columna de acciones se mostrará
 			this._determineShowFixColumnactions();
+
+			// Se valida si hay errores en los datos, si no los hay entonces el botón de grabar se habilita
+			if (this._viewDataState.isDataWithErrors())
+				this._setEnabledBtnSaved(false);
+			else
+				this._setEnabledBtnSaved(true);
 
 		},
 		onRowSelectionChange: function (oEvent) {
@@ -304,7 +318,7 @@ sap.ui.define([
 			oViewDataModel.setProperty("/btnDeletedEnabled", false);
 			oViewDataModel.setProperty("/btnSaveEnabled", false);
 			// Los botones de edición no se visualizan por defecto
-			this._viewDataState.setVisibleEditButtons(false);
+			this._setVisibleEditButtons(false);
 		},
 		// Proceso en que se leen tanto la configuración de la vista como los datos
 		_readView: function (sViewName) {
@@ -364,6 +378,12 @@ sap.ui.define([
 
 			// La columna fija de accion por defecto se oculta
 			oViewDataModel.setProperty(constants.tableData.path.visibleFixColumnAction, false);
+
+			// Si el modo de edición es de solo lectura entonces se oculta los botones asociados a la edición	
+			if (this._viewDataState.isViewEditable())
+				this._setVisibleEditButtons(true);
+			else
+				this._setVisibleEditButtons(false);
 
 
 		},
@@ -626,15 +646,25 @@ sap.ui.define([
 		_onShowStatusMsg: function (oEvent) {
 			var oRow = oEvent.getParameter("row");
 			var oItem = oEvent.getParameter("item");
-			/*MessageToast.show("Item " + (oItem.getText() || oItem.getType()) + " pressed for product with id " +
-				this.getView().getModel().getProperty("ProductId", oRow.getBindingContext()));*/
-			debugger;
 		},
 		_determineShowFixColumnactions: function () {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 
 			// La columna de acciones solo se muestra si hay errors			
 			oViewDataModel.setProperty(constants.tableData.path.visibleFixColumnAction, this._viewDataState.isDataWithErrors());
+		},
+		// Establece la visibilidad de los objetos asociados a la edición, como los botones de añadir y borrar
+		_setVisibleEditButtons(bVisible) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			oViewDataModel.setProperty("/btnDeletedVisible", bVisible);
+			oViewDataModel.setProperty("/btnAddVisible", bVisible);
+			oViewDataModel.setProperty("/btnSaveVisible", bVisible);
+		},
+		// Activa/desactiva el botón de grabar
+		_setEnabledBtnSaved: function (bEnabled) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+
+			oViewDataModel.setProperty("/btnSaveEnabled", bEnabled);
 		}
 
 
