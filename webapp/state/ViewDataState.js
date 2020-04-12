@@ -144,6 +144,9 @@ sap.ui.define([
 			// Se informa en que línea se ha hecho el cambio
 			this._oView.setRowUpdateIndicator(mParams.path, constants.tableData.fieldUpkzValues.update);
 
+			// Se lanza la validación a nivel de fila
+			this._oView.validateRowPath(mParams.path);
+
 			// Se aplica el formato para que pueda ser devuelto y se grabe correctamente en el campo.
 			mParamsOutput.value = this._oView.formatterValue(mParams.column, mParamsOutput.value);
 

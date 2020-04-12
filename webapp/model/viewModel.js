@@ -280,10 +280,10 @@ sap.ui.define([
 			var sPath = constants.tableData.path.values + "/" + oViewDataModel.oData.values.length;
 
 			// Validación de campos, aunque en una inserción no se ha introducido valores servirá para marcar sobretodo los campos
-			// obligatorios	
+			// obligatorios. 
+			// Nota: Se le indica que no valide duplicados porque no los va haber ya que se inserta un registro en blanco.
 			this.validateRow(mNewRow, {
-				mandatory: true,
-				duplicateKeyFields: true
+				duplicateKeyFields: false
 			});
 			// Se añade el registro
 			oViewDataModel.setProperty(sPath, mNewRow);
@@ -309,8 +309,32 @@ sap.ui.define([
 				oViewDataModel.setProperty(sPath, aValues);
 			}
 		},
+		// Validación de fila a partir de un path. Esta función actualizará el modelo con el resultado del proceso.
+		validateRowPath: function (sPath, mOptions) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var mRow = oViewDataModel.getProperty(sPath);
+
+			this.validateRow(mRow, mOptions);
+
+			// El modelo se actualiza porque al método llega el path 
+			oViewDataModel.setProperty(sPath, mRow);
+
+		},
 		// Validación de los datos a nivel de fila
-		validateRow: function (mRow, mOptions) {
+		validateRow: function (mRow, mParamOptions) {
+
+			// Como el parámetro de entrada puede no venir informado por defecto pongo todas las validaciones a true. Luego
+			// Si vienen informadas ya se le indicará su valor
+			var mOptions = {
+				mandatory: true,
+				duplicateKeyFields: true
+			};
+
+			if (mParamOptions != undefined && mParamOptions.mandatory != undefined)
+				mOptions.mandatory = mParamOptions.mandatory;
+
+			if (mParamOptions != undefined && mParamOptions.duplicateKeyFields != undefined)
+				mOptions.duplicateKeyFields = mParamOptions.duplicateKeyFields;
 
 			// Al iniciaio del proceso se inicializan los camops del control de la fila. Para que los errores anterior no se queden			
 			mRow[constants.tableData.internalFields.rowStatus] = '';
@@ -363,13 +387,37 @@ sap.ui.define([
 			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
 			var aFielCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
 
-			debugger;
+			// Para simplificar procesos me quedo con los campos que son claves y que no sean técnicos, estos últimos no se visualizan nunca.
+			aFielCatalog = aFielCatalog.filter(field => field.keyDDIC && !field.tech);
+
+			//debugger;
 
 			// Se leen todo los registros
 			for (var x = 0; x < aValues.length; x++) {
 				var mRowValue = aValues[x];
-				// Se ignora el registro que se esta validando
-				if (mRowValue[constants.tableData.internalFields.tabix] != mRow[constants.tableData.internalFields.tabix]) {
+				// Se ignora el registro que se esta validando o que este marcado para borrar
+				if (mRowValue[constants.tableData.internalFields.tabix] != mRow[constants.tableData.internalFields.tabix] &&
+					mRow[constants.tableData.internalFields.updkz] != constants.tableData.fieldUpkzValues.delete) {
+
+					var bDuplicate = true;
+					// Se recorren los campos editables y que no seán tecnicos, ya que los campos técnicos no se visualizan						
+					for (var z = 0; z < aFielCatalog.length; z++) {
+						// Si el valor no coincide se indica que no hay igualdad y se sale del proceso de búsqueda
+						if (mRow[aFielCatalog[z].name] != mRowValue[aFielCatalog[z].name]) {
+							bDuplicate = false;
+							break;
+						}
+					}
+					// Si hay registro duplicado, se marca el registro como erróneo
+					if (bDuplicate) {
+						var text = this._oI18nResource.getText("ViewData.validateRow.rowDuplicate");
+						mRow[constants.tableData.internalFields.rowStatus] = constants.tableData.rowStatusValues.error;
+						mRow[constants.tableData.internalFields.rowStatusMsg].push({
+							TYPE: constants.messageType.error,
+							MESSAGE: this._oI18nResource.getText("ViewData.validateRow.rowDuplicate")
+						});
+						break; // Se sale del proceso porque ya se ha encontrado una coincidea
+					}
 
 				}
 
