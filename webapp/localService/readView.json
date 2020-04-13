@@ -1,5 +1,4 @@
 {
-
 	"results": [{
 		"__metadata": {
 			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/readViewSet('1')",
@@ -27,7 +26,8 @@
 		"LEN": 3,
 		"DECIMALS": 0,
 		"LOWERCASE": false,
-		"TECH": true
+		"TECH": true,
+		"DATATYPE": "CLNT"
 	}, {
 		"__metadata": {
 			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/readViewSet('1')",
@@ -37,7 +37,7 @@
 		"VIEWNAME": "1",
 		"FIELDNAME": "FIELDNAME",
 		"POSITION": 0,
-		"MANDATORY": true,
+		"MANDATORY": false,
 		"NOOUTPUT": false,
 		"CHECKBOX": false,
 		"SELSCREEN": false,
@@ -55,7 +55,8 @@
 		"LEN": 30,
 		"DECIMALS": 0,
 		"LOWERCASE": false,
-		"TECH": false
+		"TECH": false,
+		"DATATYPE": "CHAR"
 	}, {
 		"__metadata": {
 			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/readViewSet('1')",
@@ -83,7 +84,8 @@
 		"LEN": 8,
 		"DECIMALS": 0,
 		"LOWERCASE": false,
-		"TECH": false
+		"TECH": false,
+		"DATATYPE": "DATS"
 	}, {
 		"__metadata": {
 			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/readViewSet('1')",
@@ -111,7 +113,8 @@
 		"LEN": 6,
 		"DECIMALS": 0,
 		"LOWERCASE": false,
-		"TECH": false
+		"TECH": false,
+		"DATATYPE": "TIMS"
 	}, {
 		"__metadata": {
 			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/readViewSet('1')",
@@ -139,7 +142,8 @@
 		"LEN": 13,
 		"DECIMALS": 2,
 		"LOWERCASE": false,
-		"TECH": false
+		"TECH": false,
+		"DATATYPE": "CURR"
 	}, {
 		"__metadata": {
 			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/readViewSet('1')",
@@ -167,7 +171,8 @@
 		"LEN": 5,
 		"DECIMALS": 0,
 		"LOWERCASE": false,
-		"TECH": false
+		"TECH": false,
+		"DATATYPE": "CUKY"
 	}, {
 		"__metadata": {
 			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/readViewSet('1')",
@@ -195,7 +200,8 @@
 		"LEN": 13,
 		"DECIMALS": 3,
 		"LOWERCASE": false,
-		"TECH": false
+		"TECH": false,
+		"DATATYPE": "QUAN"
 	}, {
 		"__metadata": {
 			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/readViewSet('1')",
@@ -223,7 +229,8 @@
 		"LEN": 3,
 		"DECIMALS": 0,
 		"LOWERCASE": true,
-		"TECH": false
+		"TECH": false,
+		"DATATYPE": "UNIT"
 	}, {
 		"__metadata": {
 			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/readViewSet('1')",
@@ -251,7 +258,7 @@
 		"LEN": 1,
 		"DECIMALS": 0,
 		"LOWERCASE": false,
-		"TECH": false
+		"TECH": false,
+		"DATATYPE": "CHAR"
 	}]
-
 }

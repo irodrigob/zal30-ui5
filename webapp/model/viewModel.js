@@ -268,10 +268,8 @@ sap.ui.define([
 			// En el template solo habra un registro
 			var mNewRow = this._oDataTemplate.getProperty("/0");
 
-			// Se informa el campo ZAL30_TABIX con el valor siguiente al último calculado.  Este campo se usa
-			// para control, validaciones, etc.
-			this._lastTabix = this._lastTabix + 1;
-			mNewRow[constants.tableData.internalFields.tabix] = this._lastTabix;
+			// Se informan determinados campos al añadir el registro
+			this._completeDataAddEmptyRow(mNewRow);
 
 			// Se recupera el modelo
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
@@ -479,7 +477,8 @@ sap.ui.define([
 					decimals: mFieldCatalog[x].DECIMALS,
 					lowerCase: mFieldCatalog[x].LOWERCASE,
 					tech: mFieldCatalog[x].TECH,
-					fixColumn: false
+					fixColumn: false,
+					datatype: mFieldCatalog[x].DATATYPE
 				};
 				aColumns.push(mColumn);
 			};
@@ -707,6 +706,17 @@ sap.ui.define([
 			var mValues = this._oOriginalViewData.getProperty(constants.tableData.path.values);
 
 			return mValues.find(values => values[constants.tableData.internalFields.tabix] === nTabix);
+		},
+		// Completa los datos de determinados cmapos al añadir un nuevo registro
+		_completeDataAddEmptyRow: function (mRow) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var mFielCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
+
+			// Se informa el campo ZAL30_TABIX con el valor siguiente al último calculado.  Este campo se usa
+			// para control, validaciones, etc.
+			this._lastTabix = this._lastTabix + 1;
+			mRow[constants.tableData.internalFields.tabix] = this._lastTabix;
+
 		}
 
 	});

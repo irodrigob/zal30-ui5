@@ -58,12 +58,12 @@ sap.ui.define([], function () {
 				rowStatus: "ZAL30_ROW_STATUS",
 				rowStatusMsg: "ZAL30_ROW_STATUS_MSG"
 			},
-			fixedColumns:{
-				actions:'ZAL30_FIX_ACTIONS',
+			fixedColumns: {
+				actions: 'ZAL30_FIX_ACTIONS',
 			},
 			rowStatusValues: {
 				error: "ERROR",
-				valid: "VALID"				
+				valid: "VALID"
 			},
 			fieldUpkzValues: {
 				update: "U",
@@ -73,13 +73,16 @@ sap.ui.define([], function () {
 			path: {
 				values: "/values",
 				columns: "/columns",
-				tableRowActionCount:"/tableRowActionCount",
-				visibleFixColumnAction:"/visibleFixColumnAction"
+				tableRowActionCount: "/tableRowActionCount",
+				visibleFixColumnAction: "/visibleFixColumnAction"
 			},
 			customData: {
 				columnName: "columnName",
 				objectType: "objectType",
-				changeRow:"changeRow"
+				changeRow: "changeRow"
+			},
+			dataType: {
+				mandt: "CLNT"
 			}
 
 		}
