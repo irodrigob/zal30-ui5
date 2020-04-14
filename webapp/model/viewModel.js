@@ -345,8 +345,6 @@ sap.ui.define([
 			// Duplicidad de campos clave
 			if (mOptions.duplicateKeyFields)
 				this.validateDuplicateKeyFields(mRow);
-
-
 		},
 		// Validación de campos obligatorios
 		validateRowMandatoryFields: function (mRow) {
@@ -422,6 +420,7 @@ sap.ui.define([
 			}
 
 		},
+
 		// Devuelve si hay datos erróneos en los datos		
 		isDataWithErrors: function () {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);

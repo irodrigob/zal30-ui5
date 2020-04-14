@@ -260,5 +260,34 @@
 		"LOWERCASE": false,
 		"TECH": false,
 		"DATATYPE": "CHAR"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/readViewSet('SYTABIX')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/readViewSet('SYTABIX')",
+			"type": "ZAL30_DATA_SRV.readView"
+		},
+		"VIEWNAME": "SYTABIX",
+		"FIELDNAME": "VIR_POS",
+		"POSITION": 0,
+		"MANDATORY": false,
+		"NOOUTPUT": false,
+		"CHECKBOX": false,
+		"SELSCREEN": false,
+		"KEYDDIC": false,
+		"FIELDTEXTTABLE": false,
+		"LANGTEXTTABLE": false,
+		"LANGU": "",
+		"SHORTEXT": "Row",
+		"MEDIUMTEXT": "Table Row",
+		"LONGTEXT": "Table Row",
+		"HEADERTEXT": "Row",
+		"MODE": "",
+		"EDIT": true,
+		"TYPE": "I",
+		"LEN": 4,
+		"DECIMALS": 0,
+		"LOWERCASE": false,
+		"TECH": false,
+		"DATATYPE": "INT4"
 	}]
 }
