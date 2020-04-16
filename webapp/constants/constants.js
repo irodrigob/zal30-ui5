@@ -56,7 +56,8 @@ sap.ui.define([], function () {
 				tabix: "ZAL30_TABIX",
 				updkz: "ZAL30_UPDKZ",
 				rowStatus: "ZAL30_ROW_STATUS",
-				rowStatusMsg: "ZAL30_ROW_STATUS_MSG"
+				rowStatusMsg: "ZAL30_ROW_STATUS_MSG",
+				style:"ZAL30_UI5_STYLE"
 			},
 			fixedColumns: {
 				actions: 'ZAL30_FIX_ACTIONS',
