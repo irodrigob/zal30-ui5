@@ -570,6 +570,31 @@ sap.ui.define([
 								customData: mCustomData
 							});
 							break;
+							case constants.columnTtype.integer:
+								mCustomData[1].value = constants.tableData.columnObjectType.input;
+								return new Input({
+									value: {
+										model: constants.jsonModel.viewData,
+										path: mColumn.name,
+										type: 'sap.ui.model.type.Integer',
+										formatOptions: {
+											decimals: mColumn.decimals,
+											groupingSeparator: this._oOwnerComponent.getUserConfig().thousandSeparator											
+										}
+									},
+									editable: {
+										model: constants.jsonModel.viewData,
+										path: mColumn.name + constants.tableData.suffix_edit_field,
+										formatter: function (bValue) {
+											return bValue;
+										}
+									},
+									required: mColumn.mandatory,
+									maxLength: mColumn.len,
+									change: [this.onValueChange, this],
+									customData: mCustomData
+								});
+								break;
 					}
 				}
 			}

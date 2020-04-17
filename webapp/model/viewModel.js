@@ -124,14 +124,14 @@ sap.ui.define([
 					}
 
 					break;
-				case constants.columnTtype.date:
-					return oValue;
-					break;
-				case constants.columnTtype.time:
-					return oValue;
-					break;
 				case constants.columnTtype.packed:
-					return this._oFormatters.formatfloat(mColumn.decimals, oValue);
+					return this._oFormatters.formatFloat(mColumn.decimals, oValue);
+					break;
+				case constants.columnTtype.integer:
+					return this._oFormatters.formatInteger(oValue);
+					break;
+				default:
+					return oValue;
 					break;
 
 			}
@@ -156,14 +156,14 @@ sap.ui.define([
 					}
 
 					break;
-				case constants.columnTtype.date:
-					return oValue;
-					break;
-				case constants.columnTtype.time:
-					return oValue;
-					break;
 				case constants.columnTtype.packed:
 					return this._oFormatters.parseFloat(mColumn.decimals, oValue);
+					break;
+				case constants.columnTtype.integer:
+					return this._oFormatters.parseInteger(oValue);
+					break;
+				default:
+					return oValue;
 					break;
 
 			}
@@ -176,24 +176,13 @@ sap.ui.define([
 			// Obtenemos la información de la columna	
 			var mColumn = this.getColumnInfo(sColumn);
 			switch (mColumn.type) {
-				case constants.columnTtype.char:
-
-					if (mColumn.checkBox == true) {
-
-					} else {
-
-					}
-					return oValue;
-					break;
-				case constants.columnTtype.date:
-					return oValue;
-					break;
-				case constants.columnTtype.time:
-					return oValue;
-					break;
 				case constants.columnTtype.packed:
+				case constants.columnTtype.integer:
 					// A los campos númericos se les quita las letras
 					return oValue.replace(/[^\d|.,]/g, '');
+					break;
+				default:
+					return oValue;
 					break;
 			}
 

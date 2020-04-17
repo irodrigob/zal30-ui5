@@ -18,12 +18,12 @@ sap.ui.define(
 
 
 			},
-			// Formatea un valor según los decimales pasos
-			formatfloat: function (nDecimals, oValue) {
+			// Formatea float según los decimales pasados
+			formatFloat: function (nDecimals, oValue) {
 				var oFormatObject = this.getFormatObjectFloat(nDecimals);
 				return oFormatObject.format(oValue);
 			},
-			// Devuelve un objeto con la configuración necesaria para aplicar un formato
+			// Devuelve un objeto float con la configuración necesaria para aplicar un formato
 			getFormatObjectFloat: function (nDecimals) {
 
 				var oFormatOptions = {
@@ -36,11 +36,33 @@ sap.ui.define(
 				return NumberFormat.getFloatInstance(oFormatOptions);
 
 			},
-			// Desformatea un registro para dejarlo con su formato original. Es la inversa del formatFloat
+			// Desformatea un float para dejarlo con su formato original. Es la inversa del formatFloat
 			// En ui5 sería el parse
 			parseFloat: function (nDecimals, oValue) {
 				var oFormatObject = this.getFormatObjectFloat(nDecimals);
 				return oFormatObject.parse(oValue);
+			},
+			// Devuelve un objeto interger con la configuración necesaria para aplicar un formato
+			getFormatObjectInteger: function () {
+
+				var oFormatOptions = {
+					decimals: 0, // El integer no tiene decimales
+					groupingSeparator: this._oDefaultFormat.thousandSeparator
+				};
+
+				return NumberFormat.getIntegerInstance(oFormatOptions);
+
+			},
+			// Desformatea un integer para dejarlo con su formato original. Es la inversa del formatInteger
+			// En ui5 sería el parse
+			parseInteger: function (oValue) {
+				var oFormatObject = this.getFormatObjectInteger();
+				return oFormatObject.parse(oValue);
+			},
+			// Formatea un interger
+			formatInteger: function (oValue) {
+				var oFormatObject = this.getFormatObjectInteger();
+				return oFormatObject.format(oValue);
 			},
 			//////////////////////////////////	
 			//        Private methods       //	

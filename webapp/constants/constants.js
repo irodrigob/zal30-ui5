@@ -41,7 +41,8 @@ sap.ui.define([], function () {
 			char: "C",
 			date: "D",
 			time: "T",
-			packed: "P"
+			packed: "P",
+			integer:"I"
 		},
 		tableData: {
 			columnObjectType: {
