@@ -425,6 +425,31 @@ sap.ui.define([
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			return oViewDataModel.getProperty(sPath + "/" + constants.tableData.internalFields.rowStatusMsg);
 		},
+		// Aplica lo indicado en el campo de estilos en una tabla de datos
+		applyFieldStyleInData: function (oValues) {
+			for (var x = 0; x < oValues.length; x++) {
+				oValues[x] = this.applyFieldStyleInRow(oValues[x]);
+			}
+			return oValues;
+		},
+		// Aplica lo indicado en el campo de estilos en un registro
+		applyFieldStyleInRow: function (mRow) {
+			// Se recupera el campo de estilos
+			var aStyles = mRow[constants.tableData.internalFields.style];
+			// Se recorren los campos indicador en el array de estilos			
+			for (var x = 0; x < aStyles.length; x++) {
+				// Se monta el campo que indica si es editable
+				var sEditField = aStyles[x].FIELDNAME + constants.tableData.suffix_edit_field;
+				if (mRow[sEditField]) { // Si el campo existe se le asigna el valor
+					if (aStyles[x].EDITABLE == "false")
+						mRow[sEditField] = false;
+					else
+						mRow[sEditField] = true;
+				}
+			}
+			return mRow;
+
+		},
 		//////////////////////////////////	
 		//        Private methods       //	
 		//////////////////////////////////		  
@@ -687,6 +712,11 @@ sap.ui.define([
 				formatTime: bApplyFormat ? bApplyFormat : false
 			});
 
+			// Se llama el proceso que cambia los campos editables a nivel de campo dependiendo del valor que tenga el campo
+			// de estilos en la línea de datos
+			var oValues = oData.getData();
+			this.applyFieldStyleInData(oValues);
+			oData.setData(oValues);
 			return oData;
 		},
 		// Obtiene el registro de los datos originales a partir del valor del campo ZAL30_TABIX

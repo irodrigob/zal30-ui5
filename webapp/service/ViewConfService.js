@@ -99,7 +99,7 @@ sap.ui.define([
 
 			
 			// Se llama al servicio para obtener los datos del mock si no hay Gateway
-			/*if (!bgwAvailable) {
+			if (!bgwAvailable) {
 				this._bMock = true; // Sin gateway todo tiene que por mock
 
 				return this.callOData(_mService.getViews, {
@@ -109,7 +109,7 @@ sap.ui.define([
 					(error) => {
 						oErrorHandler(error);
 					});
-			}*/
+			}
 
 		},
 		// Obtiene la autorización para la vista
