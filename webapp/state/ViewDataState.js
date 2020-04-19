@@ -145,7 +145,10 @@ sap.ui.define([
 			this._oView.setRowUpdateIndicator(mParams.path, constants.tableData.fieldUpkzValues.update);
 
 			// Se lanza la validación a nivel de fila
-			this._oView.validateRowPath(mParams.path);
+			this._oView.rowValidatePath(mParams.path);
+
+			// se lanza el proceso de validación y determinación de valores en SAP
+			this._rowValidationDeterminationSAP(mParams.path);
 
 			// Se aplica el formato para que pueda ser devuelto y se grabe correctamente en el campo.
 			mParamsOutput.value = this._oView.formatterValue(mParams.column, mParamsOutput.value);
@@ -203,6 +206,19 @@ sap.ui.define([
 			this._editMode = '';
 			this._alreadyBlocked = false;
 			this._lockedByUser = '';
+		},
+		// Va
+		_rowValidationDeterminationSAP: function (sPath) {
+			// Se recuperán los datos de la fila 
+			var mRow = this._oView.getRowFromPath(sPath);
+
+			this._oViewDataService.rowValidateDetermination(this._oView.getViewInfo().VIEWNAME, mRow).then((result) => {
+					debugger;
+				},
+				(error) => {
+
+
+				});
 		}
 	});
 	return oViewDataState;

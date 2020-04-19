@@ -18,6 +18,12 @@ sap.ui.define([
 			bUseMock: false,
 			mockFile: "/lockView.json",
 			oDataModel: "masterData"
+		},
+		rowValidationDetermination: {
+			serviceName: "/rowValidationDeterminationSet",
+			bUseMock: false,
+			mockFile: "/rowValidationDetermination.json",
+			oDataModel: "masterData"
 		}
 	};
 
@@ -84,6 +90,39 @@ sap.ui.define([
 			}
 
 			return this.callOData(mLocalService);
+
+		},
+		// Validación y determinación de valores de una fila
+		rowValidateDetermination: function (sViewName, mRow) {
+
+			var oModel = this.getModel(_mService.rowValidationDetermination.oDataModel);
+			var mParams = {};
+
+
+			if (this._bMock) {
+				// Se crea una nueva configuracuón donde se cambia el valor service name para pasarle la clave de la llama al servicio
+				var mLocalService = merge({}, _mService.rowValidationDetermination, {});
+
+			} else {
+				// Se crea una nueva configuracuón donde se cambia el valor service name para pasarle la clave de la llama al servicio
+				/*var mLocalService = merge({}, _mService.rowValidationDetermination, {
+					serviceName: oModel.createKey(_mService.rowValidationDetermination.serviceName, {
+						VIEWNAME: sViewName,
+						LANGU: this._sLanguage,
+					})
+				});*/
+				// Parámetros de la llamada. Se indica que es una creación, y se le pasa el body
+				mParams = {
+					operation: "CREATE",
+					oRequestData: {
+						VIEWNAME: sViewName,
+						LANGU: this._sLanguage
+						
+					}
+				};
+
+			}			
+			return this.callOData(_mService.rowValidationDetermination, mParams);
 
 		}
 

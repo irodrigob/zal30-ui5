@@ -269,7 +269,7 @@ sap.ui.define([
 			// Validación de campos, aunque en una inserción no se ha introducido valores servirá para marcar sobretodo los campos
 			// obligatorios. 
 			// Nota: Se le indica que no valide duplicados porque no los va haber ya que se inserta un registro en blanco.
-			this.validateRow(mNewRow, {
+			this.rowValidate(mNewRow, {
 				duplicateKeyFields: false
 			});
 			// Se añade el registro
@@ -297,18 +297,18 @@ sap.ui.define([
 			}
 		},
 		// Validación de fila a partir de un path. Esta función actualizará el modelo con el resultado del proceso.
-		validateRowPath: function (sPath, mOptions) {
+		rowValidatePath: function (sPath, mOptions) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			var mRow = oViewDataModel.getProperty(sPath);
 
-			this.validateRow(mRow, mOptions);
+			this.rowValidate(mRow, mOptions);
 
 			// El modelo se actualiza porque al método llega el path 
 			oViewDataModel.setProperty(sPath, mRow);
 
 		},
 		// Validación de los datos a nivel de fila
-		validateRow: function (mRow, mParamOptions) {
+		rowValidate: function (mRow, mParamOptions) {
 
 			// Como el parámetro de entrada puede no venir informado por defecto pongo todas las validaciones a true. Luego
 			// Si vienen informadas ya se le indicará su valor
@@ -329,20 +329,20 @@ sap.ui.define([
 
 			// Campos obligatorios
 			if (mOptions.mandatory)
-				this.validateRowMandatoryFields(mRow);
+				this.rowValidateMandatoryFields(mRow);
 
 			// Duplicidad de campos clave
 			if (mOptions.duplicateKeyFields)
 				this.validateDuplicateKeyFields(mRow);
 		},
 		// Validación de campos obligatorios
-		validateRowMandatoryFields: function (mRow) {
+		rowValidateMandatoryFields: function (mRow) {
 			var aFieldsMandatory = this._getMandatoryFields(); // Campos obligatorios
 
 			for (var x = 0; x < aFieldsMandatory.length; x++) {
 				switch (aFieldsMandatory[x].type) {
 					case constants.columnTtype.char:
-						var text = this._oI18nResource.getText("ViewData.validateRow.fieldMandatory", [aFieldsMandatory[x].headerText]);
+						var text = this._oI18nResource.getText("ViewData.rowValidate.fieldMandatory", [aFieldsMandatory[x].headerText]);
 						if (mRow[aFieldsMandatory[x].name] == '') {
 							mRow[constants.tableData.internalFields.rowStatus] = constants.tableData.rowStatusValues.error;
 							mRow[constants.tableData.internalFields.rowStatusMsg].push({
@@ -395,11 +395,11 @@ sap.ui.define([
 					}
 					// Si hay registro duplicado, se marca el registro como erróneo
 					if (bDuplicate) {
-						var text = this._oI18nResource.getText("ViewData.validateRow.rowDuplicate");
+						var text = this._oI18nResource.getText("ViewData.rowValidate.rowDuplicate");
 						mRow[constants.tableData.internalFields.rowStatus] = constants.tableData.rowStatusValues.error;
 						mRow[constants.tableData.internalFields.rowStatusMsg].push({
 							TYPE: constants.messageType.error,
-							MESSAGE: this._oI18nResource.getText("ViewData.validateRow.rowDuplicate")
+							MESSAGE: this._oI18nResource.getText("ViewData.rowValidate.rowDuplicate")
 						});
 						break; // Se sale del proceso porque ya se ha encontrado una coincidea
 					}
@@ -449,6 +449,11 @@ sap.ui.define([
 			}
 			return mRow;
 
+		},
+		// Devuelve los datos de un path determinado		
+		getRowFromPath: function (sPath) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			return oViewDataModel.getProperty(sPath);
 		},
 		//////////////////////////////////	
 		//        Private methods       //	
