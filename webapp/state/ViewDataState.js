@@ -212,6 +212,10 @@ sap.ui.define([
 			// Se recuperán los datos de la fila 
 			var mRow = this._oView.getRowFromPath(sPath);
 
+			var mRowJSON = JSON.stringify(mRow);
+			oData.setData(mRow);
+			debugger;
+
 			this._oViewDataService.rowValidateDetermination(this._oView.getViewInfo().VIEWNAME, mRow).then((result) => {
 					debugger;
 				},
