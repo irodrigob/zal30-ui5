@@ -70,7 +70,7 @@ sap.ui.define([
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 
 			// Debido a que el JSON viene en un literal para poderlo usarla hay que parsearlo.										
-			var oData = JSON.parse(oDataGW.DATA); //Otra manera de haberlo hecho.
+			var oData = JSON.parse(oDataGW.DATA); 
 			// Los datos originales no se formatean porque lo hará los propios controles de ui5
 			oData = this._processAdapModelDataFromGW(oData, false);
 
@@ -83,8 +83,12 @@ sap.ui.define([
 			// Se guarda los valores originales para poder luego saber si un registro se ha modificado o no. 
 			//Para evitar que las variables por referencias hagan los dos modelo iguales hay que usar el merge. Y como además, quiero guardarlo en el mismo path del modelo propio para simplificar
 			// luego las comparativas hago uso de variables intermedias. 
-			this._oOriginalViewData = new sap.ui.model.json.JSONModel();
-			var oDataOriginal = merge({}, oData);
+			this._oOriginalViewData = new sap.ui.model.json.JSONModel();			
+			// El merge no crea bien el array, vamos que no es un array del todo y falla cuando se usa el find y demas. Por lo tanto replico el mismo proceso
+			// que con los datos que se usarán
+			//var oDataOriginal = merge({}, oData);
+			var oDataOriginal = JSON.parse(oDataGW.DATA);
+			oDataOriginal = this._processAdapModelDataFromGW(oDataOriginal, false);
 			this._oOriginalViewData.setProperty(constants.tableData.path.values, oDataOriginal);
 
 			// Se hace lo mismos pasos para los datos de template, pero estos no se guardan en el modelo de UI5 sino que se guardan como variable

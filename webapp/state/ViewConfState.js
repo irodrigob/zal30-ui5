@@ -103,10 +103,6 @@ sap.ui.define([
 			}
 
 		},
-		// Validación y determinación de valores de una fila de datos
-		rowValidateDetermination(mRow,oSuccessHandler,oErrorHandler){
-
-		},
 		//////////////////////////////////	
 		//        Private methods       //	
 		//////////////////////////////////	

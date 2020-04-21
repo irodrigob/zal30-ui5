@@ -98,31 +98,34 @@ sap.ui.define([
 			var oModel = this.getModel(_mService.rowValidationDetermination.oDataModel);
 			var mParams = {};
 
-
 			if (this._bMock) {
 				// Se crea una nueva configuracuón donde se cambia el valor service name para pasarle la clave de la llama al servicio
 				var mLocalService = merge({}, _mService.rowValidationDetermination, {});
 
 			} else {
-				// Se crea una nueva configuracuón donde se cambia el valor service name para pasarle la clave de la llama al servicio
-				/*var mLocalService = merge({}, _mService.rowValidationDetermination, {
-					serviceName: oModel.createKey(_mService.rowValidationDetermination.serviceName, {
-						VIEWNAME: sViewName,
-						LANGU: this._sLanguage,
-					})
-				});*/
 				// Parámetros de la llamada. Se indica que es una creación, y se le pasa el body
 				mParams = {
 					operation: "CREATE",
 					oRequestData: {
 						VIEWNAME: sViewName,
-						LANGU: this._sLanguage
-						
+						LANGU: this._sLanguage,
+						ROW: JSON.stringify(mRow)
+
 					}
 				};
 
-			}			
-			return this.callOData(_mService.rowValidationDetermination, mParams);
+				var mLocalService = merge({}, _mService.rowValidationDetermination, {
+					serviceName: oModel.createKey(_mService.rowValidationDetermination.serviceName, {
+						VIEWNAME: sViewName,
+						LANGU: this._sLanguage
+					})
+				});
+
+			}
+			//return this.callOData(_mService.rowValidationDetermination, mParams);
+			return this.callOData(mLocalService);
+
+
 
 		}
 
