@@ -115,7 +115,7 @@ sap.ui.define([
 							MessageToast.show("There was an error with SAP communication");
 						} else {
 							var oJsonResponse = oResponse && oResponse.responseText ? JSON.parse(oResponse.responseText) : undefined;
-	
+
 							if (oJsonResponse && oJsonResponse.error && oJsonResponse.error.message && oJsonResponse.error.message.value) {
 								MessageToast.show(oJsonResponse.error.message.value);
 							}
@@ -171,6 +171,61 @@ sap.ui.define([
 			return oPromise;
 
 		},
+		// Versión 2 de la rutina call oData
+		callODatav2: function (oService) {
+			var that = this;
+			var model = this.getModel(oService.oDataModel);
+			var url = oService.serviceName;
+			var core = {
+				ajax: function (type, url, data, parameters) {
+					var promise = new Promise(function (resolve, reject) {
+						// Si el parámetro "mock" de la URL esta informado, o si no lo esta, a nivel de servicio si que se indica se leen los datos
+						// del mock
+						if (that._bMock === true || (that._bMock === undefined && oServiceConfig.bUseMock)) { // use mock data
+							resolve(that.loadMockDataPromise(oServiceConfig, that));
+						} else {
+							var args = [];
+							var params = {};
+							args.push(url);
+							if (data) {
+								args.push(data);
+							}
+							if (parameters) {
+								params = parameters;
+							}
+							params.success = function (result, response) {
+								resolve({
+									data: result,
+									response: response
+								});
+							};
+							params.error = function (error) {
+								reject(error);
+							};
+							args.push(params);
+							model[type].apply(model, args);
+						}
+					});
+
+					return promise;
+				}
+			};
+
+			return {
+				'get': function (params) {
+					return core.ajax('read', url, false, params);
+				},
+				'post': function (data, params) {
+					return core.ajax('create', url, data, params);
+				},
+				'put': function (data, params) {
+					return core.ajax('update', url, data, params);
+				},
+				'delete': function (params) {
+					return core.ajax('remove', url, false, params);
+				}
+			};
+		},
 		/** @param {object} oServiceConfig: Contains the below properties
 		 * @param {object} oParam: Contains the below properties. The properties specified with ? are optional
 		 * oParam.operation ? {string} - Request type (the default value is READ)
@@ -199,12 +254,12 @@ sap.ui.define([
 					// pasada en los parámetros
 					if (oResponse && oResponse.EType === "E") {
 						jQuery.sap.log.error("Error at service call: " + oServiceConfig.serviceName);
-						if (oParam.error) {							
+						if (oParam.error) {
 							oParam.error.apply(this, arguments);
 						}
 					} else {
 						// Si no hay error se llama a la función succes pasada por parámetro
-						if (oParam.success) {							
+						if (oParam.success) {
 							oParam.success.apply(this, arguments);
 						}
 					}

@@ -218,7 +218,9 @@ sap.ui.define([
 				(error) => {
 
 					debugger;
-				});
+				}); 
+
+				
 		}
 	});
 	return oViewDataState;
