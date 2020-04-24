@@ -98,81 +98,8 @@ sap.ui.define([
 			oContext._oMockDataModel.loadData(jQuery.sap.getModulePath(oContext._MockbaseDir) + oServiceConfig.mockFile, undefined, false);
 			return oContext._oMockDataModel.getData();
 		},
-		callOData: function (oServiceConfig, oParam) {
-			var that = this;
-
-			var oPromise = new Promise(function (resolve, reject) {
-
-				oParam = oParam || {}; // Si no hay parámetros se inicializan
-				var sapUserModelOData = that.getModel(oServiceConfig.oDataModel); // Modelo para poder llamar al oData de SAP
-				var oRequestParams = {
-					success: function (oResponse) {
-						resolve(oResponse)
-					},
-					error: function (oResponse) {
-						/* GENERAL MESSAGE AT EVERY ERROR CALLBACK  */
-						if (oResponse.statusCode === 500) {
-							MessageToast.show("There was an error with SAP communication");
-						} else {
-							var oJsonResponse = oResponse && oResponse.responseText ? JSON.parse(oResponse.responseText) : undefined;
-
-							if (oJsonResponse && oJsonResponse.error && oJsonResponse.error.message && oJsonResponse.error.message.value) {
-								MessageToast.show(oJsonResponse.error.message.value);
-							}
-						}
-						reject(oResponse);
-
-					}
-				};
-
-				// Si el parámetro "mock" de la URL esta informado, o si no lo esta, a nivel de servicio si que se indica se leen los datos
-				// del mock
-				if (that._bMock === true || (that._bMock === undefined && oServiceConfig.bUseMock)) { // use mock data
-					resolve(that.loadMockDataPromise(oServiceConfig, that));
-				} else {
-					// Use real backend ODATA CRUD functions
-
-					switch (oParam.operation) {
-						case "CREATE":
-							oRequest = sapUserModelOData.create(
-								oServiceConfig.serviceName,
-								oParam.oRequestData,
-								oRequestParams
-							);
-							break;
-						case "UPDATE":
-							sapUserModelOData.update(
-								oServiceConfig.serviceName,
-								oParam.oRequestData,
-								oRequestParams
-							);
-							break;
-						case "DELETE":
-							oRequest = sapUserModelOData.remove(
-								oServiceConfig.serviceName,
-								//  oParam.oRequestData,
-								oRequestParams
-							);
-							break;
-						default: // "READ":
-							if (oParam.filters) {
-								oRequestParams.filters = oParam.filters;
-							}
-							sapUserModelOData.read(
-								oServiceConfig.serviceName,
-								oRequestParams
-							);
-							break;
-
-					}
-				}
-
-			});
-			return oPromise;
-
-		},
-		// Versión 2 de la rutina call oData
-		callODatav2: function (oService) {
+		// Llamada a los servicio oData mediante funcionalidad Promise.
+		callOData: function (oService) {
 			var that = this;
 			var model = this.getModel(oService.oDataModel);
 			var url = oService.serviceName;
@@ -182,7 +109,9 @@ sap.ui.define([
 						// Si el parámetro "mock" de la URL esta informado, o si no lo esta, a nivel de servicio si que se indica se leen los datos
 						// del mock
 						if (that._bMock === true || (that._bMock === undefined && oServiceConfig.bUseMock)) { // use mock data
-							resolve(that.loadMockDataPromise(oServiceConfig, that));
+							resolve({
+								data: that.loadMockDataPromise(oService, that)
+							});
 						} else {
 							var args = [];
 							var params = {};

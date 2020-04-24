@@ -67,7 +67,7 @@ sap.ui.define([
 			}
 
 
-			return this.callOData(mLocalService);
+			return this.callOData(mLocalService).get();
 
 		},
 		// Bloqueo de los datos de la vista
@@ -89,14 +89,14 @@ sap.ui.define([
 
 			}
 
-			return this.callOData(mLocalService);
+			return this.callOData(mLocalService).get();
 
 		},
 		// Validación y determinación de valores de una fila
 		rowValidateDetermination: function (sViewName, mRow) {
 
 			
-			return this.callODatav2(_mService.rowValidationDetermination).post({
+			return this.callOData(_mService.rowValidationDetermination).post({
 				VIEWNAME: sViewName,
 				LANGU: this._sLanguage,
 				ROW: JSON.stringify(mRow)

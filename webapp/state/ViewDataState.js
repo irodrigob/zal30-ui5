@@ -73,11 +73,11 @@ sap.ui.define([
 					that._oView = result[0];
 
 					// En el registro 1 esta los datos y el template
-					that._oView.setViewDataFromService(result[1]);
+					that._oView.setViewDataFromService(result[1].data);
 
 					// Si se esta editando hay que mirar el resultado del bloqueo. Si esta bloqueado la tabla no podrá ser editada
 					if (that._editMode == constants.editMode.edit)
-						that._determineEdtModelAccordingLockView(result[2]);
+						that._determineEdtModelAccordingLockView(result[2].data);
 
 
 					// Se ejecuta el código del Success

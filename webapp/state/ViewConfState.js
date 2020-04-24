@@ -72,7 +72,7 @@ sap.ui.define([
 							// Se llama al método que devuelve el objeto View con la información del catalogo + la general 
 							var oView = that._instanceViewObject({
 								viewName: mParams.viewName,
-								fieldCatalog: result.results
+								fieldCatalog: result.data.results
 							});
 
 							resolve(oView);
@@ -91,7 +91,7 @@ sap.ui.define([
 						// Se llama al método que devuelve el objeto View con la información del catalogo + la general 
 						var oView = that._instanceViewObject({
 							viewName: mParams.viewName,
-							fieldCatalog: result.results
+							fieldCatalog: result.data.results
 						});
 
 
