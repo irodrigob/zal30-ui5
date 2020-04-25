@@ -93,12 +93,13 @@ sap.ui.define([
 
 		},
 		// Validación y determinación de valores de una fila
-		rowValidateDetermination: function (sViewName, mRow) {
+		rowValidateDetermination: function (sViewName, mRow, sColumn) {
 
 			
 			return this.callOData(_mService.rowValidationDetermination).post({
 				VIEWNAME: sViewName,
 				LANGU: this._sLanguage,
+				COLUMN:sColumn,
 				ROW: JSON.stringify(mRow)
 			}, {});
 
