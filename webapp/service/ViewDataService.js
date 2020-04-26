@@ -24,6 +24,12 @@ sap.ui.define([
 			bUseMock: false,
 			mockFile: "/rowValidationDetermination.json",
 			oDataModel: "masterData"
+		},
+		verifyFieldData: {
+			serviceName: "/verifyFieldDataSet",
+			bUseMock: false,
+			mockFile: "/verifyFieldData.json",
+			oDataModel: "masterData"
 		}
 	};
 
@@ -95,16 +101,37 @@ sap.ui.define([
 		// Validación y determinación de valores de una fila
 		rowValidateDetermination: function (sViewName, mRow, sColumn) {
 
-			
+
 			return this.callOData(_mService.rowValidationDetermination).post({
 				VIEWNAME: sViewName,
 				LANGU: this._sLanguage,
-				COLUMN:sColumn,
+				COLUMN: sColumn,
 				ROW: JSON.stringify(mRow)
 			}, {});
+		},
+		// Verificación del valor a nivel de campos
+		verifyFieldData: function (sViewName, sValue, sColumn) {
+			// Se recupera el objeto oData al que apunta el servicio
+			var oModel = this.getModel(_mService.lockView.oDataModel);
 
+			if (this._bMock) {
+				// Se crea una nueva configuracuón donde se cambia el valor service name para pasarle la clave de la llama al servicio
+				var mLocalService = merge({}, _mService.verifyFieldData, {});
 
+			} else {
+				// Se crea una nueva configuracuón donde se cambia el valor service name para pasarle la clave de la llama al servicio
+				var mLocalService = merge({}, _mService.verifyFieldData, {
+					serviceName: oModel.createKey(_mService.verifyFieldData.serviceName, {
+						VIEWNAME: sViewName,
+						COLUMN: sColumn,
+						VALUE: sValue,
+						LANGU: this._sLanguage
+					})
+				});
 
+			}
+
+			return this.callOData(mLocalService).get();
 		}
 
 	});

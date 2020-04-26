@@ -147,8 +147,11 @@ sap.ui.define([
 			// Se lanza la validación a nivel de fila
 			this._oView.rowValidatePath(mParams.path);
 
+			// Se llama a la validación a nivel de campo-valor en SAP
+			this._verifyFieldData(mParams.path, mParamsOutput.value, mParams.column);
+
 			// se lanza el proceso de validación y determinación de valores en SAP
-			this._rowValidationDeterminationSAP(mParams.path, mParams.column);
+			//this._rowValidationDeterminationSAP(mParams.path, mParams.column);
 
 			// Se aplica el formato para que pueda ser devuelto y se grabe correctamente en el campo.
 			mParamsOutput.value = this._oView.formatterValue(mParams.column, mParamsOutput.value);
@@ -212,15 +215,24 @@ sap.ui.define([
 			// Se recuperán los datos de la fila 
 			var mRow = this._oView.getRowFromPath(sPath);
 
-			this._oViewDataService.rowValidateDetermination(this._oView.getViewInfo().VIEWNAME, mRow. sColumn).then((result) => {
+			this._oViewDataService.rowValidateDetermination(this._oView.getViewInfo().VIEWNAME, mRow.sColumn).then((result) => {
 					debugger;
 				},
 				(error) => {
 
 					debugger;
-				}); 
+				});
+		},
+		_verifyFieldData: function (sPath, sValue, sColumn) {
+			this._oViewDataService.verifyFieldData(this._oView.getViewInfo().VIEWNAME, sValue, sColumn).then((result) => {					
+					// Si hay mensaje de error se añade a la columna
+					if (result.data.MESSAGE != '')
+						this._oView.addMsgRowStatusMsgFromPath(sPath, result.data.MESSAGE_TYPE, result.data.MESSAGE, sColumn);
+				},
+				(error) => {
 
-				
+					debugger;
+				});
 		}
 	});
 	return oViewDataState;

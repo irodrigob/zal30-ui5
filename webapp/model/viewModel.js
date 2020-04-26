@@ -70,7 +70,7 @@ sap.ui.define([
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 
 			// Debido a que el JSON viene en un literal para poderlo usarla hay que parsearlo.										
-			var oData = JSON.parse(oDataGW.DATA); 
+			var oData = JSON.parse(oDataGW.DATA);
 			// Los datos originales no se formatean porque lo hará los propios controles de ui5
 			oData = this._processAdapModelDataFromGW(oData, false);
 
@@ -83,7 +83,7 @@ sap.ui.define([
 			// Se guarda los valores originales para poder luego saber si un registro se ha modificado o no. 
 			//Para evitar que las variables por referencias hagan los dos modelo iguales hay que usar el merge. Y como además, quiero guardarlo en el mismo path del modelo propio para simplificar
 			// luego las comparativas hago uso de variables intermedias. 
-			this._oOriginalViewData = new sap.ui.model.json.JSONModel();			
+			this._oOriginalViewData = new sap.ui.model.json.JSONModel();
 			// El merge no crea bien el array, vamos que no es un array del todo y falla cuando se usa el find y demas. Por lo tanto replico el mismo proceso
 			// que con los datos que se usarán
 			//var oDataOriginal = merge({}, oData);
@@ -348,11 +348,7 @@ sap.ui.define([
 					case constants.columnTtype.char:
 						var text = this._oI18nResource.getText("ViewData.rowValidate.fieldMandatory", [aFieldsMandatory[x].headerText]);
 						if (mRow[aFieldsMandatory[x].name] == '') {
-							mRow[constants.tableData.internalFields.rowStatus] = constants.tableData.rowStatusValues.error;
-							mRow[constants.tableData.internalFields.rowStatusMsg].push({
-								TYPE: constants.messageType.error,
-								MESSAGE: text
-							});
+							this.addMsgRowStatusMsg(mRow, constants.messageType.error, text, aFieldsMandatory[x].name);
 						}
 
 						break;
@@ -379,8 +375,6 @@ sap.ui.define([
 			// Para simplificar procesos me quedo con los campos que son claves y que no sean técnicos, estos últimos no se visualizan nunca.
 			aFielCatalog = aFielCatalog.filter(field => field.keyDDIC && !field.tech);
 
-			//debugger;
-
 			// Se leen todo los registros
 			for (var x = 0; x < aValues.length; x++) {
 				var mRowValue = aValues[x];
@@ -400,11 +394,7 @@ sap.ui.define([
 					// Si hay registro duplicado, se marca el registro como erróneo
 					if (bDuplicate) {
 						var text = this._oI18nResource.getText("ViewData.rowValidate.rowDuplicate");
-						mRow[constants.tableData.internalFields.rowStatus] = constants.tableData.rowStatusValues.error;
-						mRow[constants.tableData.internalFields.rowStatusMsg].push({
-							TYPE: constants.messageType.error,
-							MESSAGE: this._oI18nResource.getText("ViewData.rowValidate.rowDuplicate")
-						});
+						this.addMsgRowStatusMsg(mRow, constants.messageType.error, this._oI18nResource.getText("ViewData.rowValidate.rowDuplicate"), aFielCatalog[z].name);
 						break; // Se sale del proceso porque ya se ha encontrado una coincidea
 					}
 
@@ -458,6 +448,37 @@ sap.ui.define([
 		getRowFromPath: function (sPath) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			return oViewDataModel.getProperty(sPath);
+		},
+		// Añade un mensaje en una fila según su path
+		addMsgRowStatusMsgFromPath: function (sPath, sType, sMessage, sColumn) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var mRow = oViewDataModel.getProperty(sPath);
+			if (mRow != undefined) {
+				// se añade el mensaje a la fila
+				this.addMsgRowStatusMsg(mRow, sType, sMessage, sColumn);
+
+				// Se guardan los datos en el modelo
+				oViewDataModel.setProperty(sPath, mRow);
+			}
+		},
+		// Añade un mensaje a una fila de datos
+		addMsgRowStatusMsg: function (mRow, sType, sMessage, sColumn) {
+			mRow[constants.tableData.internalFields.rowStatusMsg].push({
+				TYPE: sType, //constants.messageType.error,
+				MESSAGE: sMessage,
+				FIELDNAME: sColumn ? sColumn : ''
+			});
+			// Se determina el rowStatus según los mensajes
+			this.determineRowStatusMsgFromColumnMsg(mRow);
+		},
+		// Determina el rowStatus de la fila según los mensajes
+		determineRowStatusMsgFromColumnMsg(mRow) {
+			var aMsg = mRow[constants.tableData.internalFields.rowStatusMsg];
+
+			// Si hay un mensaje de error, el rowStatus se marca como erróneo. En caso contrario se deja tal cual estaba
+			if (aMsg.find(type => type.TYPE == constants.messageType.error))
+				mRow[constants.tableData.internalFields.rowStatus] = constants.tableData.rowStatusValues.error;
+
 		},
 		//////////////////////////////////	
 		//        Private methods       //	
