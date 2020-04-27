@@ -49,7 +49,8 @@ sap.ui.define([
 				this.getView().addDependent(this._oConfirmDialog);
 			}
 
-			let oView = this.getView();
+			// 
+
 		},
 		// Botón de ir hacía atras en la aplicación
 		onNavBack: function (oEvent) {
@@ -104,6 +105,7 @@ sap.ui.define([
 		},
 		// Evento que se dispara cuando se modifica el valor de algun registros
 		onValueChange: function (oEvent) {
+			var that = this;
 
 			// Objeto donde se ha cambiado el valor
 			var oSource = oEvent.getSource();
@@ -114,26 +116,31 @@ sap.ui.define([
 
 			// Columna donde se ha cambiado el valor
 
-			var sColumn = this._getCustomDataValue(oSource, constants.tableData.customData.columnName); // oSource.getAggregation("customData")[0].getValue().columnName;
+			var sColumn = this._getCustomDataValue(oSource, constants.tableData.customData.columnName); 
 
 			// tipo de objeto usado en la celda
-			var sObjectTypeCell = this._getCustomDataValue(oSource, constants.tableData.customData.objectType); // oSource.getAggregation("customData")[0].getValue().objectType;
+			var sObjectTypeCell = this._getCustomDataValue(oSource, constants.tableData.customData.objectType); 
+
+			// Estado que el realiza el proceso de cambio de celda
 			var mResult = this._viewDataState.onValueCellChanged({
 				path: sPath,
 				column: sColumn,
 				objetType: sObjectTypeCell,
-				value: sObjectTypeCell == constants.tableData.columnObjectType.checkbox ? oSource.getSelected() : oSource.getValue()
+				value: sObjectTypeCell == constants.tableData.columnObjectType.checkbox ? oSource.getSelected() : oSource.getValue(),
+				handlerPostServiceSAP: function () {
+					// Se valida si hay errores en los datos, si no los hay entonces el botón de grabar se habilita
+					if (that._viewDataState.isDataWithErrors())
+						that._setEnabledBtnSaved(false);
+					else
+						that._setEnabledBtnSaved(true);
+
+					// Se lanza el proceso que determina si se mostrarán las columnas de acción del listado
+					that._determineShowFixColumnactions();
+				}
 			});
 			oEvent.getSource().setValue(mResult.value);
 
-			// Se valida si hay errores en los datos, si no los hay entonces el botón de grabar se habilita
-			if (this._viewDataState.isDataWithErrors())
-				this._setEnabledBtnSaved(false);
-			else
-				this._setEnabledBtnSaved(true);
 
-			// Se lanza el proceso que determina si se mostrarán las columnas de acción del listado
-			this._determineShowFixColumnactions();
 
 		},
 		// Evento que se lanza cuando se pulsa el boton de borrar entradas 
@@ -234,6 +241,7 @@ sap.ui.define([
 			this._oLogDialog.openDialog();
 
 		},
+
 		//////////////////////////////////
 		//                              //
 		//        Private methods       //
@@ -320,8 +328,10 @@ sap.ui.define([
 			oViewDataModel.setProperty("/viewDesc", '');
 			oViewDataModel.setProperty("/btnDeletedEnabled", false);
 			oViewDataModel.setProperty("/btnSaveEnabled", false);
+
 			// Los botones de edición no se visualizan por defecto
 			this._setVisibleEditButtons(false);
+			
 		},
 		// Proceso en que se leen tanto la configuración de la vista como los datos
 		_readView: function (sViewName) {

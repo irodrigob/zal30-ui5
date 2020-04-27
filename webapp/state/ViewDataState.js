@@ -147,11 +147,29 @@ sap.ui.define([
 			// Se lanza la validación a nivel de fila
 			this._oView.rowValidatePath(mParams.path);
 
-			// Se llama a la validación a nivel de campo-valor en SAP
-			this._verifyFieldData(mParams.path, mParamsOutput.value, mParams.column);
+			// Se inicial el proceso de llamadas a SAP, todas las llamadas se encadenan usando el Promise
+			// Primer servicio es que hace la la validación a nivel de campo-valor en SAP
+			var aServices = [this._verifyFieldData(mParams.path, mParamsOutput.value, mParams.column)];
 
-			// se lanza el proceso de validación y determinación de valores en SAP
-			//this._rowValidationDeterminationSAP(mParams.path, mParams.column);
+			// Si el último path modificado difiere al actual y no esta en blanco(ocurrirá al principio o cuando se grabe), 
+			// se lanza el proceso de validación de la fila anterior modificada. Esto se hace porque se asume que te has ido de fila para modificar otra. Con lo cual
+			// supuestamente ya has introducido todos los datos necesarios
+			if (this._lastPathChanged != '' & this._lastPathChanged != mParams.path) {
+				aServices.push(this._rowValidationDeterminationSAP(this._lastPathChanged));
+			}
+			// Se sobreescribe el path anterior modificado
+			this._lastPathChanged = mParams.path;
+
+
+			Promise.all(aServices).then((result) => {
+
+					// Se llama a la función que contiene el procesos una vez los servicios han terminado.
+					// Esta función contiene los ajustes visuales en base al modelo de datos
+					mParams.handlerPostServiceSAP();
+				},
+				(error) => {
+
+				});
 
 			// Se aplica el formato para que pueda ser devuelto y se grabe correctamente en el campo.
 			mParamsOutput.value = this._oView.formatterValue(mParams.column, mParamsOutput.value);
@@ -206,33 +224,48 @@ sap.ui.define([
 		},
 		_initModel: function () {
 			// Modo de edición
-			this._editMode = '';
-			this._alreadyBlocked = false;
-			this._lockedByUser = '';
+			this._editMode = ''; // Modo de edicion
+			this._alreadyBlocked = false; // Vista bloqueada
+			this._lockedByUser = ''; // Usuario del bloqueo
+			this._lastPathChanged = ''; // Último path modificado
 		},
 		// Va
-		_rowValidationDeterminationSAP: function (sPath, sColumn) {
-			// Se recuperán los datos de la fila 
-			var mRow = this._oView.getRowFromPath(sPath);
+		_rowValidationDeterminationSAP: function (sPath) {
+			var that = this;
 
-			this._oViewDataService.rowValidateDetermination(this._oView.getViewInfo().VIEWNAME, mRow.sColumn).then((result) => {
-					debugger;
-				},
-				(error) => {
+			// La llamada al servicio se incluye en un Promise porque este servicio puede ser encadenado en otras validaciones
+			var oPromise = new Promise(function (resolve, reject) {
+				that._oViewDataService.rowValidateDetermination(that._oView.getViewInfo().VIEWNAME, that._oView.getRowFromPath(sPath)).then((result) => {
+						debugger;
+						resolve();
+					},
+					(error) => {
+						debugger;
+						reject(error)
+					});
+			});
+			return oPromise;
 
-					debugger;
-				});
+
 		},
 		_verifyFieldData: function (sPath, sValue, sColumn) {
-			this._oViewDataService.verifyFieldData(this._oView.getViewInfo().VIEWNAME, sValue, sColumn).then((result) => {					
-					// Si hay mensaje de error se añade a la columna
-					if (result.data.MESSAGE != '')
-						this._oView.addMsgRowStatusMsgFromPath(sPath, result.data.MESSAGE_TYPE, result.data.MESSAGE, sColumn);
-				},
-				(error) => {
+			var that = this;
+			// El servicio lo asocio a un promise para que este servicio pueda ser encadenado con otros
+			var oPromise = new Promise(function (resolve, reject) {
+				that._oViewDataService.verifyFieldData(that._oView.getViewInfo().VIEWNAME, sValue, sColumn).then((result) => {
+						// Si hay mensaje de error se añade a la columna
+						if (result.data.MESSAGE != '')
+							that._oView.addMsgRowStatusMsgFromPath(sPath, result.data.MESSAGE_TYPE, result.data.MESSAGE, sColumn);
 
-					debugger;
-				});
+						// Inicialmente no se devuelve nada de este servicio
+						resolve()
+					},
+					(error) => {
+						reject(error)
+					});
+			});
+			return oPromise;
+
 		}
 	});
 	return oViewDataState;
