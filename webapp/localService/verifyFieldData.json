@@ -1,0 +1,13 @@
+{
+	"__metadata": {
+		"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/verifyFieldDataSet(COLUMN='FIELDCURR',VALUE='3300.01',LANGU='EN',VIEWNAME='ZAL30_T_UI5_TEST')",
+		"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/verifyFieldDataSet(COLUMN='FIELDCURR',VALUE='3300.01',LANGU='EN',VIEWNAME='ZAL30_T_UI5_TEST')",
+		"type": "ZAL30_DATA_SRV.verifyFieldData"
+	},
+	"COLUMN": "FIELDCURR",
+	"VALUE": "3300.01",
+	"LANGU": "EN",
+	"MESSAGE_TYPE": "",
+	"MESSAGE": "",
+	"VIEWNAME": "ZAL30_T_UI5_TEST"
+}

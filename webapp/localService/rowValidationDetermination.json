@@ -1,0 +1,10 @@
+{
+	"__metadata": {
+		"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/rowValidationDeterminationSet(LANGU='EN',VIEWNAME='ZAL30_T_UI5_TEST')",
+		"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/rowValidationDeterminationSet(LANGU='EN',VIEWNAME='ZAL30_T_UI5_TEST')",
+		"type": "ZAL30_DATA_SRV.rowValidationDetermination"
+	},
+	"LANGU": "EN",
+	"VIEWNAME": "ZAL30_T_UI5_TEST",
+	"ROW": "{\"FIELDCHKBOX\":\"\",\"FIELDCURR\":2330.00,\"FIELDDATE\":\"2020-01-01\",\"FIELDNAME\":\"F10\",\"FIELDQTY\":230.000,\"FIELDTIME\":\"16:00:00\",\"FIELDUNIT\":\"ST\",\"FIELDWAERS\":\"AAA\",\"MANDT\":\"001\",\"VIR_POS\":2,\"ZAL30_IS_DICT\":\"X\",\"ZAL30_ROW_STATUS\":\"E\",\"ZAL30_ROW_STATUS_MSG\":[{\"TYPE\":\"E\",\"MESSAGE\":\"Enter a valid currency\",\"FIELDNAME\":\"FIELDWAERS\"}],\"ZAL30_STYLE\":[],\"ZAL30_TABIX\":2,\"ZAL30_UI5_STYLE\":[],\"ZAL30_UPDKZ\":\"U\"}"
+}
