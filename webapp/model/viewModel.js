@@ -72,7 +72,7 @@ sap.ui.define([
 			// Debido a que el JSON viene en un literal para poderlo usarla hay que parsearlo.										
 			var oData = JSON.parse(oDataGW.DATA);
 			// Los datos originales no se formatean porque lo hará los propios controles de ui5
-			oData = this._processAdapModelDataFromGW(oData, false);
+			oData = this._InitialProcessAdapModelDataFromGW(oData, false);
 
 			// Guardo el número de registros
 			this._lastTabix = oData.length;
@@ -88,13 +88,13 @@ sap.ui.define([
 			// que con los datos que se usarán
 			//var oDataOriginal = merge({}, oData);
 			var oDataOriginal = JSON.parse(oDataGW.DATA);
-			oDataOriginal = this._processAdapModelDataFromGW(oDataOriginal, false);
+			oDataOriginal = this._InitialProcessAdapModelDataFromGW(oDataOriginal, false);
 			this._oOriginalViewData.setProperty(constants.tableData.path.values, oDataOriginal);
 
 			// Se hace lo mismos pasos para los datos de template, pero estos no se guardan en el modelo de UI5 sino que se guardan como variable
 			this._oDataTemplate = new sap.ui.model.json.JSONModel();
 			var aDataTemplate = JSON.parse(oDataGW.DATA_TEMPLATE);
-			aDataTemplate = this._processAdapModelDataFromGW(aDataTemplate, false);
+			aDataTemplate = this._InitialProcessAdapModelDataFromGW(aDataTemplate, false);
 			this._oDataTemplate.setProperty("/", aDataTemplate);
 
 
@@ -328,8 +328,8 @@ sap.ui.define([
 				mOptions.duplicateKeyFields = mParamOptions.duplicateKeyFields;
 
 			// Al iniciaio del proceso se inicializan los camops del control de la fila. Para que los errores anterior no se queden			
-			mRow[constants.tableData.internalFields.rowStatus] = '';
-			mRow[constants.tableData.internalFields.rowStatusMsg] = [];
+			mRow[constants.tableData.internalFields.rowStatusInternal] = '';
+			mRow[constants.tableData.internalFields.rowStatusMsgInternal] = [];
 
 			// Campos obligatorios
 			if (mOptions.mandatory)
@@ -348,7 +348,7 @@ sap.ui.define([
 					case constants.columnTtype.char:
 						var text = this._oI18nResource.getText("ViewData.rowValidate.fieldMandatory", [aFieldsMandatory[x].headerText]);
 						if (mRow[aFieldsMandatory[x].name] == '') {
-							this.addMsgRowStatusMsg(mRow, constants.messageType.error, text, aFieldsMandatory[x].name);
+							this.addMsgRowStatusMsgInternal(mRow, constants.messageType.error, text, aFieldsMandatory[x].name);
 						}
 
 						break;
@@ -394,7 +394,7 @@ sap.ui.define([
 					// Si hay registro duplicado, se marca el registro como erróneo
 					if (bDuplicate) {
 						var text = this._oI18nResource.getText("ViewData.rowValidate.rowDuplicate");
-						this.addMsgRowStatusMsg(mRow, constants.messageType.error, this._oI18nResource.getText("ViewData.rowValidate.rowDuplicate"), aFielCatalog[z].name);
+						this.addMsgRowStatusMsgInternal(mRow, constants.messageType.error, this._oI18nResource.getText("ViewData.rowValidate.rowDuplicate"), aFielCatalog[z].name);
 						break; // Se sale del proceso porque ya se ha encontrado una coincidea
 					}
 
@@ -409,7 +409,9 @@ sap.ui.define([
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
 
-			if (aValues.find(values => values[constants.tableData.internalFields.rowStatus] == constants.tableData.rowStatusValues.error))
+			// Si alguna de los dos campos que gestionan el status de la fila tienen error, entonces se devuelve los errores
+			if (aValues.find(values => values[constants.tableData.internalFields.rowStatus] == constants.tableData.rowStatusValues.error)
+				|| aValues.find(values => values[constants.tableData.internalFields.rowStatusInernal] == constants.tableData.rowStatusValues.error))
 				return true;
 			else
 				return false;
@@ -417,7 +419,10 @@ sap.ui.define([
 		// Devuelve los mensajes de error de una fila de datos
 		getRowStatusMsg: function (sPath) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			return oViewDataModel.getProperty(sPath + "/" + constants.tableData.internalFields.rowStatusMsg);
+			var aMsgSAP = oViewDataModel.getProperty(sPath + "/" + constants.tableData.internalFields.rowStatusMsg);
+			var aMsgInternal = oViewDataModel.getProperty(sPath + "/" + constants.tableData.internalFields.rowStatusMsgInternal);			
+			return aMsgSAP.concat(aMsgInternal);
+
 		},
 		// Aplica lo indicado en el campo de estilos en una tabla de datos
 		applyFieldStyleInData: function (oValues) {
@@ -450,34 +455,57 @@ sap.ui.define([
 			return oViewDataModel.getProperty(sPath);
 		},
 		// Añade un mensaje en una fila según su path
-		addMsgRowStatusMsgFromPath: function (sPath, sType, sMessage, sColumn) {
+		addMsgRowStatusMsgInternalFromPath: function (sPath, sType, sMessage, sColumn) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			var mRow = oViewDataModel.getProperty(sPath);
 			if (mRow != undefined) {
 				// se añade el mensaje a la fila
-				this.addMsgRowStatusMsg(mRow, sType, sMessage, sColumn);
+				this.addMsgRowStatusMsgInternal(mRow, sType, sMessage, sColumn);
 
 				// Se guardan los datos en el modelo
 				oViewDataModel.setProperty(sPath, mRow);
 			}
 		},
 		// Añade un mensaje a una fila de datos
-		addMsgRowStatusMsg: function (mRow, sType, sMessage, sColumn) {
-			mRow[constants.tableData.internalFields.rowStatusMsg].push({
+		addMsgRowStatusMsgInternal: function (mRow, sType, sMessage, sColumn) {
+			mRow[constants.tableData.internalFields.rowStatusMsgInternal].push({
 				TYPE: sType, //constants.messageType.error,
 				MESSAGE: sMessage,
 				FIELDNAME: sColumn ? sColumn : ''
 			});
 			// Se determina el rowStatus según los mensajes
-			this.determineRowStatusMsgFromColumnMsg(mRow);
+			this.setRowStatusInternal(mRow);
 		},
 		// Determina el rowStatus de la fila según los mensajes
-		determineRowStatusMsgFromColumnMsg(mRow) {
+		setRowStatusInternal(mRow) {
 			var aMsg = mRow[constants.tableData.internalFields.rowStatusMsg];
+			var aMsgInternal= mRow[constants.tableData.internalFields.rowStatusMsgInternal];
 
-			// Si hay un mensaje de error, el rowStatus se marca como erróneo. En caso contrario se deja tal cual estaba
-			if (aMsg.find(type => type.TYPE == constants.messageType.error))
+			// Si hay un mensaje de error tanto interno como en el de SAP, el rowStatus se marca como erróneo. En caso contrario se deja tal cual estaba
+			if (aMsg.find(type => type.TYPE == constants.messageType.error)
+				|| aMsgInternal.find(type => type.TYPE == constants.messageType.error) )
 				mRow[constants.tableData.internalFields.rowStatus] = constants.tableData.rowStatusValues.error;
+
+		},
+		// Actualiza una fila de datos al modelo
+		updateServiceRow2Model: function (sRow, sPath) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			
+			// Se pasa el string a JSON
+			var oData = JSON.parse(sRow);
+
+			// Se pasa el JSON a una array para poder llamar al método que formatea los valores que vienen de SAP
+			var aValues = [oData];
+
+			// Se aplican los formatos y estilos
+			aValues = this._processAdapModelDataFromGW(aValues, false);
+
+			// Se determina el valor del RowStatus, porque puede cambiar en base los mensajes que vengan de SAP + los
+			// internos de la propia aplicación
+			this.setRowStatusInternal(aValues[0]);
+
+			// Se guardado los datos en la fila seleccionada
+			oViewDataModel.setProperty(sPath, aValues[0]);
 
 		},
 		//////////////////////////////////	
@@ -613,10 +641,15 @@ sap.ui.define([
 						var sPathEditFieldname = mFieldCatalog[x].name + constants.tableData.suffix_edit_field;
 						mRow[sPathEditFieldname] = mFieldCatalog[x].edit;
 
-						aValues[z] = mRow;
-
 					}
 				}
+
+				// Se añade un campo que contendrán el control interno si la fila es erronea y los mensajes internos de esa fila
+				mRow[constants.tableData.internalFields.rowStatusMsgInternal] = [];
+				//mRow[constants.tableData.internalFields.rowStatusInternal] = "";
+
+				// Se pasa la fila al array
+				aValues[z] = mRow;
 			}
 			return aValues;
 		},
@@ -712,21 +745,31 @@ sap.ui.define([
 							var sPathValue = "/" + z + "/" + sFieldName;
 							mRow[sFieldName] = this.formatterValue(sFieldName, mRow[sFieldName]);
 							aValues[z] = mRow;
-
 						}
-
 					}
+
 				}
 			}
 			return aValues;
 		},
-		// Proceso que adapta el modelo de datos que proviene de GW al modelo que se necesita en al aplicación
-		_processAdapModelDataFromGW(aValues, bApplyFormat) {
-			// Se añaden los campos de control para poder determinar si un campo es editable o no.
+
+		// Proceso inicial que adapta los datos provenientes de GW al formato de la aplicación. Este método solo se lanza al inicio del proceso
+		_InitialProcessAdapModelDataFromGW(aValues, bApplyFormat) {
+			// Se añaden los campos de control para poder determinar si un campo es editable o no, status, etc...
 			aValues = this._addCustomFields(aValues);
 
 			// Se establece a nivel de celda si el campo será editable o no
 			aValues = this._setInitialCellValues(aValues);
+
+			// Proceso que formatea campo y estilos
+			aValues = this._processAdapModelDataFromGW(aValues, bApplyFormat);
+
+			return aValues;
+
+		},
+		// Proceso que adapta el modelo de datos que proviene de GW al modelo que se necesita en al aplicación
+		_processAdapModelDataFromGW(aValues, bApplyFormat) {
+
 
 			// Se adapta los valores según los tipos de campos pasados. Ejemplo: los campos checkbox que hay que cambiar la 'X'/'' por true/false.			
 			//oData = this._convValuesFromService(oData);

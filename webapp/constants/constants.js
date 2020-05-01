@@ -57,15 +57,17 @@ sap.ui.define([], function () {
 				tabix: "ZAL30_TABIX",
 				updkz: "ZAL30_UPDKZ",
 				rowStatus: "ZAL30_ROW_STATUS",
+				rowStatusInternal: "ZAL30_ROW_STATUS_INTERNAL",
 				rowStatusMsg: "ZAL30_ROW_STATUS_MSG",
+				rowStatusMsgInternal: "ZAL30_ROW_STATUS_MSG_INTERNAL",
 				style:"ZAL30_UI5_STYLE"
 			},
 			fixedColumns: {
 				actions: 'ZAL30_FIX_ACTIONS',
 			},
 			rowStatusValues: {
-				error: "ERROR",
-				valid: "VALID"
+				error: "E",
+				valid: "S"
 			},
 			fieldUpkzValues: {
 				update: "U",

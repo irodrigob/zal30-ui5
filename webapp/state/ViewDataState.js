@@ -158,7 +158,7 @@ sap.ui.define([
 				aServices.push(this._rowValidationDeterminationSAP(this._lastPathChanged));
 			}
 			// Se sobreescribe el path anterior modificado
-			this._lastPathChanged = mParams.path;
+			this.setLastPathChanged(mParams.path);
 
 
 			Promise.all(aServices).then((result) => {
@@ -229,14 +229,17 @@ sap.ui.define([
 			this._lockedByUser = ''; // Usuario del bloqueo
 			this._lastPathChanged = ''; // Último path modificado
 		},
-		// Va
+		// Validación de una fila de datos en SAP
 		_rowValidationDeterminationSAP: function (sPath) {
 			var that = this;
 
 			// La llamada al servicio se incluye en un Promise porque este servicio puede ser encadenado en otras validaciones
 			var oPromise = new Promise(function (resolve, reject) {
 				that._oViewDataService.rowValidateDetermination(that._oView.getViewInfo().VIEWNAME, that._oView.getRowFromPath(sPath)).then((result) => {
-						debugger;
+				
+						// Se actualiza el modelo de datos con el resultado recuperado
+						that._oView.updateServiceRow2Model(result.data.ROW, sPath);
+
 						resolve();
 					},
 					(error) => {
@@ -245,8 +248,14 @@ sap.ui.define([
 					});
 			});
 			return oPromise;
-
-
+		},
+		// Informa el path de la variable que controla que última fila ha sido modificada
+		setLastPathChanged:function(sPath){
+			this._lastPathChanged = sPath;
+		},
+		// Recupera el path de la variable que controla que última fila ha sido modificada
+		getLastPathChanged:function(){
+			return this._lastPathChanged ;
 		},
 		_verifyFieldData: function (sPath, sValue, sColumn) {
 			var that = this;
