@@ -116,10 +116,10 @@ sap.ui.define([
 
 			// Columna donde se ha cambiado el valor
 
-			var sColumn = this._getCustomDataValue(oSource, constants.tableData.customData.columnName); 
+			var sColumn = this._getCustomDataValue(oSource, constants.tableData.customData.columnName);
 
 			// tipo de objeto usado en la celda
-			var sObjectTypeCell = this._getCustomDataValue(oSource, constants.tableData.customData.objectType); 
+			var sObjectTypeCell = this._getCustomDataValue(oSource, constants.tableData.customData.objectType);
 
 			// Estado que el realiza el proceso de cambio de celda
 			var mResult = this._viewDataState.onValueCellChanged({
@@ -128,14 +128,7 @@ sap.ui.define([
 				objetType: sObjectTypeCell,
 				value: sObjectTypeCell == constants.tableData.columnObjectType.checkbox ? oSource.getSelected() : oSource.getValue(),
 				handlerPostServiceSAP: function () {
-					// Se valida si hay errores en los datos, si no los hay entonces el botón de grabar se habilita
-					if (that._viewDataState.isDataWithErrors())
-						that._setEnabledBtnSaved(false);
-					else
-						that._setEnabledBtnSaved(true);
-
-					// Se lanza el proceso que determina si se mostrarán las columnas de acción del listado
-					that._determineShowFixColumnactions();
+					that._postSAPProcess();
 				}
 			});
 			oEvent.getSource().setValue(mResult.value);
@@ -169,18 +162,10 @@ sap.ui.define([
 		},
 		// Evento que se alnza cuando se pulsa el botón de añadir nueva entrada
 		onAddEntry: function (oEvent) {
-			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-
-			this._viewDataState.onAddEntry();
-
-			// Se determina si la columna de acciones se mostrará
-			this._determineShowFixColumnactions();
-
-			// Se valida si hay errores en los datos, si no los hay entonces el botón de grabar se habilita
-			if (this._viewDataState.isDataWithErrors())
-				this._setEnabledBtnSaved(false);
-			else
-				this._setEnabledBtnSaved(true);
+			var that = this;
+			this._viewDataState.onAddEntry(function () {
+				that._postSAPProcess();
+			});
 
 		},
 		onRowSelectionChange: function (oEvent) {
@@ -312,6 +297,20 @@ sap.ui.define([
 
 			}
 		},
+		//////////////////////////////////	
+		//        Private methods       //	
+		//////////////////////////////////	
+		// Procesos que se lanzan después de llamar a SAP. Están el control de botones, columnas de errores, etc.
+		_postSAPProcess: function () {
+			// Se valida si hay errores en los datos, si no los hay entonces el botón de grabar se habilita
+			if (this._viewDataState.isDataWithErrors())
+				this._setEnabledBtnSaved(false);
+			else
+				this._setEnabledBtnSaved(true);
+
+			// Se lanza el proceso que determina si se mostrarán las columnas de acción del listado
+			this._determineShowFixColumnactions();
+		},
 		// Inicialización del modelo de datos
 		_initModelData: function () {
 			// Se recupera la clase que gestiona los estado de la configuración y datos de las vistas			
@@ -331,7 +330,7 @@ sap.ui.define([
 
 			// Los botones de edición no se visualizan por defecto
 			this._setVisibleEditButtons(false);
-			
+
 		},
 		// Proceso en que se leen tanto la configuración de la vista como los datos
 		_readView: function (sViewName) {
@@ -690,6 +689,11 @@ sap.ui.define([
 
 			// La columna de acciones solo se muestra si hay errors			
 			oViewDataModel.setProperty(constants.tableData.path.visibleFixColumnAction, this._viewDataState.isDataWithErrors());
+
+			// En determinados contextos, por ejemplo al añadir una fila, donde se llama este proceso no refresque bien la visualización/ocultación de columnas. Por ello, le doy un empujoncito 
+			// para que lo haga.
+			var oTable = this.byId(constants.objectsId.viewData.tableData);
+			oTable.updateRows();
 		},
 		// Establece la visibilidad de los objetos asociados a la edición, como los botones de añadir y borrar
 		_setVisibleEditButtons(bVisible) {

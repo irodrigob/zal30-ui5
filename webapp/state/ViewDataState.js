@@ -191,8 +191,33 @@ sap.ui.define([
 			return this._oView.getNumberKeyFields();
 		},
 		// Evento que se produce al añadir una entrada
-		onAddEntry: function () {
-			this._oView.addEmptyRow();
+		onAddEntry: function (oPostSAPProcess) {
+			var that = this;
+			var aServices = [];
+
+
+			// Si se ha modificado una fila previamente se lanzará el servicio que valida en SAP dicha fila
+			if (this._lastPathChanged != '') {
+				aServices.push(this._rowValidationDeterminationSAP(this._lastPathChanged));
+			}
+
+			// Se añade el proceso que añade una línea al modelo
+			var oPromise = new Promise(function (resolve, reject) {
+				var sNewPath = that._oView.addEmptyRow();
+				// Se sobreescribe el path anterior modificado
+				that.setLastPathChanged(sNewPath);
+			});
+			aServices.push(oPromise);
+
+			Promise.all(aServices).then((result) => {					
+					oPostSAPProcess();
+				},
+				(error) => {
+					debugger;
+				});
+
+
+
 		},
 		// Devuelve si hay registros erroneos
 		isDataWithErrors: function () {
@@ -236,26 +261,26 @@ sap.ui.define([
 			// La llamada al servicio se incluye en un Promise porque este servicio puede ser encadenado en otras validaciones
 			var oPromise = new Promise(function (resolve, reject) {
 				that._oViewDataService.rowValidateDetermination(that._oView.getViewInfo().VIEWNAME, that._oView.getRowFromPath(sPath)).then((result) => {
-				
+
 						// Se actualiza el modelo de datos con el resultado recuperado
 						that._oView.updateServiceRow2Model(result.data.ROW, sPath);
 
 						resolve();
 					},
 					(error) => {
-						debugger;
+						
 						reject(error)
 					});
 			});
 			return oPromise;
 		},
 		// Informa el path de la variable que controla que última fila ha sido modificada
-		setLastPathChanged:function(sPath){
+		setLastPathChanged: function (sPath) {
 			this._lastPathChanged = sPath;
 		},
 		// Recupera el path de la variable que controla que última fila ha sido modificada
-		getLastPathChanged:function(){
-			return this._lastPathChanged ;
+		getLastPathChanged: function () {
+			return this._lastPathChanged;
 		},
 		_verifyFieldData: function (sPath, sValue, sColumn) {
 			var that = this;

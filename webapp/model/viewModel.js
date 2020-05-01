@@ -282,6 +282,8 @@ sap.ui.define([
 			// Se marca la fila con el indicador de actualización
 			this.setRowUpdateIndicator(sPath, constants.tableData.fieldUpkzValues.insert);
 
+			// Se devuelve en que posición se ha añadido el registro
+			return sPath;
 
 
 		},
@@ -410,8 +412,8 @@ sap.ui.define([
 			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
 
 			// Si alguna de los dos campos que gestionan el status de la fila tienen error, entonces se devuelve los errores
-			if (aValues.find(values => values[constants.tableData.internalFields.rowStatus] == constants.tableData.rowStatusValues.error)
-				|| aValues.find(values => values[constants.tableData.internalFields.rowStatusInernal] == constants.tableData.rowStatusValues.error))
+			if (aValues.find(values => values[constants.tableData.internalFields.rowStatus] == constants.tableData.rowStatusValues.error) ||
+				aValues.find(values => values[constants.tableData.internalFields.rowStatusInernal] == constants.tableData.rowStatusValues.error))
 				return true;
 			else
 				return false;
@@ -420,7 +422,7 @@ sap.ui.define([
 		getRowStatusMsg: function (sPath) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			var aMsgSAP = oViewDataModel.getProperty(sPath + "/" + constants.tableData.internalFields.rowStatusMsg);
-			var aMsgInternal = oViewDataModel.getProperty(sPath + "/" + constants.tableData.internalFields.rowStatusMsgInternal);			
+			var aMsgInternal = oViewDataModel.getProperty(sPath + "/" + constants.tableData.internalFields.rowStatusMsgInternal);
 			return aMsgSAP.concat(aMsgInternal);
 
 		},
@@ -479,23 +481,26 @@ sap.ui.define([
 		// Determina el rowStatus de la fila según los mensajes
 		setRowStatusInternal(mRow) {
 			var aMsg = mRow[constants.tableData.internalFields.rowStatusMsg];
-			var aMsgInternal= mRow[constants.tableData.internalFields.rowStatusMsgInternal];
+			var aMsgInternal = mRow[constants.tableData.internalFields.rowStatusMsgInternal];
 
 			// Si hay un mensaje de error tanto interno como en el de SAP, el rowStatus se marca como erróneo. En caso contrario se deja tal cual estaba
-			if (aMsg.find(type => type.TYPE == constants.messageType.error)
-				|| aMsgInternal.find(type => type.TYPE == constants.messageType.error) )
+			if (aMsg.find(type => type.TYPE == constants.messageType.error) ||
+				aMsgInternal.find(type => type.TYPE == constants.messageType.error))
 				mRow[constants.tableData.internalFields.rowStatus] = constants.tableData.rowStatusValues.error;
 
 		},
 		// Actualiza una fila de datos al modelo
 		updateServiceRow2Model: function (sRow, sPath) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			
+
 			// Se pasa el string a JSON
-			var oData = JSON.parse(sRow);
+			var mRowOData = JSON.parse(sRow);
+
+			// Se pasan los valores de los campos que vienen en el catalogo de campos de SAP al registro que hay en el modelo
+			var mRow = this._transfODataValues2ModelDatafromPath(sPath, mRowOData);
 
 			// Se pasa el JSON a una array para poder llamar al método que formatea los valores que vienen de SAP
-			var aValues = [oData];
+			var aValues = [mRow];
 
 			// Se aplican los formatos y estilos
 			aValues = this._processAdapModelDataFromGW(aValues, false);
@@ -627,19 +632,19 @@ sap.ui.define([
 		// 2.- Campo para poder un status a nivel de fila si se ha modificado o no.
 		_addCustomFields: function (aValues) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			var mFieldCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
+			var aFieldCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
 
 			// Se recorren los datos leídos
 			for (var z = 0; z < aValues.length; z++) {
 				var mRow = aValues[z];
 
-				for (var x = 0; x < mFieldCatalog.length; x++) {
+				for (var x = 0; x < aFieldCatalog.length; x++) {
 					// Los campos técnicos no tendrán campo de edición porque nunca se muestran
-					if (this._isEditableFieldCatalog(mFieldCatalog[x])) {
+					if (this._isEditableFieldCatalog(aFieldCatalog[x])) {
 
 						// se construye el nombre del nuevo campo que será el nombre del campo + un sufijo						
-						var sPathEditFieldname = mFieldCatalog[x].name + constants.tableData.suffix_edit_field;
-						mRow[sPathEditFieldname] = mFieldCatalog[x].edit;
+						var sPathEditFieldname = aFieldCatalog[x].name + constants.tableData.suffix_edit_field;
+						mRow[sPathEditFieldname] = aFieldCatalog[x].edit;
 
 					}
 				}
@@ -794,16 +799,38 @@ sap.ui.define([
 
 			return mValues.find(values => values[constants.tableData.internalFields.tabix] === nTabix);
 		},
-		// Completa los datos de determinados cmapos al añadir un nuevo registro
+		// Completa los datos de determinados campos al añadir un nuevo registro
 		_completeDataAddEmptyRow: function (mRow) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			var mFielCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
 
 			// Se informa el campo ZAL30_TABIX con el valor siguiente al último calculado.  Este campo se usa
 			// para control, validaciones, etc.
 			this._lastTabix = this._lastTabix + 1;
 			mRow[constants.tableData.internalFields.tabix] = this._lastTabix;
 
+		},
+		// Transifere los datos del modelo Odata al modelo interno a partir de un path
+		_transfODataValues2ModelDatafromPath: function (sPath, mRowOData) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var aFieldCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
+
+			// Se recupera el registro anterior
+			var mRow = oViewDataModel.getProperty(sPath);
+
+			// Se pasan los datos que vienen del catalogo de campos
+			for (var x = 0; x < aFieldCatalog.length; x++) {
+				mRow[aFieldCatalog[x].name] = mRowOData[aFieldCatalog[x].name];
+			}
+
+			// Se pasan los campos internos que vienen de SAP pero no están en el catalogo.
+			mRow[constants.tableData.internalFields.isDict] = mRowOData[constants.tableData.internalFields.isDict];
+			mRow[constants.tableData.internalFields.tabix] = mRowOData[constants.tableData.internalFields.tabix];
+			mRow[constants.tableData.internalFields.updkz] = mRowOData[constants.tableData.internalFields.updkz];
+			mRow[constants.tableData.internalFields.rowStatus] = mRowOData[constants.tableData.internalFields.rowStatus];
+			mRow[constants.tableData.internalFields.rowStatusMsg] = mRowOData[constants.tableData.internalFields.rowStatusMsg];
+			mRow[constants.tableData.internalFields.style] = mRowOData[constants.tableData.internalFields.style];
+
+			return mRow;
 		}
 
 	});
