@@ -30,7 +30,14 @@ sap.ui.define([
 			bUseMock: false,
 			mockFile: "/verifyFieldData.json",
 			oDataModel: "masterData"
+		},
+		saveData: {
+			serviceName: "/saveDataSet",
+			bUseMock: false,
+			mockFile: "/saveData.json",
+			oDataModel: "masterData"
 		}
+
 	};
 
 	return CoreService.extend("com.ivancio.zal30-ui5.service.ViewDataService", {
@@ -99,11 +106,11 @@ sap.ui.define([
 
 		},
 		// Validación y determinación de valores de una fila
-		rowValidateDetermination: function (sViewName, mRow) {
+		rowValidateDetermination: function (sViewName, sRow) {
 			return this.callOData(_mService.rowValidationDetermination).post({
 				VIEWNAME: sViewName,
 				LANGU: this._sLanguage,				
-				ROW: JSON.stringify(mRow)
+				ROW: sRow
 			}, {});
 		},
 		// Verificación del valor a nivel de campos
@@ -129,6 +136,14 @@ sap.ui.define([
 			}
 
 			return this.callOData(mLocalService).get();
+		},
+		// Grabación de los datos en SAP
+		saveDataSAP:function(sViewName,sData){
+			return this.callOData(_mService.saveDataSAP).post({
+				VIEWNAME: sViewName,
+				LANGU: this._sLanguage,				
+				DATA: sData
+			}, {});
 		}
 
 	});

@@ -156,7 +156,10 @@ sap.ui.define([
 							return false;
 
 					} else {
-						return oValue;
+						if (mColumn.keyDDIC) // Los campos clave se pasan a mayúsculas, tal como lo hace SAP
+							return oValue.toUpperCase();
+						else
+							return oValue;
 					}
 
 					break;
@@ -372,10 +375,10 @@ sap.ui.define([
 		validateDuplicateKeyFields: function (mRow) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
-			var aFielCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
+			var aFieldCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
 
 			// Para simplificar procesos me quedo con los campos que son claves y que no sean técnicos, estos últimos no se visualizan nunca.
-			aFielCatalog = aFielCatalog.filter(field => field.keyDDIC && !field.tech);
+			aFieldCatalog = aFieldCatalog.filter(field => field.keyDDIC && !field.tech);
 
 			// Se leen todo los registros
 			for (var x = 0; x < aValues.length; x++) {
@@ -386,18 +389,15 @@ sap.ui.define([
 
 					var bDuplicate = true;
 					// Se recorren los campos editables y que no seán tecnicos, ya que los campos técnicos no se visualizan						
-					for (var z = 0; z < aFielCatalog.length; z++) {
-						// Si el valor no coincide se indica que no hay igualdad y se sale del proceso de búsqueda
-						if (mRow[aFielCatalog[z].name] != mRowValue[aFielCatalog[z].name]) {
-							bDuplicate = false;
-							break;
+					for (var z = 0; z < aFieldCatalog.length; z++) {
+						// Si el valor coincide se añade en que campos hay duplicados
+						if (mRow[aFieldCatalog[z].name] == mRowValue[aFieldCatalog[z].name]) {
+
+							var text = this._oI18nResource.getText("ViewData.rowValidate.rowDuplicate");
+							this.addMsgRowStatusMsgInternal(mRow, constants.messageType.error, this._oI18nResource.getText("ViewData.rowValidate.rowDuplicate"));
+							break; // se sale del proceso porque ya se ha encontrado una coincidencia
+
 						}
-					}
-					// Si hay registro duplicado, se marca el registro como erróneo
-					if (bDuplicate) {
-						var text = this._oI18nResource.getText("ViewData.rowValidate.rowDuplicate");
-						this.addMsgRowStatusMsgInternal(mRow, constants.messageType.error, this._oI18nResource.getText("ViewData.rowValidate.rowDuplicate"), aFielCatalog[z].name);
-						break; // Se sale del proceso porque ya se ha encontrado una coincidea
 					}
 
 				}
@@ -456,6 +456,10 @@ sap.ui.define([
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			return oViewDataModel.getProperty(sPath);
 		},
+		// Devuelve el valor de una fila en formato JSON
+		getRowFromPathFormatJSON: function (sPath) {
+			return JSON.stringify(this.getRowFromPath(sPath));
+		},
 		// Añade un mensaje en una fila según su path
 		addMsgRowStatusMsgInternalFromPath: function (sPath, sType, sMessage, sColumn) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
@@ -512,6 +516,13 @@ sap.ui.define([
 			// Se guardado los datos en la fila seleccionada
 			oViewDataModel.setProperty(sPath, aValues[0]);
 
+		},
+		// Devuelve los datos en formato JSON
+		getModelDataFormatJSON: function () {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
+
+			return JSON.stringify(aValues);
 		},
 		//////////////////////////////////	
 		//        Private methods       //	

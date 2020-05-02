@@ -150,10 +150,15 @@ sap.ui.define([
 				sEndButtonText: this._oI18nResource.getText("ViewData.popupConfDeleteEndButton"),
 				oCallBackStartButton: function (oEvent) {
 
-					that._viewDataState.onDeleteEntries(aIndices);
-					var oTable = that.byId(constants.objectsId.viewData.tableData);
-					oTable.getBinding("rows").applyFilter(); // Se vuelven aplicar los filtros definidos		
-					oTable.updateRows(); /// Se actualizan los datos de las filas para que se refresque la tabla					
+					that._viewDataState.onDeleteEntries(aIndices, function () {
+						that._postSAPProcess();
+						var oTable = that.byId(constants.objectsId.viewData.tableData);
+						oTable.getBinding("rows").applyFilter(); // Se vuelven aplicar los filtros definidos		
+						oTable.updateRows(); // Se actualizan los datos de las filas para que se refresque la tabla	
+						// Fuerzo la deseleccion de los registros porque quedan marcados internamente. 
+						oTable.setSelectedIndex(-1);
+					});
+
 				},
 				oCallBackEndButton: {}
 			});
@@ -178,6 +183,12 @@ sap.ui.define([
 			oViewDataModel.setProperty("/btnDeletedEnabled", bEnabled);
 		},
 		onSaveData: function (oEvent) {
+
+			var that = this;
+
+			this._viewDataState(function () {
+				that._postSAPProcess();
+			});
 
 		},
 		// Devuelve el formato del RowSetting según el valor del campo ZAL30_ROW_STATUS

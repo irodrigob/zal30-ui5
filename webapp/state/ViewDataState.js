@@ -177,12 +177,27 @@ sap.ui.define([
 			return mParamsOutput;
 		},
 		// Evento que se lanza cuando se marcan líneas para borrar
-		onDeleteEntries: function (aRows) {
+		onDeleteEntries: function (aRows, oPostSAPProcess) {
+			var that = this;
 
 			// Como se controla que el botón de borrar se habilite solo cuando se seleccionan registros, cuando llega a este método
 			// seguro que hay líneas seleccionadas
 			for (var x = 0; x < aRows.length; x++) {
-				this._oView.deleteEntry(aRows[x]);
+				that._oView.deleteEntry(aRows[x]);
+			}
+
+			// Si se ha modificado una fila previamente se lanzará el servicio que valida en SAP dicha fila
+			if (this._lastPathChanged != '') {
+				this._rowValidationDeterminationSAP(this._lastPathChanged).then((result) => {
+						that.setLastPathChanged(""); // Se marca que no hay fila pendiente de validar
+						oPostSAPProcess();
+					},
+					(error) => {
+
+					});
+			} else {
+				// Si no se llama al servicio de SAP hay que lanzar la función pasada para el refresco de datos en la tabla
+				oPostSAPProcess();
 			}
 
 		},
@@ -195,21 +210,22 @@ sap.ui.define([
 			var that = this;
 			var aServices = [];
 
+			// Como en ambos procesos luego hay que ajustar los datos de la tabla para no hacer dos veces lo mismo, lo que hago es encadenar ambas llamadas.
+			// Para que cuando terminen las dos se ejecute los procesos en pantalla para ajustar sus visualizaciones.
 
 			// Si se ha modificado una fila previamente se lanzará el servicio que valida en SAP dicha fila
 			if (this._lastPathChanged != '') {
 				aServices.push(this._rowValidationDeterminationSAP(this._lastPathChanged));
 			}
 
-			// Se añade el proceso que añade una línea al modelo
-			var oPromise = new Promise(function (resolve, reject) {
+			aServices.push(new Promise(function (resolve, reject) {
 				var sNewPath = that._oView.addEmptyRow();
 				// Se sobreescribe el path anterior modificado
 				that.setLastPathChanged(sNewPath);
-			});
-			aServices.push(oPromise);
+				resolve();
+			}));
 
-			Promise.all(aServices).then((result) => {					
+			Promise.all(aServices).then((result) => {
 					oPostSAPProcess();
 				},
 				(error) => {
@@ -217,6 +233,44 @@ sap.ui.define([
 				});
 
 
+
+		},
+		onSaveData: function (oPostSAPProcess) {
+			var that = this;
+
+			// antes de grabar se evalua si alguna fila pendiente de validar datos en SAP, si es así hay que lanzar el servicio 
+			// Y si no hay errores entonces hacer el proceso de grabación
+
+			// Si se ha modificado una fila previamente se lanzará el servicio que valida en SAP dicha fila
+			if (this._lastPathChanged != '') {
+				this._rowValidationDeterminationSAP(this._lastPathChanged).then((result) => {
+
+						that.setLastPathChanged(""); // Se marca que no hay fila pendiente de validar
+
+						// Si no hay errores en los datos entonces lanzamos la grabación
+						if (!this.isDataWithErrors()) {
+
+							// Se llama al proceso de grabación. Si el servicio va bien entonces se lanza la función pasada para
+							// el refresco de datos
+							that._saveDataSAP().then((result) => {
+								oPostSAPProcess();
+							}, (error) => {
+
+							});
+						}
+						else{
+							MessageToast.show(this._oI18nResource.getText("ViewData.processSave.tableWithError"));
+						}
+
+
+					},
+					(error) => {
+
+					});
+			} else {
+				// Si no se llama al servicio de SAP hay que lanzar la función pasada para el refresco de datos en la tabla
+				oPostSAPProcess();
+			}
 
 		},
 		// Devuelve si hay registros erroneos
@@ -260,7 +314,7 @@ sap.ui.define([
 
 			// La llamada al servicio se incluye en un Promise porque este servicio puede ser encadenado en otras validaciones
 			var oPromise = new Promise(function (resolve, reject) {
-				that._oViewDataService.rowValidateDetermination(that._oView.getViewInfo().VIEWNAME, that._oView.getRowFromPath(sPath)).then((result) => {
+				that._oViewDataService.rowValidateDetermination(that._oView.getViewInfo().VIEWNAME, that._oView.getRowFromPathFormatJSON(sPath)).then((result) => {
 
 						// Se actualiza el modelo de datos con el resultado recuperado
 						that._oView.updateServiceRow2Model(result.data.ROW, sPath);
@@ -268,7 +322,27 @@ sap.ui.define([
 						resolve();
 					},
 					(error) => {
-						
+
+						reject(error)
+					});
+			});
+			return oPromise;
+		},
+		// Validación de una fila de datos en SAP
+		_saveDataSAP: function () {
+			var that = this;
+
+			// La llamada al servicio se incluye en un Promise porque este servicio puede ser encadenado en otras validaciones
+			var oPromise = new Promise(function (resolve, reject) {
+				that._oViewDataService.saveDataSAP(that._oView.getViewInfo().VIEWNAME, that._oView.getModelDataFormatJSON(sPath)).then((result) => {
+
+						// Se actualiza el modelo de datos con el resultado recuperado
+						//that._oView.updateServiceRow2Model(result.data.ROW, sPath);
+
+						resolve();
+					},
+					(error) => {
+
 						reject(error)
 					});
 			});
