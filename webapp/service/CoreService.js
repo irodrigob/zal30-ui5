@@ -128,7 +128,8 @@ sap.ui.define([
 									response: response
 								});
 							};
-							params.error = function (error) {
+							params.error = function (error) {								
+								MessageToast.show(this._oI18nResource.getText("CoreService.generalError", error));
 								reject(error);
 							};
 							args.push(params);

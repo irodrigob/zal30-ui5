@@ -186,7 +186,7 @@ sap.ui.define([
 
 			var that = this;
 
-			this._viewDataState(function () {
+			this._viewDataState.onSaveData(function () {
 				that._postSAPProcess();
 			});
 

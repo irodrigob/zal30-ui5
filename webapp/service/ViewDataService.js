@@ -109,7 +109,7 @@ sap.ui.define([
 		rowValidateDetermination: function (sViewName, sRow) {
 			return this.callOData(_mService.rowValidationDetermination).post({
 				VIEWNAME: sViewName,
-				LANGU: this._sLanguage,				
+				LANGU: this._sLanguage,
 				ROW: sRow
 			}, {});
 		},
@@ -138,10 +138,10 @@ sap.ui.define([
 			return this.callOData(mLocalService).get();
 		},
 		// Grabación de los datos en SAP
-		saveDataSAP:function(sViewName,sData){
-			return this.callOData(_mService.saveDataSAP).post({
+		saveDataSAP: function (sViewName, sData) {			
+			return this.callOData(_mService.saveData).post({
 				VIEWNAME: sViewName,
-				LANGU: this._sLanguage,				
+				LANGU: this._sLanguage,
 				DATA: sData
 			}, {});
 		}

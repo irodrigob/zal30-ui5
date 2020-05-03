@@ -1,8 +1,9 @@
 sap.ui.define([
 	"com/ivancio/zal30-ui5/state/ViewBaseState",
 	"com/ivancio/zal30-ui5/service/ViewDataService",
-	"com/ivancio/zal30-ui5/constants/constants"
-], function (ViewBaseState, ViewDataService, constants) {
+	"com/ivancio/zal30-ui5/constants/constants",
+	"sap/m/MessageToast"
+], function (ViewBaseState, ViewDataService, constants, MessageToast) {
 	"use strict";
 
 	var oViewDataState = ViewBaseState.extend("com.ivancio.zal30-ui5.state.ViewBaseState", {
@@ -229,7 +230,7 @@ sap.ui.define([
 					oPostSAPProcess();
 				},
 				(error) => {
-					debugger;
+					MessageToast.show(this._oI18nResource.getText("GeneralError"));
 				});
 
 
@@ -248,28 +249,40 @@ sap.ui.define([
 						that.setLastPathChanged(""); // Se marca que no hay fila pendiente de validar
 
 						// Si no hay errores en los datos entonces lanzamos la grabación
-						if (!this.isDataWithErrors()) {
+						if (!that.isDataWithErrors()) {
 
 							// Se llama al proceso de grabación. Si el servicio va bien entonces se lanza la función pasada para
 							// el refresco de datos
 							that._saveDataSAP().then((result) => {
+								debugger;
 								oPostSAPProcess();
 							}, (error) => {
 
 							});
-						}
-						else{
+						} else {
 							MessageToast.show(this._oI18nResource.getText("ViewData.processSave.tableWithError"));
 						}
 
 
 					},
 					(error) => {
-
+						debugger;
 					});
 			} else {
-				// Si no se llama al servicio de SAP hay que lanzar la función pasada para el refresco de datos en la tabla
-				oPostSAPProcess();
+				// Si no hay errores en los datos entonces lanzamos la grabación
+				if (!that.isDataWithErrors()) {
+
+					// Se llama al proceso de grabación. Si el servicio va bien entonces se lanza la función pasada para
+					// el refresco de datos
+					that._saveDataSAP().then((result) => {
+						debugger;
+						oPostSAPProcess();
+					}, (error) => {
+
+					});
+				} else {
+					MessageToast.show(this._oI18nResource.getText("ViewData.processSave.tableWithError"));
+				}
 			}
 
 		},
@@ -314,15 +327,15 @@ sap.ui.define([
 
 			// La llamada al servicio se incluye en un Promise porque este servicio puede ser encadenado en otras validaciones
 			var oPromise = new Promise(function (resolve, reject) {
-				that._oViewDataService.rowValidateDetermination(that._oView.getViewInfo().VIEWNAME, that._oView.getRowFromPathFormatJSON(sPath)).then((result) => {
+				that._oViewDataService.rowValidateDetermination(that._oView.getViewInfo().VIEWNAME, JSON.stringify(that._oView.getRowFromPathtoSAP(sPath))).then((result) => {
 
 						// Se actualiza el modelo de datos con el resultado recuperado
-						that._oView.updateServiceRow2Model(result.data.ROW, sPath);
+						that._oView.updateServiceRow2ModelFromPath(result.data.ROW, sPath);
 
 						resolve();
 					},
 					(error) => {
-
+						debugger;
 						reject(error)
 					});
 			});
@@ -334,15 +347,18 @@ sap.ui.define([
 
 			// La llamada al servicio se incluye en un Promise porque este servicio puede ser encadenado en otras validaciones
 			var oPromise = new Promise(function (resolve, reject) {
-				that._oViewDataService.saveDataSAP(that._oView.getViewInfo().VIEWNAME, that._oView.getModelDataFormatJSON(sPath)).then((result) => {
 
-						// Se actualiza el modelo de datos con el resultado recuperado
-						//that._oView.updateServiceRow2Model(result.data.ROW, sPath);
+				// Recupero los valores en formato SAP				
+				var aValuesSAP = that._oView.getModelDataChanged2SAP();
+
+				that._oViewDataService.saveDataSAP(that._oView.getViewInfo().VIEWNAME, JSON.stringify(aValuesSAP)).then((result) => {
+
+						debugger;
 
 						resolve();
 					},
 					(error) => {
-
+						debugger;
 						reject(error)
 					});
 			});
