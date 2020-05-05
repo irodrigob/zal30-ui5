@@ -254,8 +254,13 @@ sap.ui.define([
 							// Se llama al proceso de grabación. Si el servicio va bien entonces se lanza la función pasada para
 							// el refresco de datos
 							that._saveDataSAP().then((result) => {
-								debugger;
-								oPostSAPProcess();
+
+								//Se recupera el parámetro de retorno que tendrá los mensajes generales
+								var aReturn = JSON.parse(result.RETURN);
+
+								// Se llama al proceso de la vista una vez se haya ejecutado los pasos de SAP
+								oPostSAPProcess(aReturn);
+
 							}, (error) => {
 
 							});
@@ -275,8 +280,11 @@ sap.ui.define([
 					// Se llama al proceso de grabación. Si el servicio va bien entonces se lanza la función pasada para
 					// el refresco de datos
 					that._saveDataSAP().then((result) => {
-						debugger;
-						oPostSAPProcess();
+						//Se recupera el parámetro de retorno que tendrá los mensajes generales
+						var aReturn = JSON.parse(result.RETURN);
+
+						// Se llama al proceso de la vista una vez se haya ejecutado los pasos de SAP
+						oPostSAPProcess(aReturn);
 					}, (error) => {
 
 					});
@@ -355,7 +363,7 @@ sap.ui.define([
 
 						debugger;
 
-						resolve();
+						resolve(result.data);
 					},
 					(error) => {
 						debugger;

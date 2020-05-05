@@ -186,8 +186,12 @@ sap.ui.define([
 
 			var that = this;
 
-			this._viewDataState.onSaveData(function () {
+			this._viewDataState.onSaveData(function (aReturn) {
 				that._postSAPProcess();
+				// Se muestran los mensajes del proceso					
+				if (aReturn.length > 0)
+					that._showMessageReturn(aReturn);
+
 			});
 
 		},
@@ -718,6 +722,19 @@ sap.ui.define([
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 
 			oViewDataModel.setProperty("/btnSaveEnabled", bEnabled);
+		},
+		// Se muestran los mensajes de retorno que devuelve SAP
+		_showMessageReturn:function(aReturn){
+			var aMsgLogDialog = [];
+			for (var x = 0; x < aReturn.length; x++) {
+				aMsgLogDialog.push({
+					type: aReturn[0].TYPE,
+					message: aReturn[x].MESSAGE
+				});
+			};
+			this._oLogDialog.setValues(this._oI18nResource.getText("ViewData.logDialog.returnMsg.Title"), aMsgLogDialog);
+			this._oLogDialog.openDialog();
+
 		}
 
 
