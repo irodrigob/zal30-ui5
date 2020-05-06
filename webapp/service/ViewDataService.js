@@ -138,11 +138,12 @@ sap.ui.define([
 			return this.callOData(mLocalService).get();
 		},
 		// Grabación de los datos en SAP
-		saveDataSAP: function (sViewName, sData) {			
+		saveDataSAP: function (sViewName, sData, sOriginalData) {
 			return this.callOData(_mService.saveData).post({
 				VIEWNAME: sViewName,
 				LANGU: this._sLanguage,
-				DATA: sData
+				DATA: sData,
+				ORIGINAL_DATA: sOriginalData
 			}, {});
 		}
 

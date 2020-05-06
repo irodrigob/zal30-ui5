@@ -542,7 +542,7 @@ sap.ui.define([
 			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
 
 			// Solo me quedo con lo que han sido modificados, borrados o insertados
-			var aValuesChanged =  aValues.filter(field => field[constants.tableData.internalFields.updkz] != '');
+			var aValuesChanged = aValues.filter(field => field[constants.tableData.internalFields.updkz] != '');
 
 			// Se recorren los datos y se adaptan a SAP. 
 			var aValuesSAP = [];
@@ -552,6 +552,22 @@ sap.ui.define([
 
 			return aValuesSAP;
 
+		},
+		// Recupera los valores originales de los registros modificados
+		getOriginalDataChanged2SAP: function () {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
+
+			// Solo me quedo con lo que han sido modificados o borrados o insertados
+			var aValuesChanged = aValues.filter(field => field[constants.tableData.internalFields.updkz] == constants.tableData.fieldUpkzValues.update || field[constants.tableData.internalFields.updkz] == constants.tableData.fieldUpkzValues.delete);
+
+			var aOriginalDataChanged = [];
+			for (var x = 0; x < aValuesChanged.length; x++) {
+				var mRow = aValuesChanged[x];
+				// Añadido el registro original en base al valor del campo ZAL30_TABIX
+				aOriginalDataChanged.push(this._getRowOriginalData(mRow[constants.tableData.internalFields.tabix]));
+			}
+			return aOriginalDataChanged;
 		},
 		//////////////////////////////////	
 		//        Private methods       //	

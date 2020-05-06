@@ -358,8 +358,10 @@ sap.ui.define([
 
 				// Recupero los valores en formato SAP				
 				var aValuesSAP = that._oView.getModelDataChanged2SAP();
+				// Recupero los datos originales de los registros modificados
+				var aOriginalValuesSAP = that._oView.getOriginalDataChanged2SAP();
 
-				that._oViewDataService.saveDataSAP(that._oView.getViewInfo().VIEWNAME, JSON.stringify(aValuesSAP)).then((result) => {
+				that._oViewDataService.saveDataSAP(that._oView.getViewInfo().VIEWNAME, JSON.stringify(aValuesSAP),JSON.stringify(aOriginalValuesSAP)).then((result) => {
 
 						debugger;
 
