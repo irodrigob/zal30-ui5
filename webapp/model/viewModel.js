@@ -569,6 +569,36 @@ sap.ui.define([
 			}
 			return aOriginalDataChanged;
 		},
+		// Procesa los datos después que se graben en SAP
+		processDataAfterSave: function (sData) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
+			var aOriginalValues = this._oOriginalViewData.getProperty(constants.tableData.path.values);
+
+			// Se pasa el string a JSON
+			var aValuesSAP = JSON.parse(sData);
+
+			for (x = 0; x < aValuesSAP.length; x++) {
+				// Se localiza el registro
+			}
+
+			// Se pasan los valores de los campos que vienen en el catalogo de campos de SAP al registro que hay en el modelo
+			var mRow = this._transfODataValues2ModelDatafromPath(sPath, mRowOData);
+
+			// Se pasa el JSON a una array para poder llamar al método que formatea los valores que vienen de SAP
+			var aValues = [mRow];
+
+			// Se aplican los formatos y estilos
+			aValues = this._processAdapModelDataFromGW(aValues, false);
+
+			// Se determina el valor del RowStatus, porque puede cambiar en base los mensajes que vengan de SAP + los
+			// internos de la propia aplicación
+			this.setRowStatusInternal(aValues[0]);
+
+			// Se guardado los datos en la fila seleccionada
+			oViewDataModel.setProperty(sPath, aValues[0]);
+
+		},
 		//////////////////////////////////	
 		//        Private methods       //	
 		//////////////////////////////////		  
@@ -855,6 +885,20 @@ sap.ui.define([
 
 			return mValues.find(values => values[constants.tableData.internalFields.tabix] === nTabix);
 		},
+		// Obtiene el registro de los datos a partir del valor del campo ZAL30_TABIX
+		_getRowDataFromTabix: function (nTabix) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var mValues = this.oViewDataModel.getProperty(constants.tableData.path.values);
+
+			return mValues.find(values => values[constants.tableData.internalFields.tabix] === nTabix);
+		},
+		// Obtiene el índice de los datos a partir del valor del campo ZAL30_TABIX
+		_getIndexDataFromTabix: function (nTabix) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var mValues = this.oViewDataModel.getProperty(constants.tableData.path.values);
+
+			return mValues.findIndex(values => values[constants.tableData.internalFields.tabix] === nTabix);
+		},
 		// Completa los datos de determinados campos al añadir un nuevo registro
 		_completeDataAddEmptyRow: function (mRow) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
@@ -872,6 +916,15 @@ sap.ui.define([
 
 			// Se recupera el registro anterior
 			var mRow = oViewDataModel.getProperty(sPath);
+
+			// Se hace la transformación
+			return this._transfODataValues2ModelData(mRow, mRowOData);
+
+		},
+		// Transfeire los datos de un modelo OData al modelo interno a partide una fila de datos
+		_transfODataValues2ModelData: function (mRow, mRowOData) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var aFieldCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
 
 			// Se pasan los datos que vienen del catalogo de campos
 			for (var x = 0; x < aFieldCatalog.length; x++) {

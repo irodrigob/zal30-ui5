@@ -363,7 +363,7 @@ sap.ui.define([
 
 				that._oViewDataService.saveDataSAP(that._oView.getViewInfo().VIEWNAME, JSON.stringify(aValuesSAP),JSON.stringify(aOriginalValuesSAP)).then((result) => {
 
-						debugger;
+						that._oView.processDataAfterSave(result.DATA.DATA);
 
 						resolve(result.data);
 					},
