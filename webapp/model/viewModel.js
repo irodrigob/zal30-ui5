@@ -570,7 +570,7 @@ sap.ui.define([
 			return aOriginalDataChanged;
 		},
 		// Procesa los datos después que se graben en SAP
-		processDataAfterSave: function (sData) {
+		processDataAfterSave: function (sData, aReturn) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
 			var aOriginalValues = this._oOriginalViewData.getProperty(constants.tableData.path.values);
@@ -578,25 +578,63 @@ sap.ui.define([
 			// Se pasa el string a JSON
 			var aValuesSAP = JSON.parse(sData);
 
-			for (x = 0; x < aValuesSAP.length; x++) {
-				// Se localiza el registro
+			var bHasError = aReturn.find(row => row.TYPE == constants.messageType.error) ? true : false;
+
+			for (var x = 0; x < aValuesSAP.length; x++) {
+				var mRowSAP = aValuesSAP[x];
+
+				// Se localiza el registro en la tabla de datos del modelo
+				var iIndex = this._getIndexFromTabix(aValues, mRowSAP[constants.tableData.internalFields.tabix]);
+
+				// Se pasan los valores de los campos que vienen en el catalogo de campos de SAP al registro que hay en el modelo
+				var mRow = this._transfODataValues2ModelData(aValues[iIndex], mRowSAP);
+
+				// Para aprovechar los procesos de adaptación del registro lo paso a un array. Estos procesos
+				// ajustes estilos, formatos de campos, etc..
+				var aValuesTmp = [mRow];
+				aValuesTmp = this._processAdapModelDataFromGW(aValues, false);
+				mRow = aValuesTmp[0];
+
+				// Se determina el valor del RowStatus, porque puede cambiar en base los mensajes que vengan de SAP + los
+				// internos de la propia aplicación
+				this.setRowStatusInternal(mRow);
+
+				// Si la fila no tiene errores y tampoco los hay a nivel global:
+				// - se quita el indicador de actualización
+				// - Se ajusta el modelo según la operación de actualización
+				var sUpdkz = mRow[constants.tableData.internalFields.udpz]; // Me quedo con el valor original de la actualización
+				if (!bHasError && mRow[constants.tableData.internalFields.rowStatus] != constants.tableData.rowStatusValues.error) {
+					mRow[constants.tableData.internalFields.udpkz]
+
+					// Ahora se procesa el status segun su actualización. Lo hago después de limpiar porque para la inserción como la 
+					// actualización duplicaría el código y no sentido, por eso guardar el tipo de actualización en una variable
+					switch (sUpdkz) {
+						case constants.tableData.fieldUpkzValues.insert:
+							// En la inserción se marca el registro como que existe en base de datos
+							mRow[constants.tableData.internalFields.isDict] = 'X';
+
+							// Se determina los campos que serán editables
+							mRow = this.detEditableCellValue(mRow);
+
+							// Se añaden el registro al array de valores originales
+							aOriginalValues.push(mRow);
+
+							break;
+						case constants.tableData.fieldUpkzValues.delete:
+							// Localizo donde esta el registro en los datos originales y lo borro
+							var iOrigIndex = this._getIndexFromTabix(aOriginalValues, mRowSAP[constants.tableData.internalFields.tabix]);
+							aOriginalValues.splice(iOrigIndex, 1);
+
+							// Lo mismo para la tabla de datos final
+							aValues.splice(iIndex, 1);
+							break;
+					}
+				}
 			}
 
-			// Se pasan los valores de los campos que vienen en el catalogo de campos de SAP al registro que hay en el modelo
-			var mRow = this._transfODataValues2ModelDatafromPath(sPath, mRowOData);
-
-			// Se pasa el JSON a una array para poder llamar al método que formatea los valores que vienen de SAP
-			var aValues = [mRow];
-
-			// Se aplican los formatos y estilos
-			aValues = this._processAdapModelDataFromGW(aValues, false);
-
-			// Se determina el valor del RowStatus, porque puede cambiar en base los mensajes que vengan de SAP + los
-			// internos de la propia aplicación
-			this.setRowStatusInternal(aValues[0]);
-
-			// Se guardado los datos en la fila seleccionada
-			oViewDataModel.setProperty(sPath, aValues[0]);
+			// Se guardan los datos principales como los originales en el modelo de datos
+			oViewDataModel.setProperty(constants.tableData.path.values, aValues);
+			this._oOriginalViewData.setProperty(constants.tableData.path.values, aOriginalValues);
 
 		},
 		//////////////////////////////////	
@@ -893,11 +931,8 @@ sap.ui.define([
 			return mValues.find(values => values[constants.tableData.internalFields.tabix] === nTabix);
 		},
 		// Obtiene el índice de los datos a partir del valor del campo ZAL30_TABIX
-		_getIndexDataFromTabix: function (nTabix) {
-			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			var mValues = this.oViewDataModel.getProperty(constants.tableData.path.values);
-
-			return mValues.findIndex(values => values[constants.tableData.internalFields.tabix] === nTabix);
+		_getIndexFromTabix: function (aValues, nTabix) {
+			return aValues.findIndex(values => values[constants.tableData.internalFields.tabix] === nTabix);
 		},
 		// Completa los datos de determinados campos al añadir un nuevo registro
 		_completeDataAddEmptyRow: function (mRow) {

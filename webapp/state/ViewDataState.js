@@ -255,11 +255,8 @@ sap.ui.define([
 							// el refresco de datos
 							that._saveDataSAP().then((result) => {
 
-								//Se recupera el parámetro de retorno que tendrá los mensajes generales
-								var aReturn = JSON.parse(result.RETURN);
-
 								// Se llama al proceso de la vista una vez se haya ejecutado los pasos de SAP
-								oPostSAPProcess(aReturn);
+								oPostSAPProcess(result.return);
 
 							}, (error) => {
 
@@ -280,11 +277,8 @@ sap.ui.define([
 					// Se llama al proceso de grabación. Si el servicio va bien entonces se lanza la función pasada para
 					// el refresco de datos
 					that._saveDataSAP().then((result) => {
-						//Se recupera el parámetro de retorno que tendrá los mensajes generales
-						var aReturn = JSON.parse(result.RETURN);
-
 						// Se llama al proceso de la vista una vez se haya ejecutado los pasos de SAP
-						oPostSAPProcess(aReturn);
+						oPostSAPProcess(result.return);
 					}, (error) => {
 
 					});
@@ -361,11 +355,16 @@ sap.ui.define([
 				// Recupero los datos originales de los registros modificados
 				var aOriginalValuesSAP = that._oView.getOriginalDataChanged2SAP();
 
-				that._oViewDataService.saveDataSAP(that._oView.getViewInfo().VIEWNAME, JSON.stringify(aValuesSAP),JSON.stringify(aOriginalValuesSAP)).then((result) => {
+				that._oViewDataService.saveDataSAP(that._oView.getViewInfo().VIEWNAME, JSON.stringify(aValuesSAP), JSON.stringify(aOriginalValuesSAP)).then((result) => {
 
-						that._oView.processDataAfterSave(result.DATA.DATA);
+						//Se recupera el parámetro de retorno que tendrá los mensajes generales
+						var aReturn = JSON.parse(result.data.RETURN);
 
-						resolve(result.data);
+						that._oView.processDataAfterSave(result.data.DATA, aReturn);
+
+						resolve({
+							return: aReturn
+						});
 					},
 					(error) => {
 						debugger;
