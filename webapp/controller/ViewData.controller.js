@@ -189,7 +189,7 @@ sap.ui.define([
 			this._viewDataState.onSaveData(function (aReturn) {
 				that._postSAPProcess();
 				// Se muestran los mensajes del proceso					
-				if (aReturn.length > 0)
+				if (aReturn && aReturn.length > 0)
 					that._showMessageReturn(aReturn);
 
 			});
@@ -318,7 +318,7 @@ sap.ui.define([
 		// Procesos que se lanzan después de llamar a SAP. Están el control de botones, columnas de errores, etc.
 		_postSAPProcess: function () {
 			// Se valida si hay errores en los datos, si no los hay entonces el botón de grabar se habilita
-			if (this._viewDataState.isDataWithErrors())
+			if (this._viewDataState.isDataWithInternalErrors())
 				this._setEnabledBtnSaved(false);
 			else
 				this._setEnabledBtnSaved(true);
@@ -702,8 +702,9 @@ sap.ui.define([
 		_determineShowFixColumnactions: function () {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 
-			// La columna de acciones solo se muestra si hay errors			
-			oViewDataModel.setProperty(constants.tableData.path.visibleFixColumnAction, this._viewDataState.isDataWithErrors());
+			// La columna de acciones solo se muestra si hay errores intenros o de SAP
+			var bHaveError = this._viewDataState.isDataWithInternalErrors() || this._viewDataState.isDataWithSAPErrors() ? true : false;
+			oViewDataModel.setProperty(constants.tableData.path.visibleFixColumnAction, bHaveError);
 
 			// En determinados contextos, por ejemplo al añadir una fila, donde se llama este proceso no refresque bien la visualización/ocultación de columnas. Por ello, le doy un empujoncito 
 			// para que lo haga.
@@ -724,7 +725,7 @@ sap.ui.define([
 			oViewDataModel.setProperty("/btnSaveEnabled", bEnabled);
 		},
 		// Se muestran los mensajes de retorno que devuelve SAP
-		_showMessageReturn:function(aReturn){
+		_showMessageReturn: function (aReturn) {
 			var aMsgLogDialog = [];
 			for (var x = 0; x < aReturn.length; x++) {
 				aMsgLogDialog.push({

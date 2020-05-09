@@ -156,7 +156,7 @@ sap.ui.define([
 							return false;
 
 					} else {
-						if (mColumn.keyDDIC) // Los campos clave se pasan a mayúsculas, tal como lo hace SAP
+						if (!mColumn.lowerCase) // Si no tiene permitido minúsculas se pasa el texto a mayúsculas
 							return oValue.toUpperCase();
 						else
 							return oValue;
@@ -406,17 +406,33 @@ sap.ui.define([
 
 		},
 
-		// Devuelve si hay datos erróneos en los datos		
-		isDataWithErrors: function () {
+		// Devuelve si hay datos con errores internos. Los errores internos son aquellos que se producen en vista		
+		isDataWithInternalErrors: function () {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
 
-			// Si alguna de los dos campos que gestionan el status de la fila tienen error, entonces se devuelve los errores
-			if (aValues.find(values => values[constants.tableData.internalFields.rowStatus] == constants.tableData.rowStatusValues.error) ||
-				aValues.find(values => values[constants.tableData.internalFields.rowStatusInernal] == constants.tableData.rowStatusValues.error))
+			return aValues.find(values => values[constants.tableData.internalFields.rowStatusInternal] == constants.tableData.rowStatusValues.error) ? true : false;
+		},
+		// Devuelve si hay errores de SAP en los datos. Los errores de SAP se produces al llamar a los servicios
+		isDataWithSAPErrors: function () {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
+
+			return aValues.find(values => values[constants.tableData.internalFields.rowStatus] == constants.tableData.rowStatusValues.error) ? true : false;
+		},
+		// Devuelve si una fila tiene error en SAP, la fila se recupera a partir de un path
+		isRowWithSAPErrorfromPath: function (sPath) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			return this.isRowWithSAPError(oViewDataModel.getProperty(sPath));
+
+		},
+		// Devuelve si una fila tiene error en SAP a partir de una fila de datos
+		isRowWithSAPError: function (mRow) {
+			if (mRow[constants.tableData.internalFields.rowStatus] == constants.tableData.rowStatusValues.error)
 				return true;
 			else
 				return false;
+
 		},
 		// Devuelve los mensajes de error de una fila de datos
 		getRowStatusMsg: function (sPath) {
@@ -465,7 +481,12 @@ sap.ui.define([
 		getRowFromPathtoSAP: function (sPath) {
 			return this._transfOModelDataValues2OData(this.getRowFromPath(sPath))
 		},
-
+		// devuelve el indicador de actualización de un path
+		getUpdkzFromPath: function (sPath) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var mRow = oViewDataModel.getProperty(sPath);
+			return mRow[constants.tableData.internalFields.updkz];
+		},
 		// Añade un mensaje en una fila según su path
 		addMsgRowStatusMsgInternalFromPath: function (sPath, sType, sMessage, sColumn) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
@@ -496,7 +517,7 @@ sap.ui.define([
 			// Si hay un mensaje de error tanto interno como en el de SAP, el rowStatus se marca como erróneo. En caso contrario se deja tal cual estaba
 			if (aMsg.find(type => type.TYPE == constants.messageType.error) ||
 				aMsgInternal.find(type => type.TYPE == constants.messageType.error))
-				mRow[constants.tableData.internalFields.rowStatus] = constants.tableData.rowStatusValues.error;
+				mRow[constants.tableData.internalFields.rowStatusInternal] = constants.tableData.rowStatusValues.error;
 
 		},
 		// Actualiza una fila de datos al modelo
@@ -517,7 +538,7 @@ sap.ui.define([
 
 			// Se determina el valor del RowStatus, porque puede cambiar en base los mensajes que vengan de SAP + los
 			// internos de la propia aplicación
-			this.setRowStatusInternal(aValues[0]);
+			//this.setRowStatusInternal(aValues[0]);
 
 			// Se guardado los datos en la fila seleccionada
 			oViewDataModel.setProperty(sPath, aValues[0]);
@@ -592,17 +613,17 @@ sap.ui.define([
 				// Para aprovechar los procesos de adaptación del registro lo paso a un array. Estos procesos
 				// ajustes estilos, formatos de campos, etc..
 				var aValuesTmp = [mRow];
-				aValuesTmp = this._processAdapModelDataFromGW(aValues, false);
+				aValuesTmp = this._processAdapModelDataFromGW(aValuesTmp, false);
 				mRow = aValuesTmp[0];
 
 				// Se determina el valor del RowStatus, porque puede cambiar en base los mensajes que vengan de SAP + los
 				// internos de la propia aplicación
-				this.setRowStatusInternal(mRow);
+				//this.setRowStatusInternal(mRow);
 
 				// Si la fila no tiene errores y tampoco los hay a nivel global:
 				// - se quita el indicador de actualización
 				// - Se ajusta el modelo según la operación de actualización
-				var sUpdkz = mRow[constants.tableData.internalFields.udpz]; // Me quedo con el valor original de la actualización
+				var sUpdkz = mRow[constants.tableData.internalFields.updkz]; // Me quedo con el valor original de la actualización
 				if (!bHasError && mRow[constants.tableData.internalFields.rowStatus] != constants.tableData.rowStatusValues.error) {
 					mRow[constants.tableData.internalFields.udpkz]
 

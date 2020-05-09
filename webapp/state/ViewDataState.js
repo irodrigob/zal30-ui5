@@ -126,6 +126,7 @@ sap.ui.define([
 		// La estructura con los datos modificados tendra los siguientes campos:
 		// path, column, value
 		onValueCellChanged: function (mParams) {
+			var that = this;
 			// Se inicializa la matriz con los datos de salida
 			var mParamsOutput = {
 				value: mParams.value
@@ -148,29 +149,26 @@ sap.ui.define([
 			// Se lanza la validación a nivel de fila
 			this._oView.rowValidatePath(mParams.path);
 
-			// Se inicial el proceso de llamadas a SAP, todas las llamadas se encadenan usando el Promise
-			// Primer servicio es que hace la la validación a nivel de campo-valor en SAP
-			var aServices = [this._verifyFieldData(mParams.path, mParamsOutput.value, mParams.column)];
 
-			// Si el último path modificado difiere al actual y no esta en blanco(ocurrirá al principio o cuando se grabe), 
-			// se lanza el proceso de validación de la fila anterior modificada. Esto se hace porque se asume que te has ido de fila para modificar otra. Con lo cual
-			// supuestamente ya has introducido todos los datos necesarios
+			// La validación en SAP a nivel de fila se hará cuando has cambiado de fila. Es decir, modificas una y luego al modifica otra es cuando se valida en SAP. Esto permite hacer un validación
+			// cuando ya has introducido el valor en todos los campos. 			
 			if (this._lastPathChanged != '' & this._lastPathChanged != mParams.path) {
-				aServices.push(this._rowValidationDeterminationSAP(this._lastPathChanged));
+
+				// Proceso de validación a nivel de fila					
+				this._rowValidationDeterminationSAP(this._lastPathChanged).then((result) => {
+						// Procesos en vista una vez ha finalizado la llamada en SAP
+						mParams.handlerPostServiceSAP();
+					},
+					(error) => {
+
+					});
+			} else {
+				// Procesos en vista una vez ha finalizado la llamada en SAP
+				mParams.handlerPostServiceSAP();
 			}
+
 			// Se sobreescribe el path anterior modificado
 			this.setLastPathChanged(mParams.path);
-
-
-			Promise.all(aServices).then((result) => {
-
-					// Se llama a la función que contiene el procesos una vez los servicios han terminado.
-					// Esta función contiene los ajustes visuales en base al modelo de datos
-					mParams.handlerPostServiceSAP();
-				},
-				(error) => {
-
-				});
 
 			// Se aplica el formato para que pueda ser devuelto y se grabe correctamente en el campo.
 			mParamsOutput.value = this._oView.formatterValue(mParams.column, mParamsOutput.value);
@@ -246,14 +244,16 @@ sap.ui.define([
 			if (this._lastPathChanged != '') {
 				this._rowValidationDeterminationSAP(this._lastPathChanged).then((result) => {
 
-						that.setLastPathChanged(""); // Se marca que no hay fila pendiente de validar
-
 						// Si no hay errores en los datos entonces lanzamos la grabación
-						if (!that.isDataWithErrors()) {
+						if (!that.isDataWithSAPErrors()) {
 
 							// Se llama al proceso de grabación. Si el servicio va bien entonces se lanza la función pasada para
 							// el refresco de datos
 							that._saveDataSAP().then((result) => {
+
+								// Se deja en blanco el último path modificado. Porque la grabación se puede hacer de varios registros. Y guardar el ultimo
+								// produce comportamiento erróneos al corregir/editar los datos después de grabarlos.
+								that.setLastPathChanged("");
 
 								// Se llama al proceso de la vista una vez se haya ejecutado los pasos de SAP
 								oPostSAPProcess(result.return);
@@ -263,6 +263,9 @@ sap.ui.define([
 							});
 						} else {
 							MessageToast.show(this._oI18nResource.getText("ViewData.processSave.tableWithError"));
+
+							// Se llama al proceso de la vista una vez se haya ejecutado los pasos de SAP
+							oPostSAPProcess();
 						}
 
 
@@ -272,7 +275,7 @@ sap.ui.define([
 					});
 			} else {
 				// Si no hay errores en los datos entonces lanzamos la grabación
-				if (!that.isDataWithErrors()) {
+				if (!that.isDataWithSAPErrors()) {
 
 					// Se llama al proceso de grabación. Si el servicio va bien entonces se lanza la función pasada para
 					// el refresco de datos
@@ -288,10 +291,13 @@ sap.ui.define([
 			}
 
 		},
-		// Devuelve si hay registros erroneos
-		isDataWithErrors: function () {
-			return this._oView.isDataWithErrors();
+		// Devuelve si hay registros con errores internos, los generados por la propi aplicacion
+		isDataWithInternalErrors: function () {
+			return this._oView.isDataWithInternalErrors();
 
+		},
+		isDataWithSAPErrors: function () {
+			return this._oView.isDataWithSAPErrors();
 		},
 		// Devuelve los mensajes de error de una fila de datos
 		getRowStatusMsg: function (sPath) {
@@ -390,8 +396,10 @@ sap.ui.define([
 						if (result.data.MESSAGE != '')
 							that._oView.addMsgRowStatusMsgFromPath(sPath, result.data.MESSAGE_TYPE, result.data.MESSAGE, sColumn);
 
-						// Inicialmente no se devuelve nada de este servicio
-						resolve()
+						// Se devuelve el tipo de mensaje devuelto por SAP
+						resolve({
+							msgType: result.data.MESSAGE_TYPE
+						})
 					},
 					(error) => {
 						reject(error)
