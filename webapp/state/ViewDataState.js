@@ -178,10 +178,18 @@ sap.ui.define([
 		// Evento que se lanza cuando se marcan líneas para borrar
 		onDeleteEntries: function (aRows, oPostSAPProcess) {
 			var that = this;
-
+		
+			
+		if(this._lastPathChanged!='')
+			var mRowLastChanged = this._oView.getRowFromPath(this._lastPathChanged)
+		
 			// Como se controla que el botón de borrar se habilite solo cuando se seleccionan registros, cuando llega a este método
 			// seguro que hay líneas seleccionadas
 			for (var x = 0; x < aRows.length; x++) {
+
+				if (constants.tableData.path.values + "/" + aRows[x] == this._lastPathChanged)
+					this.setLastPathChanged("");
+
 				that._oView.deleteEntry(aRows[x]);
 			}
 
@@ -291,13 +299,18 @@ sap.ui.define([
 			}
 
 		},
-		// Devuelve si hay registros con errores internos, los generados por la propi aplicacion
+		// Devuelve si hay registros con errores internos, los generados por la propia aplicacion
 		isDataWithInternalErrors: function () {
 			return this._oView.isDataWithInternalErrors();
 
 		},
+		// Llama al modelo para ver si hay errores procedentes de SAP
 		isDataWithSAPErrors: function () {
 			return this._oView.isDataWithSAPErrors();
+		},
+		// Llama al modelo para determinar si los datos han sido modificados
+		isDataChanged: function () {
+			return this._oView.isDataChanged();
 		},
 		// Devuelve los mensajes de error de una fila de datos
 		getRowStatusMsg: function (sPath) {

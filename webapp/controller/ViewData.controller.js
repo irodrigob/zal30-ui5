@@ -297,8 +297,11 @@ sap.ui.define([
 			// Se valida si hay errores en los datos, si no los hay entonces el botón de grabar se habilita
 			if (this._viewDataState.isDataWithInternalErrors())
 				this._setEnabledBtnSaved(false);
-			else
+			// Si no hay errores se chequea si hay datos modificados. Si es así, se habilita
+			else if (this._viewDataState.isDataChanged())
 				this._setEnabledBtnSaved(true);
+			else // Si no cumple las condiciones anteriores se desactiva
+				this._setEnabledBtnSaved(false);
 
 			// Se lanza el proceso que determina si se mostrarán las columnas de acción del listado
 			this._determineShowFixColumnactions();

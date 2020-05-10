@@ -302,7 +302,7 @@ sap.ui.define([
 			} else { // Si no viene del diccionario se borra directamente
 				var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
 				aValues.splice(nRow, 1);
-				oViewDataModel.setProperty(sPath, aValues);
+				oViewDataModel.setProperty(constants.tableData.path.values, aValues);
 			}
 		},
 		// Validación de fila a partir de un path. Esta función actualizará el modelo con el resultado del proceso.
@@ -423,6 +423,13 @@ sap.ui.define([
 
 			return aValues.find(values => values[constants.tableData.internalFields.rowStatus] == constants.tableData.rowStatusValues.error &&
 				values[constants.tableData.internalFields.updkz] != constants.tableData.fieldUpkzValues.delete) ? true : false;
+		},
+		// Devuelve si se ha modificado algún registro
+		isDataChanged: function () {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
+
+			return aValues.find(values => values[constants.tableData.internalFields.updkz] != '') ? true : false;
 		},
 		// Devuelve si una fila tiene error en SAP, la fila se recupera a partir de un path
 		isRowWithSAPErrorfromPath: function (sPath) {
@@ -803,7 +810,7 @@ sap.ui.define([
 
 				// Se añade un campo que contendrán el control interno si la fila es erronea y los mensajes internos de esa fila
 				mRow[constants.tableData.internalFields.rowStatusMsgInternal] = [];
-				//mRow[constants.tableData.internalFields.rowStatusInternal] = "";
+				mRow[constants.tableData.internalFields.rowStatusInternal] = "";
 
 				// Se pasa la fila al array
 				aValues[z] = mRow;

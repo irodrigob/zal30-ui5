@@ -37,7 +37,7 @@
 		"VIEWNAME": "1",
 		"FIELDNAME": "FIELDNAME",
 		"POSITION": 0,
-		"MANDATORY": false,
+		"MANDATORY": true,
 		"NOOUTPUT": false,
 		"CHECKBOX": false,
 		"SELSCREEN": false,
