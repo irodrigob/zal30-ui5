@@ -195,29 +195,6 @@ sap.ui.define([
 			});
 
 		},
-		// Devuelve el formato del RowSetting según el valor del campo ZAL30_ROW_STATUS
-		formatRowStatus: function (sStatus) {
-
-			switch (sStatus) {
-				case constants.tableData.rowStatusValues.error:
-					return 'Error';
-				case constants.tableData.rowStatusValues.valid:
-					return 'Success';
-				default:
-					return 'None';
-
-			}
-		},
-		// Texto que tendrá el RowSettign en base a los valores del campo ZAL30_ROW_STATUS_MSG
-		formatRowStatusMsg: function (aMsg) {
-			if (aMsg && aMsg.length > 0) {
-				return aMsg.join();
-			} else {
-				return '';
-			}
-
-
-		},
 		// Evento al pulsar el icono de ver el detalle de los mensajes de la fila
 		onShowRowStatusMsg: function (oEvent) {
 			var oSource = oEvent.getSource();
@@ -419,14 +396,42 @@ sap.ui.define([
 			var oTable = this.byId(constants.objectsId.viewData.tableData);
 			oTable.setRowSettingsTemplate(new RowSettings({
 				highlight: {
-					model: constants.jsonModel.viewData,
-					path: constants.tableData.internalFields.rowStatus,
-					formatter: this.formatRowStatus
+					parts: [{
+						model: constants.jsonModel.viewData,
+						path: constants.tableData.internalFields.rowStatus
+					}, {
+						model: constants.jsonModel.viewData,
+						path: constants.tableData.internalFields.rowStatusInternal
+					}],
+					formatter: function (sStatus, sStatusInternal) {
+						if (sStatus == constants.tableData.rowStatusValues.error || sStatusInternal == constants.tableData.rowStatusValues.error)
+							return 'Error';
+						else if (sStatus == constants.tableData.rowStatusValues.valid || sStatusInternal == constants.tableData.rowStatusValues.valid)
+							return 'Success';
+						else
+							return 'None';
+
+					}
 				},
 				highlightText: {
-					model: constants.jsonModel.viewData,
-					path: constants.tableData.internalFields.rowStatusMsg,
-					formatter: this.formatRowStatusMsg
+					parts: [{
+						model: constants.jsonModel.viewData,
+						path: constants.tableData.internalFields.rowStatusMsg
+					}, {
+						model: constants.jsonModel.viewData,
+						path: constants.tableData.internalFields.rowStatusMsgInternal
+					}],
+					formatter: function (aStatus, aStatusInternal) {
+						var aMsg = [];
+
+						if (aStatus)
+							aMsg = aStatus;
+
+						if (aStatusInternal)
+							aMsg = aMsg.concat(aStatusInternal);
+
+						return aMsg;
+					}
 				}
 			}));
 
@@ -634,10 +639,15 @@ sap.ui.define([
 				src: "sap-icon://search",
 				press: [this.onShowRowStatusMsg, this],
 				visible: {
-					model: constants.jsonModel.viewData,
-					path: constants.tableData.internalFields.rowStatus,
-					formatter: function (sStatus) {
-						if (sStatus == constants.tableData.rowStatusValues.error)
+					parts: [{
+						model: constants.jsonModel.viewData,
+						path: constants.tableData.internalFields.rowStatus
+					}, {
+						model: constants.jsonModel.viewData,
+						path: constants.tableData.internalFields.rowStatusInternal
+					}],
+					formatter: function (sStatus, sStatusInternal) {
+						if (sStatus == constants.tableData.rowStatusValues.error || sStatusInternal == constants.tableData.rowStatusValues.error)
 							return true;
 						else
 							return false;

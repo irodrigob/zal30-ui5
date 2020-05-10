@@ -406,19 +406,23 @@ sap.ui.define([
 
 		},
 
-		// Devuelve si hay datos con errores internos. Los errores internos son aquellos que se producen en vista		
+		// Devuelve si hay datos con errores internos. Los errores internos son aquellos que se producen en vista.Se ignorarán los registros 
+		// marcados para borrars
 		isDataWithInternalErrors: function () {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
 
-			return aValues.find(values => values[constants.tableData.internalFields.rowStatusInternal] == constants.tableData.rowStatusValues.error) ? true : false;
+			return aValues.find(values => values[constants.tableData.internalFields.rowStatusInternal] == constants.tableData.rowStatusValues.error &&
+				values[constants.tableData.internalFields.updkz] != constants.tableData.fieldUpkzValues.delete) ? true : false;
 		},
-		// Devuelve si hay errores de SAP en los datos. Los errores de SAP se produces al llamar a los servicios
+		// Devuelve si hay errores de SAP en los datos. Los errores de SAP se produces al llamar a los servicios. Se ignorarán los registros 
+		// marcados para borrar
 		isDataWithSAPErrors: function () {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
 
-			return aValues.find(values => values[constants.tableData.internalFields.rowStatus] == constants.tableData.rowStatusValues.error) ? true : false;
+			return aValues.find(values => values[constants.tableData.internalFields.rowStatus] == constants.tableData.rowStatusValues.error &&
+				values[constants.tableData.internalFields.updkz] != constants.tableData.fieldUpkzValues.delete) ? true : false;
 		},
 		// Devuelve si una fila tiene error en SAP, la fila se recupera a partir de un path
 		isRowWithSAPErrorfromPath: function (sPath) {
@@ -607,8 +611,13 @@ sap.ui.define([
 				// Se localiza el registro en la tabla de datos del modelo
 				var iIndex = this._getIndexFromTabix(aValues, mRowSAP[constants.tableData.internalFields.tabix]);
 
+				var mRow = aValues[iIndex];
+
+				// Guardo el modo de actualización porque en SAP se resetea	
+				var sUpdkz = mRow[constants.tableData.internalFields.updkz];
+
 				// Se pasan los valores de los campos que vienen en el catalogo de campos de SAP al registro que hay en el modelo
-				var mRow = this._transfODataValues2ModelData(aValues[iIndex], mRowSAP);
+				mRow = this._transfODataValues2ModelData(aValues[iIndex], mRowSAP);
 
 				// Para aprovechar los procesos de adaptación del registro lo paso a un array. Estos procesos
 				// ajustes estilos, formatos de campos, etc..
@@ -620,19 +629,18 @@ sap.ui.define([
 				// internos de la propia aplicación
 				//this.setRowStatusInternal(mRow);
 
-				// Si la fila no tiene errores y tampoco los hay a nivel global:
-				// - se quita el indicador de actualización
+				// Si la fila no tiene errores y tampoco los hay a nivel global: 				
 				// - Se ajusta el modelo según la operación de actualización
-				var sUpdkz = mRow[constants.tableData.internalFields.updkz]; // Me quedo con el valor original de la actualización
+
 				if (!bHasError && mRow[constants.tableData.internalFields.rowStatus] != constants.tableData.rowStatusValues.error) {
-					mRow[constants.tableData.internalFields.udpkz]
+
 
 					// Ahora se procesa el status segun su actualización. Lo hago después de limpiar porque para la inserción como la 
 					// actualización duplicaría el código y no sentido, por eso guardar el tipo de actualización en una variable
 					switch (sUpdkz) {
 						case constants.tableData.fieldUpkzValues.insert:
 							// En la inserción se marca el registro como que existe en base de datos
-							mRow[constants.tableData.internalFields.isDict] = 'X';
+							//mRow[constants.tableData.internalFields.isDict] = 'X';
 
 							// Se determina los campos que serán editables
 							mRow = this.detEditableCellValue(mRow);
@@ -642,7 +650,6 @@ sap.ui.define([
 
 							break;
 						case constants.tableData.fieldUpkzValues.delete:
-							// Localizo donde esta el registro en los datos originales y lo borro
 							var iOrigIndex = this._getIndexFromTabix(aOriginalValues, mRowSAP[constants.tableData.internalFields.tabix]);
 							aOriginalValues.splice(iOrigIndex, 1);
 

@@ -303,6 +303,14 @@ sap.ui.define([
 		getRowStatusMsg: function (sPath) {
 			return this._oView.getRowStatusMsg(sPath);
 		},
+		// Informa el path de la variable que controla que última fila ha sido modificada
+		setLastPathChanged: function (sPath) {
+			this._lastPathChanged = sPath;
+		},
+		// Recupera el path de la variable que controla que última fila ha sido modificada
+		getLastPathChanged: function () {
+			return this._lastPathChanged;
+		},
 		//////////////////////////////////	
 		//        Private methods       //	
 		//////////////////////////////////	
@@ -364,7 +372,10 @@ sap.ui.define([
 				that._oViewDataService.saveDataSAP(that._oView.getViewInfo().VIEWNAME, JSON.stringify(aValuesSAP), JSON.stringify(aOriginalValuesSAP)).then((result) => {
 
 						//Se recupera el parámetro de retorno que tendrá los mensajes generales
-						var aReturn = JSON.parse(result.data.RETURN);
+						var aReturn = [];
+						if (result.data.RETURN != '')
+							aReturn = JSON.parse(result.data.RETURN);
+
 
 						that._oView.processDataAfterSave(result.data.DATA, aReturn);
 
@@ -378,14 +389,6 @@ sap.ui.define([
 					});
 			});
 			return oPromise;
-		},
-		// Informa el path de la variable que controla que última fila ha sido modificada
-		setLastPathChanged: function (sPath) {
-			this._lastPathChanged = sPath;
-		},
-		// Recupera el path de la variable que controla que última fila ha sido modificada
-		getLastPathChanged: function () {
-			return this._lastPathChanged;
 		},
 		_verifyFieldData: function (sPath, sValue, sColumn) {
 			var that = this;
