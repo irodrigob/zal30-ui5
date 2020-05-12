@@ -107,31 +107,38 @@ sap.ui.define([
 		onValueChange: function (oEvent) {
 			var that = this;
 
-			// Objeto donde se ha cambiado el valor
-			var oSource = oEvent.getSource();
+			// Aunque la vista no es editable alguno objetos, como el checkbox, provocan que salte este evento y dar error en consolo. Por
+			// lo controlo y así me aseguro que ningún dato se modifica
+			if (this._viewDataState.isViewEditable()) {
 
-			// Registro de la tabla donde se ha modificado
-			var oRow = oSource.getParent();
-			var sPath = oRow.getBindingContext(constants.jsonModel.viewData).getPath();
 
-			// Columna donde se ha cambiado el valor
+				// Objeto donde se ha cambiado el valor
+				var oSource = oEvent.getSource();
 
-			var sColumn = this._getCustomDataValue(oSource, constants.tableData.customData.columnName);
+				// Registro de la tabla donde se ha modificado
+				var oRow = oSource.getParent();
+				var sPath = oRow.getBindingContext(constants.jsonModel.viewData).getPath();
 
-			// tipo de objeto usado en la celda
-			var sObjectTypeCell = this._getCustomDataValue(oSource, constants.tableData.customData.objectType);
+				// Columna donde se ha cambiado el valor
 
-			// Estado que el realiza el proceso de cambio de celda
-			var mResult = this._viewDataState.onValueCellChanged({
-				path: sPath,
-				column: sColumn,
-				objetType: sObjectTypeCell,
-				value: sObjectTypeCell == constants.tableData.columnObjectType.checkbox ? oSource.getSelected() : oSource.getValue(),
-				handlerPostServiceSAP: function () {
-					that._postSAPProcess();
-				}
-			});
-			oEvent.getSource().setValue(mResult.value);
+				var sColumn = this._getCustomDataValue(oSource, constants.tableData.customData.columnName);
+
+				// tipo de objeto usado en la celda
+				var sObjectTypeCell = this._getCustomDataValue(oSource, constants.tableData.customData.objectType);
+
+				// Estado que el realiza el proceso de cambio de celda
+				var mResult = this._viewDataState.onValueCellChanged({
+					path: sPath,
+					column: sColumn,
+					objetType: sObjectTypeCell,
+					value: sObjectTypeCell == constants.tableData.columnObjectType.checkbox ? oSource.getSelected() : oSource.getValue(),
+					handlerPostServiceSAP: function () {
+						that._postSAPProcess();
+					}
+				});
+				oEvent.getSource().setValue(mResult.value);
+
+			}
 
 
 
@@ -341,7 +348,7 @@ sap.ui.define([
 			this._viewDataState.determineEditModebyAuthLevel(sViewName);
 
 			// Lectura de los datos y configuracuón de la vista
-			this._viewDataState.readConfDataView({
+			this._viewDataState.processReadConfDataView({
 					viewName: sViewName,
 					fromViewData: true
 				}, function () {
@@ -510,6 +517,9 @@ sap.ui.define([
 									editable: {
 										model: constants.jsonModel.viewData,
 										path: mColumn.name + constants.tableData.suffix_edit_field,
+										formatter: function (bValue) {
+											return bValue;
+										}
 									},
 									select: [this.onValueChange, this],
 									customData: mCustomData

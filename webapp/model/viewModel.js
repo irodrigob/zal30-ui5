@@ -672,6 +672,14 @@ sap.ui.define([
 			this._oOriginalViewData.setProperty(constants.tableData.path.values, aOriginalValues);
 
 		},
+		// Guarda el modo de edición
+		setEditMode: function (sMode) {
+			this._editMode = sMode;
+		},
+		// Devuelve el modo de edición
+		getEditMode: function () {
+			return this._editMode;
+		},
 		//////////////////////////////////	
 		//        Private methods       //	
 		//////////////////////////////////		  
@@ -682,6 +690,10 @@ sap.ui.define([
 			oViewDataModel.setProperty(constants.tableData.path.columns, {});
 			this._oViewDataDeletd = new sap.ui.model.json.JSONModel();
 			this._oOriginalViewData = '';
+
+			this._editMode = ''; // Modo de edicion
+			this._alreadyBlocked = false; // Vista bloqueada
+			this._lockedByUser = ''; // Usuario del bloqueo
 
 
 		},

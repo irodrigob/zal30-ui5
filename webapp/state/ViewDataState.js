@@ -32,22 +32,48 @@ sap.ui.define([
 
 			// Si se tiene nivel de autorización "full" entonces tiene permisos para todo. En caso contrario de visualización
 			if (mViewInfo.LEVELAUTH == constants.mLevelAuth.full)
-				this._editMode = constants.editMode.edit;
+				this._oView.setEditMode(constants.editMode.edit);
 			else
-				this._editMode = constants.editMode.view;
+				this._oView.setEditMode(constants.editMode.view);
 
 		},
 
 		// Devuelve si se puede editar la vista
 		isViewEditable: function () {
-			if (this._editMode == constants.editMode.edit)
+			if (this._oView.getEditMode() == constants.editMode.edit)
 				return true;
 			else
 				return false;
 		},
 
 		// Lectura de la configuración y datos
-		readConfDataView(mParams, oSuccessHandler, oErrorHandler) {
+		processReadConfDataView(mParams, oSuccessHandler, oErrorHandler) {
+			var that = this;
+
+
+			if (this._editMode == constants.editMode.edit) {
+				this._oViewDataService.lockView({
+					viewName: mParams.viewName
+				}).then((result) => {
+
+						// Se determina como se edita según el resultado
+						that._determineEdtModelAccordingLockView(result.data);
+
+						// Y ahora la funcion que lee la configuración y datos
+						that._readConfDataView(mParams, oSuccessHandler, oErrorHandler);
+					},
+					(error) => {
+
+					});
+			} else {
+				// Si se esta en modo lectura se leen los datos directamente
+				this._readConfDataView(mParams, oSuccessHandler, oErrorHandler);
+			}
+
+		},
+		// Lectura de configurados y datos
+		_readConfDataView: function (mParams, oSuccessHandler, oErrorHandler) {
+
 			var that = this;
 
 			// Nota IRB: Las llamadas se tienen que construir en el propio array. Si se hacen en variables provoca que se llamen de manera inmediata y la recepción
@@ -61,13 +87,6 @@ sap.ui.define([
 				editMode: this._editMode
 			})];
 
-			// Si en modo de edición no es de lectura se añade el servicio de bloqueo
-			if (this._editMode == constants.editMode.edit) {
-				aServices.push(this._oViewDataService.lockView({
-					viewName: mParams.viewName
-				}));
-			}
-
 			Promise.all(aServices).then((result) => {
 
 					// En el registro 0 esta el resultado de la primera llamada
@@ -75,11 +94,6 @@ sap.ui.define([
 
 					// En el registro 1 esta los datos y el template
 					that._oView.setViewDataFromService(result[1].data);
-
-					// Si se esta editando hay que mirar el resultado del bloqueo. Si esta bloqueado la tabla no podrá ser editada
-					if (that._editMode == constants.editMode.edit)
-						that._determineEdtModelAccordingLockView(result[2].data);
-
 
 					// Se ejecuta el código del Success
 					oSuccessHandler();
@@ -89,7 +103,6 @@ sap.ui.define([
 					oErrorHandler(error);
 
 				});
-
 		},
 		// lectura de los datos de la vista
 		readDataView: function (mParams) {
@@ -178,19 +191,17 @@ sap.ui.define([
 		// Evento que se lanza cuando se marcan líneas para borrar
 		onDeleteEntries: function (aRows, oPostSAPProcess) {
 			var that = this;
-		
-			
-		if(this._lastPathChanged!='')
-			var mRowLastChanged = this._oView.getRowFromPath(this._lastPathChanged)
-		
+
 			// Como se controla que el botón de borrar se habilite solo cuando se seleccionan registros, cuando llega a este método
 			// seguro que hay líneas seleccionadas
 			for (var x = 0; x < aRows.length; x++) {
 
+				// Si se borra justo la ultima línea modificada se deja el blanco la variable que lo controla. De esta manera no se lanzará el servicio
+				// de validación
 				if (constants.tableData.path.values + "/" + aRows[x] == this._lastPathChanged)
 					this.setLastPathChanged("");
 
-				that._oView.deleteEntry(aRows[x]);
+				this._oView.deleteEntry(aRows[x]);
 			}
 
 			// Si se ha modificado una fila previamente se lanzará el servicio que valida en SAP dicha fila
