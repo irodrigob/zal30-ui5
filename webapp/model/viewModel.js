@@ -841,9 +841,9 @@ sap.ui.define([
 			}
 			return aValues;
 		},
-		// Devuelve si un campos será editable según sus atributos
+		// Devuelve si un campos será editable según sus atributos, y el estado de la vista.
 		_isEditableFieldCatalog: function (mFieldcatalog) {
-			if (!mFieldcatalog.tech && mFieldcatalog.edit)
+			if (!mFieldcatalog.tech && mFieldcatalog.edit && this._editMode)
 				return true;
 			else
 				return false;

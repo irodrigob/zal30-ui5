@@ -344,9 +344,6 @@ sap.ui.define([
 			if (!this._oOwnerComponent.isBusyDialogOpen())
 				this._oOwnerComponent.showBusyDialog();
 
-			// Determinación del modo de edición segun el nivel de autorización
-			this._viewDataState.determineEditModebyAuthLevel(sViewName);
-
 			// Lectura de los datos y configuracuón de la vista
 			this._viewDataState.processReadConfDataView({
 					viewName: sViewName,

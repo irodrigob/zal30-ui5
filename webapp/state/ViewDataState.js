@@ -2,8 +2,9 @@ sap.ui.define([
 	"com/ivancio/zal30-ui5/state/ViewBaseState",
 	"com/ivancio/zal30-ui5/service/ViewDataService",
 	"com/ivancio/zal30-ui5/constants/constants",
-	"sap/m/MessageToast"
-], function (ViewBaseState, ViewDataService, constants, MessageToast) {
+	"sap/m/MessageToast",
+	"com/ivancio/zal30-ui5/model/viewModel"
+], function (ViewBaseState, ViewDataService, constants, MessageToast, viewModel) {
 	"use strict";
 
 	var oViewDataState = ViewBaseState.extend("com.ivancio.zal30-ui5.state.ViewBaseState", {
@@ -50,8 +51,13 @@ sap.ui.define([
 		processReadConfDataView(mParams, oSuccessHandler, oErrorHandler) {
 			var that = this;
 
+			// Se instancia el objeto que gestionara datos y catlaogo de campos
+			this._oView = this._instanceViewModelObject(mParams.viewName);
 
-			if (this._editMode == constants.editMode.edit) {
+			// Determinación del modo de edición segun el nivel de autorización
+			this.determineEditModebyAuthLevel(mParams.viewName);
+
+			if (this._oView.getEditMode() == constants.editMode.edit) {
 				this._oViewDataService.lockView({
 					viewName: mParams.viewName
 				}).then((result) => {
@@ -81,16 +87,16 @@ sap.ui.define([
 			var aServices = [this._viewConfState.readView({
 				viewName: mParams.viewName,
 				fromViewData: true,
-				editMode: this._editMode
+				editMode: this._oView.getEditMode()
 			}), this.readDataView({
 				viewName: mParams.viewName,
-				editMode: this._editMode
+				editMode: this._oView.getEditMode()
 			})];
 
 			Promise.all(aServices).then((result) => {
 
-					// En el registro 0 esta el resultado de la primera llamada
-					that._oView = result[0];
+					// Se pasa el catalogo de campos
+					that._oView.setFieldCatalogFromService(result[0]);
 
 					// En el registro 1 esta los datos y el template
 					that._oView.setViewDataFromService(result[1].data);
@@ -351,12 +357,11 @@ sap.ui.define([
 
 			if (this._alreadyBlocked) {
 				// Con bloqueo la vista solo se puede visualizar
-				this._editMode = constants.editMode.view;
+				this._oView.setEditMode(constants.editMode.view);
 			}
 		},
 		_initModel: function () {
-			// Modo de edición
-			this._editMode = ''; // Modo de edicion
+			// Modo de edición			
 			this._alreadyBlocked = false; // Vista bloqueada
 			this._lockedByUser = ''; // Usuario del bloqueo
 			this._lastPathChanged = ''; // Último path modificado
@@ -434,7 +439,21 @@ sap.ui.define([
 			});
 			return oPromise;
 
-		}
+		},
+		// Se instacia el objeto vista con los datos pasados + otros que se determinan
+		_instanceViewModelObject(sViewName) {
+			// Se instancia el objeto vista que guardará toda la información de la vista pasada por parámetro			
+			var oView = new viewModel(this._oOwnerComponent);
+
+			// Se guarda la info general de la vista
+			oView.setViewInfo(this._viewConfState.getViewInfo(sViewName));
+
+			// Se guarda el catalogo de campos
+			//oView.setFieldCatalogFromService(mParams.fieldCatalog);
+
+			return oView;
+
+		},
 	});
 	return oViewDataState;
 });

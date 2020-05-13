@@ -59,7 +59,7 @@ sap.ui.define([
 
 			// Si el origen de la llama es desde la vista de los datos, ViewData.Controller.js, la llamada se hará devolviendo el objeto promise. El motivo es que
 			// desde la consulta de datos se encadenan llamadas y la unica manera que procesarlas todas seguidas es con el objeto promise. En caso de llamarse
-			// desde la vista de selección de vista se hará directamente la llamada. El 
+			// desde la vista de selección de vista se hará directamente la llamada. 
 			if (mParams.fromViewData) {
 				var oPromise = new Promise(function (resolve, reject) {
 
@@ -70,12 +70,12 @@ sap.ui.define([
 					}).then((result) => {
 
 							// Se llama al método que devuelve el objeto View con la información del catalogo + la general 
-							var oView = that._instanceViewObject({
+							/*var oView = that._instanceViewObject({
 								viewName: mParams.viewName,
 								fieldCatalog: result.data.results
-							});
+							});*/
 
-							resolve(oView);
+							resolve(result.data.results);
 						},
 						(error) => {
 							reject(error);
@@ -89,11 +89,11 @@ sap.ui.define([
 					mode: mParams.editMode
 				}).then((result) => {
 						// Se llama al método que devuelve el objeto View con la información del catalogo + la general 
-						var oView = that._instanceViewObject({
+						/*var oView = that._instanceViewObject({
 							viewName: mParams.viewName,
 							fieldCatalog: result.data.results
-						});
-
+						});*/
+						debugger;
 
 					},
 					(error) => {
@@ -126,7 +126,7 @@ sap.ui.define([
 			return oView;
 
 		},
-		
+
 	});
 	return oViewConfState;
 });
