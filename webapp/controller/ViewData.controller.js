@@ -253,7 +253,7 @@ sap.ui.define([
 			this._oOwnerComponent.showBusyDialog();
 
 			// Si la página viene de la selección de vista se valida que la vista pasada por parametro es valida y no se ha
-			// modificado
+			// modificado			
 			if (viewSelect) {
 				var mViewInfo = this._viewConfState.getViewInfo(sViewName);
 
@@ -377,8 +377,7 @@ sap.ui.define([
 			// Se establece las propiedades del layout de la tabla
 			this._setInitialTableDataLayout();
 
-			// Se establece el filtro de borrado. Es decir, no se ven los registros borrados
-			this._setFilterRowsDeleted();
+
 
 			// Se define los row settings de la columna
 			// El Row setting para hacer los highlight se hace por código porque en la vista XML View no funciona con la opción de formatter
@@ -391,11 +390,15 @@ sap.ui.define([
 			oViewDataModel.setProperty(constants.tableData.path.visibleFixColumnAction, false);
 
 			// Si el modo de edición es de solo lectura entonces se oculta los botones asociados a la edición	
-			if (this._viewDataState.isViewEditable())
+			if (this._viewDataState.isViewEditable()) {
 				this._setVisibleEditButtons(true);
-			else
-				this._setVisibleEditButtons(false);
 
+				// En dición se establece el filtro de borrado. Es decir, no se ven los registros borrados
+				this._setFilterRowsDeleted();
+
+			} else {
+				this._setVisibleEditButtons(false);
+			}
 
 		},
 		// Se define los row setting de la tabla
@@ -644,26 +647,28 @@ sap.ui.define([
 		},
 		// Columna fija de acciones
 		_addActionFixColum: function () {
-
-			return new Icon({
-				src: "sap-icon://search",
-				press: [this.onShowRowStatusMsg, this],
-				visible: {
-					parts: [{
-						model: constants.jsonModel.viewData,
-						path: constants.tableData.internalFields.rowStatus
-					}, {
-						model: constants.jsonModel.viewData,
-						path: constants.tableData.internalFields.rowStatusInternal
-					}],
-					formatter: function (sStatus, sStatusInternal) {
-						if (sStatus == constants.tableData.rowStatusValues.error || sStatusInternal == constants.tableData.rowStatusValues.error)
-							return true;
-						else
-							return false;
+			// El icono de consultar el status
+			if (this._viewDataState.isViewEditable()) {
+				return new Icon({
+					src: "sap-icon://search",
+					press: [this.onShowRowStatusMsg, this],
+					visible: {
+						parts: [{
+							model: constants.jsonModel.viewData,
+							path: constants.tableData.internalFields.rowStatus
+						}, {
+							model: constants.jsonModel.viewData,
+							path: constants.tableData.internalFields.rowStatusInternal
+						}],
+						formatter: function (sStatus, sStatusInternal) {
+							if (sStatus == constants.tableData.rowStatusValues.error || sStatusInternal == constants.tableData.rowStatusValues.error)
+								return true;
+							else
+								return false;
+						}
 					}
-				}
-			});
+				});
+			}
 
 		},
 		// Establece el layout inicial de la tabla de datos
@@ -687,19 +692,23 @@ sap.ui.define([
 		// 1) Nombre de la columna. Con el nombre de la columna se puede saber el tipo de campo
 		// 2) Tipo de objeto. Para saber como recuperar sus valore, sobretodo para los checkbox
 		_getCustomerDataCells: function (mColumn) {
-			return [{
-					Type: "sap.ui.core.CustomData",
-					key: constants.tableData.customData.columnName,
-					value: mColumn.name,
-					writeToDom: false
-				},
-				{
-					Type: "sap.ui.core.CustomData",
-					key: constants.tableData.customData.objectType,
-					value: "",
-					writeToDom: false
-				},
-				{
+			var aObjects = [];
+			aObjects.push({
+				Type: "sap.ui.core.CustomData",
+				key: constants.tableData.customData.columnName,
+				value: mColumn.name,
+				writeToDom: false
+			});
+			aObjects.push({
+				Type: "sap.ui.core.CustomData",
+				key: constants.tableData.customData.objectType,
+				value: "",
+				writeToDom: false
+			});
+
+			// El campo de control del registro modificado solo se muestra en la edición
+			if (this._viewDataState.isViewEditable()) {
+				aObjects.push({
 					Type: "sap.ui.core.CustomData",
 					key: constants.tableData.customData.changeRow,
 					value: {
@@ -708,11 +717,11 @@ sap.ui.define([
 						formatter: function (sUpdkz) {
 							return sUpdkz == constants.tableData.fieldUpkzValues.update || sUpdkz == constants.tableData.fieldUpkzValues.insert ? "true" : "false";
 						}
-
 					},
 					writeToDom: true
-				}
-			];
+				});
+			}
+			return aObjects;
 		},
 		// Evento cuando se pulsa en la row action de visualizar los mensajes
 		_onShowStatusMsg: function (oEvent) {

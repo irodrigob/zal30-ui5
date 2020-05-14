@@ -77,39 +77,6 @@ sap.ui.define([
 			}
 
 		},
-		// Lectura de configurados y datos
-		_readConfDataView: function (mParams, oSuccessHandler, oErrorHandler) {
-
-			var that = this;
-
-			// Nota IRB: Las llamadas se tienen que construir en el propio array. Si se hacen en variables provoca que se llamen de manera inmediata y la recepción
-			// del resultado en el promise.all no es correcta, ya que siempre se recibe los datos del primer servicio.			
-			var aServices = [this._viewConfState.readView({
-				viewName: mParams.viewName,
-				fromViewData: true,
-				editMode: this._oView.getEditMode()
-			}), this.readDataView({
-				viewName: mParams.viewName,
-				editMode: this._oView.getEditMode()
-			})];
-
-			Promise.all(aServices).then((result) => {
-
-					// Se pasa el catalogo de campos
-					that._oView.setFieldCatalogFromService(result[0]);
-
-					// En el registro 1 esta los datos y el template
-					that._oView.setViewDataFromService(result[1].data);
-
-					// Se ejecuta el código del Success
-					oSuccessHandler();
-
-				},
-				(error) => {
-					oErrorHandler(error);
-
-				});
-		},
 		// lectura de los datos de la vista
 		readDataView: function (mParams) {
 			return this._oViewDataService.readData({
@@ -134,11 +101,11 @@ sap.ui.define([
 		},
 		// Devuelve si la vista ha sido bloqueada
 		getViewAlreadyLocked: function () {
-			return this._alreadyBlocked;
+			return this._oView.getAlreadyBlocked();
 		},
 		// Devuelve el usuario que tiene bloqueado la vista
 		getUserAlreadyBlocked: function () {
-			return this._lockedByUser;
+			return this._oView.getLockedByUser();
 		},
 		// Evento que se lanza cuando un datos de la vista ha sido modificado. Este evento es mixto entre la controladora de la vista
 		// que determina donde se ha disparado el evento y aquí, que es el que hace las comprobaciones y validaciones
@@ -352,18 +319,15 @@ sap.ui.define([
 		},
 		// Determina el modo de edición dependiendo si la tabla esta bloqueda
 		_determineEdtModelAccordingLockView: function (mResult) {
-			this._alreadyBlocked = mResult.ALREADYLOCKED;
-			this._lockedByUser = mResult.LOCKBYUSER;
+			this._oView.setAlreadyBlocked(mResult.ALREADYLOCKED);
+			this._oView.setLockedByUser(mResult.LOCKBYUSER);
 
-			if (this._alreadyBlocked) {
+			if (mResult.ALREADYLOCKED) {
 				// Con bloqueo la vista solo se puede visualizar
 				this._oView.setEditMode(constants.editMode.view);
 			}
 		},
 		_initModel: function () {
-			// Modo de edición			
-			this._alreadyBlocked = false; // Vista bloqueada
-			this._lockedByUser = ''; // Usuario del bloqueo
 			this._lastPathChanged = ''; // Último path modificado
 		},
 		// Validación de una fila de datos en SAP
@@ -453,6 +417,39 @@ sap.ui.define([
 
 			return oView;
 
+		},
+		// Lectura de configurados y datos
+		_readConfDataView: function (mParams, oSuccessHandler, oErrorHandler) {
+
+			var that = this;
+
+			// Nota IRB: Las llamadas se tienen que construir en el propio array. Si se hacen en variables provoca que se llamen de manera inmediata y la recepción
+			// del resultado en el promise.all no es correcta, ya que siempre se recibe los datos del primer servicio.			
+			var aServices = [this._viewConfState.readView({
+				viewName: mParams.viewName,
+				fromViewData: true,
+				editMode: this._oView.getEditMode()
+			}), this.readDataView({
+				viewName: mParams.viewName,
+				editMode: this._oView.getEditMode()
+			})];
+
+			Promise.all(aServices).then((result) => {
+
+					// Se pasa el catalogo de campos
+					that._oView.setFieldCatalogFromService(result[0]);
+
+					// En el registro 1 esta los datos y el template
+					that._oView.setViewDataFromService(result[1].data);
+
+					// Se ejecuta el código del Success
+					oSuccessHandler();
+
+				},
+				(error) => {
+					oErrorHandler(error);
+
+				});
 		},
 	});
 	return oViewDataState;

@@ -47,7 +47,7 @@
                         <Button icon="sap-icon://add" 
                             tooltip="{i18n>ViewData.tooltipBtnAdd}" 
                             press="onAddEntry" 
-                            visible="{model:'viewData',path:'/btnDeletedVisible'}"/>
+                            visible="{model:'viewData',path:'/btnAddVisible'}"/>
                     </OverflowToolbar>
                 </table:extension>
                 <!-- <table:rowSettingsTemplate>

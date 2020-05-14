@@ -80,23 +80,25 @@ sap.ui.define([
 			// Se guardado los valores en el modelo original
 			oViewDataModel.setProperty(constants.tableData.path.values, oData);
 
-			// Se guarda los valores originales para poder luego saber si un registro se ha modificado o no. 
-			//Para evitar que las variables por referencias hagan los dos modelo iguales hay que usar el merge. Y como además, quiero guardarlo en el mismo path del modelo propio para simplificar
-			// luego las comparativas hago uso de variables intermedias. 
-			this._oOriginalViewData = new sap.ui.model.json.JSONModel();
-			// El merge no crea bien el array, vamos que no es un array del todo y falla cuando se usa el find y demas. Por lo tanto replico el mismo proceso
-			// que con los datos que se usarán
-			//var oDataOriginal = merge({}, oData);
-			var oDataOriginal = JSON.parse(oDataGW.DATA);
-			oDataOriginal = this._InitialProcessAdapModelDataFromGW(oDataOriginal, false);
-			this._oOriginalViewData.setProperty(constants.tableData.path.values, oDataOriginal);
+			// En modo edición se guardan los valores originales y la línea en blanco
+			if (this.getEditMode() == constants.editMode.edit) {
+				// Se guarda los valores originales para poder luego saber si un registro se ha modificado o no. 
+				//Para evitar que las variables por referencias hagan los dos modelo iguales hay que usar el merge. Y como además, quiero guardarlo en el mismo path del modelo propio para simplificar
+				// luego las comparativas hago uso de variables intermedias. 
+				this._oOriginalViewData = new sap.ui.model.json.JSONModel();
+				// El merge no crea bien el array, vamos que no es un array del todo y falla cuando se usa el find y demas. Por lo tanto replico el mismo proceso
+				// que con los datos que se usarán
+				//var oDataOriginal = merge({}, oData);
+				var oDataOriginal = JSON.parse(oDataGW.DATA);
+				oDataOriginal = this._InitialProcessAdapModelDataFromGW(oDataOriginal, false);
+				this._oOriginalViewData.setProperty(constants.tableData.path.values, oDataOriginal);
 
-			// Se hace lo mismos pasos para los datos de template, pero estos no se guardan en el modelo de UI5 sino que se guardan como variable
-			this._oDataTemplate = new sap.ui.model.json.JSONModel();
-			var aDataTemplate = JSON.parse(oDataGW.DATA_TEMPLATE);
-			aDataTemplate = this._InitialProcessAdapModelDataFromGW(aDataTemplate, false);
-			this._oDataTemplate.setProperty("/", aDataTemplate);
-
+				// Se hace lo mismos pasos para los datos de template, pero estos no se guardan en el modelo de UI5 sino que se guardan como variable
+				this._oDataTemplate = new sap.ui.model.json.JSONModel();
+				var aDataTemplate = JSON.parse(oDataGW.DATA_TEMPLATE);
+				aDataTemplate = this._InitialProcessAdapModelDataFromGW(aDataTemplate, false);
+				this._oDataTemplate.setProperty("/", aDataTemplate);
+			}
 
 		},
 		// Devuelve los datos de la vista
@@ -242,7 +244,7 @@ sap.ui.define([
 			return nNumber;
 		},
 		// Se modifica si a nivel de celda es posible editar el campo segun los valores y atributos
-		detEditableCellValue: function (mRow) {
+		_detEditableCellValue: function (mRow) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			var mFielCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
 			// Se recorren todos los campos del catalogo para poder acceder a cada campo de manera individual
@@ -250,10 +252,16 @@ sap.ui.define([
 
 				// Si el campo de edición existe se continua el proceso. El IF lo hago en dos pasos para que quede más claro su funcionamiento
 				if (mRow[mFielCatalog[x].name + constants.tableData.suffix_edit_field]) {
-					// Si el valor proviene del diccionario, es decir, que existe en base de datos y es un campo clave el campo se marca como no editable.
-					if (mRow[constants.tableData.internalFields.isDict] == "X" && mFielCatalog[x].keyDDIC) {
+					// Cualquier
+					if (this.getEditMode() == constants.editMode.edit) {
+						// Si el valor proviene del diccionario, es decir, que existe en base de datos y es un campo clave el campo se marca como no editable.
+						if (mRow[constants.tableData.internalFields.isDict] == "X" && mFielCatalog[x].keyDDIC) {
+							mRow[mFielCatalog[x].name + constants.tableData.suffix_edit_field] = false;
+						}
+					} else {
 						mRow[mFielCatalog[x].name + constants.tableData.suffix_edit_field] = false;
 					}
+
 				}
 			}
 			return mRow;
@@ -464,15 +472,19 @@ sap.ui.define([
 		applyFieldStyleInRow: function (mRow) {
 			// Se recupera el campo de estilos
 			var aStyles = mRow[constants.tableData.internalFields.style];
-			// Se recorren los campos indicador en el array de estilos			
-			for (var x = 0; x < aStyles.length; x++) {
-				// Se monta el campo que indica si es editable
-				var sEditField = aStyles[x].FIELDNAME + constants.tableData.suffix_edit_field;
-				if (mRow[sEditField]) { // Si el campo existe se le asigna el valor
-					if (aStyles[x].EDITABLE == "false")
-						mRow[sEditField] = false;
-					else
-						mRow[sEditField] = true;
+			// En los modo de visualización el campo no viene informado
+			if (aStyles) {
+
+				// Se recorren los campos indicador en el array de estilos			
+				for (var x = 0; x < aStyles.length; x++) {
+					// Se monta el campo que indica si es editable
+					var sEditField = aStyles[x].FIELDNAME + constants.tableData.suffix_edit_field;
+					if (mRow[sEditField]) { // Si el campo existe se le asigna el valor
+						if (aStyles[x].EDITABLE == "false")
+							mRow[sEditField] = false;
+						else
+							mRow[sEditField] = true;
+					}
 				}
 			}
 			return mRow;
@@ -650,7 +662,7 @@ sap.ui.define([
 							//mRow[constants.tableData.internalFields.isDict] = 'X';
 
 							// Se determina los campos que serán editables
-							mRow = this.detEditableCellValue(mRow);
+							mRow = this._detEditableCellValue(mRow);
 
 							// Se añaden el registro al array de valores originales
 							aOriginalValues.push(mRow);
@@ -679,6 +691,22 @@ sap.ui.define([
 		// Devuelve el modo de edición
 		getEditMode: function () {
 			return this._editMode;
+		},
+		// Guarda si esta bloqueada la vista
+		setAlreadyBlocked: function (bValue) {
+			this._alreadyBlocked = bValue;
+		},
+		// Devuelve si esta bloqueda la vista
+		getAlreadyBlocked: function () {
+			return this._alreadyBlocked;
+		},
+		// Guarda el usuario que bloquea la vista
+		setLockedByUser: function (sUser) {
+			this._lockedByUser = sUser;
+		},
+		// Devuelve si esta bloqueda la vista
+		getLockedByUser: function () {
+			return this._lockedByUser;
 		},
 		//////////////////////////////////	
 		//        Private methods       //	
@@ -737,25 +765,27 @@ sap.ui.define([
 		_addFixedColumnsFieldCatalog: function (aFieldCatalog) {
 			var aNewFieldCatalog = [];
 
-			// Columna de acciones, que contendra acciones individuales
-			aNewFieldCatalog.push({
-				name: constants.tableData.fixedColumns.actions,
-				shortText: this._oI18nResource.getText('ViewData.fix.Column.state'),
-				mediumText: this._oI18nResource.getText('ViewData.fix.Column.state'),
-				longText: this._oI18nResource.getText('ViewData.fix.Column.state'),
-				headerText: this._oI18nResource.getText('ViewData.fix.Column.state'),
-				mandatory: false,
-				noOutput: false,
-				checkBox: false,
-				keyDDIC: false,
-				edit: false,
-				type: 'C',
-				len: 0,
-				decimals: 0,
-				lowerCase: false,
-				tech: false,
-				fixColumn: true
-			});
+			// Se añade la columna de acciones, que contendra acciones individuales. Inicialmente solo tiene un icono, pero la idea
+			// es tener una columna que pueda tener distintos iconos con acciones
+				aNewFieldCatalog.push({
+					name: constants.tableData.fixedColumns.actions,
+					shortText: this._oI18nResource.getText('ViewData.fix.Column.state'),
+					mediumText: this._oI18nResource.getText('ViewData.fix.Column.state'),
+					longText: this._oI18nResource.getText('ViewData.fix.Column.state'),
+					headerText: this._oI18nResource.getText('ViewData.fix.Column.state'),
+					mandatory: false,
+					noOutput: false,
+					checkBox: false,
+					keyDDIC: false,
+					edit: false,
+					type: 'C',
+					len: 0,
+					decimals: 0,
+					lowerCase: false,
+					tech: false,
+					fixColumn: true
+				});
+			
 
 			// Se añaden campos que provienen del servicio
 			for (var x = 0; x < aFieldCatalog.length; x++) {
@@ -820,9 +850,11 @@ sap.ui.define([
 					}
 				}
 
-				// Se añade un campo que contendrán el control interno si la fila es erronea y los mensajes internos de esa fila
-				mRow[constants.tableData.internalFields.rowStatusMsgInternal] = [];
-				mRow[constants.tableData.internalFields.rowStatusInternal] = "";
+				// En modo edición Se añade un campo que contendrán el control interno si la fila es erronea y los mensajes internos de esa fila
+				if (this.getEditMode() == constants.editMode.edit) {
+					mRow[constants.tableData.internalFields.rowStatusMsgInternal] = [];
+					mRow[constants.tableData.internalFields.rowStatusInternal] = "";
+				}
 
 				// Se pasa la fila al array
 				aValues[z] = mRow;
@@ -837,7 +869,7 @@ sap.ui.define([
 			for (var z = 0; z < aValues.length; z++) {
 				// constants.tableData.path.values
 				// Se llama a la función encarga de determinar que celdas son editables
-				aValues[z] = this.detEditableCellValue(aValues[z]);
+				aValues[z] = this._detEditableCellValue(aValues[z]);
 			}
 			return aValues;
 		},
