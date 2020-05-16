@@ -188,18 +188,24 @@ sap.ui.define([
 
 			var bEnabled = this.byId(constants.objectsId.viewData.tableData).getSelectedIndices().length ? true : false;
 			oViewDataModel.setProperty("/btnDeletedEnabled", bEnabled);
+			oViewDataModel.setProperty("/btnTransportEnabled", bEnabled);
+
 		},
 		onSaveData: function (oEvent) {
 
 			var that = this;
 
-			this._viewDataState.onSaveData(function (aReturn) {
-				that._postSAPProcess();
-				// Se muestran los mensajes del proceso					
-				if (aReturn && aReturn.length > 0)
-					that._showMessageReturn(aReturn);
+			// Si la vista permite transportar entonces se lanza el proceso de selección de la orden de transporte
+			if (this._viewDataState.getAllowedTransport()) {
+				this._selectTransportOrder()
+			} else {
+				// Si no lo permite entonces se graba lo datos
+				this._viewDataState.onSaveData('', function (aReturn) {
+					that._postSaveSAPProcess(aReturn);
+				});
+			}
 
-			});
+
 
 		},
 		// Evento al pulsar el icono de ver el detalle de los mensajes de la fila
@@ -329,8 +335,11 @@ sap.ui.define([
 			oViewDataModel.setProperty("/viewDesc", '');
 			oViewDataModel.setProperty("/btnDeletedEnabled", false);
 			oViewDataModel.setProperty("/btnSaveEnabled", false);
+			oViewDataModel.setProperty("/btnTransportEnabled", false);
 
-			// Los botones de edición no se visualizan por defecto
+			oViewDataModel.setProperty("/transportOrder", '');
+
+			// Los botones de edición no se vTransportlizan por defecto
 			this._setVisibleEditButtons(false);
 
 		},
@@ -355,6 +364,9 @@ sap.ui.define([
 					// Se guarda en el modelo el nombre y descripción de la vista
 					oViewDataModel.setProperty("/viewName", that._viewDataState.getViewInfo().viewName);
 					oViewDataModel.setProperty("/viewDesc", that._viewDataState.getViewInfo().viewDesc);
+
+					// Se guarda en el modelo si se puede transportar
+					oViewDataModel.setProperty("/allowedTransport", that._viewDataState.getAllowedTransport());
 
 					// Se mira si la tabla esta bloqueda para mostrar un mensaje indicandolo
 					if (that._viewDataState.getViewAlreadyLocked()) {
@@ -564,7 +576,8 @@ sap.ui.define([
 								valueFormat: this._oOwnerComponent.getUserConfig().dateFormat,
 								displayFormat: this._oOwnerComponent.getUserConfig().displayDateFormat,
 								change: [this.onValueChange, this],
-								customData: mCustomData
+								customData: mCustomData,
+								placeholder: "Enter date..."
 							})
 							break;
 						case constants.columnTtype.time:
@@ -746,6 +759,7 @@ sap.ui.define([
 			oViewDataModel.setProperty("/btnDeletedVisible", bVisible);
 			oViewDataModel.setProperty("/btnAddVisible", bVisible);
 			oViewDataModel.setProperty("/btnSaveVisible", bVisible);
+
 		},
 		// Activa/desactiva el botón de grabar
 		_setEnabledBtnSaved: function (bEnabled) {
@@ -765,9 +779,40 @@ sap.ui.define([
 			this._oLogDialog.setValues(this._oI18nResource.getText("ViewData.logDialog.returnMsg.Title"), aMsgLogDialog);
 			this._oLogDialog.openDialog();
 
-		}
+		},
+		// Procesos posteriores al momento de grabación
+		_postSaveSAPProcess: function (aReturn) {
 
+			// Procesos posterioris generar a las llamafas
+			this._postSAPProcess();
 
+			// Se muestran los mensajes del proceso					
+			if (aReturn && aReturn.length > 0)
+				this._showMessageReturn(aReturn);
+		},
+
+		// Seleccion, o validación ya ha sido escogida, de la orden de transporte
+		_selectTransportOrder: function () {
+			var that = this;
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+
+			// Se recupera la orden de transporte
+			var sTransportOrder = oViewDataModel.getProperty("/transportOrder");
+
+			// Si no hay orden de transporte se llama al servicio para obtenerlo
+			if (sTransportOrder == '') {
+				this._viewDataState.getUserOrder().then((result) => {
+					debugger;
+				}, (error) => {
+
+				});
+			}
+
+			//this._viewDataState.onSaveData('', function (aReturn) {
+		//		that._postSaveSAPProcess(aReturn);
+		//	});
+
+		},
 
 	});
 });

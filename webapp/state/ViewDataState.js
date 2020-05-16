@@ -25,19 +25,6 @@ sap.ui.define([
 
 
 		},
-		// Determinación del modo de edición según nivel de autorización
-		determineEditModebyAuthLevel: function (sViewName) {
-			// El nivel de autorización lo marca la información básica obtenida de la vistas leídas. 
-
-			var mViewInfo = this._viewConfState.getViewInfo(sViewName);
-
-			// Si se tiene nivel de autorización "full" entonces tiene permisos para todo. En caso contrario de visualización
-			if (mViewInfo.LEVELAUTH == constants.mLevelAuth.full)
-				this._oView.setEditMode(constants.editMode.edit);
-			else
-				this._oView.setEditMode(constants.editMode.view);
-
-		},
 
 		// Devuelve si se puede editar la vista
 		isViewEditable: function () {
@@ -55,7 +42,7 @@ sap.ui.define([
 			this._oView = this._instanceViewModelObject(mParams.viewName);
 
 			// Determinación del modo de edición segun el nivel de autorización
-			this.determineEditModebyAuthLevel(mParams.viewName);
+			this._determineEditModeByLevelAuth(mParams.viewName);
 
 			if (this._oView.getEditMode() == constants.editMode.edit) {
 				this._oViewDataService.lockView({
@@ -88,7 +75,7 @@ sap.ui.define([
 		getViewInfo: function () {
 			return {
 				viewName: this._oView.viewInfo.viewName,
-				viewDesc: this._oView.viewInfo.viewDesc
+				viewDesc: this._oView.viewInfo.viewDesc,
 			};
 		},
 		// Se devuelve las columnas de la tabla a partir del catalogo de campos
@@ -226,7 +213,7 @@ sap.ui.define([
 
 
 		},
-		onSaveData: function (oPostSAPProcess) {
+		onSaveData: function (sTransportOrder, oPostSAPProcess) {
 			var that = this;
 
 			// antes de grabar se evalua si alguna fila pendiente de validar datos en SAP, si es así hay que lanzar el servicio 
@@ -307,6 +294,31 @@ sap.ui.define([
 		// Recupera el path de la variable que controla que última fila ha sido modificada
 		getLastPathChanged: function () {
 			return this._lastPathChanged;
+		},
+		// Devuelve si se puede transportar en la vista
+		getAllowedTransport: function () {
+			// Solo se puede transporte si la vista tiene el flag permitido y la vista es editable
+			if (this._oView.getViewInfo().ALLOWEDTRANSPORT && this.isViewEditable())
+				return true;
+			else
+				return false;
+		},
+		// Obtiene las ordenes de transporte del usuario
+		getUserOrder: function () {
+			var that=this;
+			// Se devuelve un promise para simplificar los datos que se devuelven. Así nos ahorramos los paths
+			// "basura" que se devuelve
+			var oPromise = new Promise(function (resolve, reject) {
+				that._oViewDataService.getUserOrder().then((result) => {					
+					resolve(result.data.results);
+				}, (error) => {
+					reject(error);
+				});
+
+			});
+
+			return oPromise;
+
 		},
 		//////////////////////////////////	
 		//        Private methods       //	
@@ -450,6 +462,18 @@ sap.ui.define([
 					oErrorHandler(error);
 
 				});
+		},
+		// Determinación del modo de edición según nivel de autorización
+		_determineEditModeByLevelAuth: function (sViewName) {
+
+			// Se leen los atributos de la vista
+			var mViewInfo = this._viewConfState.getViewInfo(sViewName);
+
+			// Si se tiene nivel de autorización "full" entonces tiene permisos para todo. En caso contrario de visualización
+			if (mViewInfo.LEVELAUTH == constants.mLevelAuth.full)
+				this._oView.setEditMode(constants.editMode.edit);
+			else
+				this._oView.setEditMode(constants.editMode.view);
 		},
 	});
 	return oViewDataState;

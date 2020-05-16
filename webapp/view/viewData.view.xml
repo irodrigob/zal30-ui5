@@ -35,7 +35,7 @@
                 rowSelectionChange="onRowSelectionChange" 
                 rowActionCount="{model: 'viewData', path:'/tableRowActionCount'}" 
                 class="tableData">
-                
+
                 <table:extension>
                     <OverflowToolbar>
                         <ToolbarSpacer/>
@@ -60,6 +60,11 @@
                             tooltip="{i18n>ViewData.tooltipBtnSave}" 
                             enabled="{model:'viewData', path:'/btnSaveEnabled'}" 
                             visible="{model:'viewData', path:'/btnSaveVisible'}" 
+                            press="onSaveData"/>
+                        <Button icon="sap-icon://shipping-status" 
+                            tooltip="{i18n>ViewData.tooltipBtnTransport}" 
+                            enabled="{model:'viewData', path:'/btnTransportEnabled'}" 
+                            visible="{model:'viewData', path:'/allowedTransport'}" 
                             press="onSaveData"/>
                     </OverflowToolbar>
                 </table:footer>

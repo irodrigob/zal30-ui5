@@ -55,9 +55,8 @@ sap.ui.define([
 		// Guarda información general de la vista
 		setViewInfo: function (mViewInfo) {
 			// Se guarda el nombre de la vista y su descripción para usarse directamente sin tener que recuperar toda la info
-			this.viewInfo.viewName = mViewInfo.VIEWNAME;
-			this.viewInfo.viewDesc = mViewInfo.VIEWDESC;
-
+			//this.viewInfo.viewName = mViewInfo.VIEWNAME;
+			//this.viewInfo.viewDesc = mViewInfo.VIEWDESC;			
 			this._viewInfo = mViewInfo;
 		},
 		// Devuelve la información de la vista
@@ -269,8 +268,11 @@ sap.ui.define([
 		// Añade un registro vacia a los datos
 		addEmptyRow: function () {
 
-			// En el template solo habra un registro
-			var mNewRow = this._oDataTemplate.getProperty("/0");
+			// En el template solo habra un registro por eso se lee directamente la posición 0, para evitar el paso por referencia hago así
+			// del merge para crear un objeto nuevo sin referencia. 
+			// El merge evita que al añadir la primera vez el registro esta en blanco, pero cuando se informa ese nuevo registro en vista los datos
+			// también se propagan al registro template por el tema del paso por referencia. Esto se evita con el merge
+			var mNewRow = merge({}, this._oDataTemplate.getProperty("/0"));
 
 			// Se informan determinados campos al añadir el registro
 			this._completeDataAddEmptyRow(mNewRow);
@@ -767,25 +769,25 @@ sap.ui.define([
 
 			// Se añade la columna de acciones, que contendra acciones individuales. Inicialmente solo tiene un icono, pero la idea
 			// es tener una columna que pueda tener distintos iconos con acciones
-				aNewFieldCatalog.push({
-					name: constants.tableData.fixedColumns.actions,
-					shortText: this._oI18nResource.getText('ViewData.fix.Column.state'),
-					mediumText: this._oI18nResource.getText('ViewData.fix.Column.state'),
-					longText: this._oI18nResource.getText('ViewData.fix.Column.state'),
-					headerText: this._oI18nResource.getText('ViewData.fix.Column.state'),
-					mandatory: false,
-					noOutput: false,
-					checkBox: false,
-					keyDDIC: false,
-					edit: false,
-					type: 'C',
-					len: 0,
-					decimals: 0,
-					lowerCase: false,
-					tech: false,
-					fixColumn: true
-				});
-			
+			aNewFieldCatalog.push({
+				name: constants.tableData.fixedColumns.actions,
+				shortText: this._oI18nResource.getText('ViewData.fix.Column.state'),
+				mediumText: this._oI18nResource.getText('ViewData.fix.Column.state'),
+				longText: this._oI18nResource.getText('ViewData.fix.Column.state'),
+				headerText: this._oI18nResource.getText('ViewData.fix.Column.state'),
+				mandatory: false,
+				noOutput: false,
+				checkBox: false,
+				keyDDIC: false,
+				edit: false,
+				type: 'C',
+				len: 0,
+				decimals: 0,
+				lowerCase: false,
+				tech: false,
+				fixColumn: true
+			});
+
 
 			// Se añaden campos que provienen del servicio
 			for (var x = 0; x < aFieldCatalog.length; x++) {

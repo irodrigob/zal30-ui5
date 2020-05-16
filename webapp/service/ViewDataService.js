@@ -36,6 +36,12 @@ sap.ui.define([
 			bUseMock: false,
 			mockFile: "/saveData.json",
 			oDataModel: "masterData"
+		},
+		userOrder:{
+			serviceName: "/userOrderSet",
+			bUseMock: false,
+			mockFile: "/userOrder.json",
+			oDataModel: "masterData"
 		}
 
 	};
@@ -145,6 +151,14 @@ sap.ui.define([
 				DATA: sData,
 				ORIGINAL_DATA: sOriginalData
 			}, {});
+		},
+		// Devuelve las ordenes del usuario
+		getUserOrder:function(){
+
+			var oFilters = [new Filter(constants.services.filter.langu, sap.ui.model.FilterOperator.EQ, this._sLanguage)];
+			return this.callOData(_mService.userOrder).get({
+				filters: oFilters
+			})
 		}
 
 	});
