@@ -53,7 +53,7 @@ sap.ui.define([
 		},
 		// Establece el titulo de la ventana
 		setTitle: function (sTitle) {
-			this._title = sTitle;
+			this._title = sTitle;			
 		},
 		// Añade un mensaje de manera individual
 		addMessage: function (sType, sMessage) {
@@ -98,9 +98,9 @@ sap.ui.define([
 			/*this._sId = this.getId() + "--LogDialog";
 			if (!this._oDialog) {
 				Fragment.load({
-					id: this._sId,
+					id: that._sId,
 					name: "com.ivancio.zal30-ui5.component.general.logDialog.LogDialog",
-					controller: this
+					controller: that
 				}).then(function (oDialog) {
 					that._oDialog = oDialog;
 					that.addDependent(oDialog);

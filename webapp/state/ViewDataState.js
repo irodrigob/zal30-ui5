@@ -228,7 +228,7 @@ sap.ui.define([
 
 							// Se llama al proceso de grabación. Si el servicio va bien entonces se lanza la función pasada para
 							// el refresco de datos
-							that._saveDataSAP().then((result) => {
+							that._saveDataSAP(sTransportOrder).then((result) => {
 
 								// Se deja en blanco el último path modificado. Porque la grabación se puede hacer de varios registros. Y guardar el ultimo
 								// produce comportamiento erróneos al corregir/editar los datos después de grabarlos.
@@ -258,7 +258,7 @@ sap.ui.define([
 
 					// Se llama al proceso de grabación. Si el servicio va bien entonces se lanza la función pasada para
 					// el refresco de datos
-					that._saveDataSAP().then((result) => {
+					that._saveDataSAP(sTransportOrder).then((result) => {
 						// Se llama al proceso de la vista una vez se haya ejecutado los pasos de SAP
 						oPostSAPProcess(result.return);
 					}, (error) => {
@@ -305,11 +305,11 @@ sap.ui.define([
 		},
 		// Obtiene las ordenes de transporte del usuario
 		getUserOrder: function () {
-			var that=this;
+			var that = this;
 			// Se devuelve un promise para simplificar los datos que se devuelven. Así nos ahorramos los paths
 			// "basura" que se devuelve
 			var oPromise = new Promise(function (resolve, reject) {
-				that._oViewDataService.getUserOrder().then((result) => {					
+				that._oViewDataService.getUserOrder().then((result) => {
 					resolve(result.data.results);
 				}, (error) => {
 					reject(error);
@@ -363,7 +363,7 @@ sap.ui.define([
 			return oPromise;
 		},
 		// Validación de una fila de datos en SAP
-		_saveDataSAP: function () {
+		_saveDataSAP: function (sTransportOrder) {
 			var that = this;
 
 			// La llamada al servicio se incluye en un Promise porque este servicio puede ser encadenado en otras validaciones
@@ -374,7 +374,7 @@ sap.ui.define([
 				// Recupero los datos originales de los registros modificados
 				var aOriginalValuesSAP = that._oView.getOriginalDataChanged2SAP();
 
-				that._oViewDataService.saveDataSAP(that._oView.getViewInfo().VIEWNAME, JSON.stringify(aValuesSAP), JSON.stringify(aOriginalValuesSAP)).then((result) => {
+				that._oViewDataService.saveDataSAP(that._oView.getViewInfo().VIEWNAME, JSON.stringify(aValuesSAP), JSON.stringify(aOriginalValuesSAP), sTransportOrder).then((result) => {
 
 						//Se recupera el parámetro de retorno que tendrá los mensajes generales
 						var aReturn = [];

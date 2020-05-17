@@ -1,0 +1,38 @@
+<core:FragmentDefinition xmlns="sap.m" 
+    xmlns:core="sap.ui.core">
+    <TableSelectDialog noDataText="{i18n>selectTransportOrderDialog.noData}" 
+        title="{ model:'selectTransportOrderModel', path:'/title'}" 
+        confirm=".onSelectedOrder" 
+        cancel=".onCancelOrder" 
+        search=".onSearch"
+        items="{
+            model:'selectTransportOrderModel',
+			path : '/orders'			
+		}">
+        <ColumnListItem>
+            <cells>                
+                <Text text="{ model:'selectTransportOrderModel', path:'order'}" />
+                <Text text="{ model:'selectTransportOrderModel', path:'user'}" />
+                <Text text="{ model:'selectTransportOrderModel', path:'description'}" />                
+            </cells>
+        </ColumnListItem>
+        <columns>
+            <Column width="12em">
+                <header>
+                    <Text text="Order" />
+                </header>
+            </Column>
+            <Column minScreenWidth="Desktop" 
+                demandPopin="true">
+                <header>
+                    <Text text="User" />
+                </header>
+            </Column>
+            <Column minScreenWidth="Desktop">
+                <header>
+                    <Text text="Description" />
+                </header>
+            </Column>
+        </columns>
+    </TableSelectDialog>
+</core:FragmentDefinition>

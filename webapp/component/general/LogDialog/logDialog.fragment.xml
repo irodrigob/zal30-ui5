@@ -13,7 +13,7 @@
             <MessageView items="{model: 'logDialogModel', path: '/messages'}">
                 <MessageItem title="{message}" 
                     description="{logDialogModel>message}" 
-                    type="{model: 'logDialogModel', path: 'TYPE', formatter: '.formatterMessageType'}"/>
+                    type="{model: 'logDialogModel', path: 'type', formatter: '.formatterMessageType'}"/>
             </MessageView>
         </content>
         <beginButton>

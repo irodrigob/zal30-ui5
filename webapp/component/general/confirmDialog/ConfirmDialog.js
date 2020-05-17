@@ -88,7 +88,7 @@ sap.ui.define([
 			
 		},
 		onEndButtonDialog: function (oEvent) {
-			this._oCallEndStartButton
+			this._oCallEndStartButton();
 			this._oDialog.close();
 		},
 		//////////////////////////////////

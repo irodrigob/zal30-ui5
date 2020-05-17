@@ -37,7 +37,7 @@ sap.ui.define([
 			mockFile: "/saveData.json",
 			oDataModel: "masterData"
 		},
-		userOrder:{
+		userOrder: {
 			serviceName: "/userOrderSet",
 			bUseMock: false,
 			mockFile: "/userOrder.json",
@@ -144,16 +144,17 @@ sap.ui.define([
 			return this.callOData(mLocalService).get();
 		},
 		// Grabación de los datos en SAP
-		saveDataSAP: function (sViewName, sData, sOriginalData) {
+		saveDataSAP: function (sViewName, sData, sOriginalData, sTransportOrder) {			
 			return this.callOData(_mService.saveData).post({
 				VIEWNAME: sViewName,
 				LANGU: this._sLanguage,
 				DATA: sData,
-				ORIGINAL_DATA: sOriginalData
+				ORIGINAL_DATA: sOriginalData,
+				TRANSPORTORDER: sTransportOrder
 			}, {});
 		},
 		// Devuelve las ordenes del usuario
-		getUserOrder:function(){
+		getUserOrder: function () {
 
 			var oFilters = [new Filter(constants.services.filter.langu, sap.ui.model.FilterOperator.EQ, this._sLanguage)];
 			return this.callOData(_mService.userOrder).get({
