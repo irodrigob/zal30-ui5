@@ -786,7 +786,11 @@ sap.ui.define([
 
 		},
 		// Procesos posteriores al momento de grabación
-		_postSaveSAPProcess: function (aReturn) {
+		_postSaveSAPProcess: function (aReturn,sNewOrder) {
+		
+			// En SAP la orden puede cambiar en el proceso de grabación, sobretodo la primera que se selecciona. El motivo es que las funciones
+			// de transporte devolverán la tarea donde se ha grabado los datos y no en la orden.
+			this._transportOrder = sNewOrder;
 
 			// Procesos posterioris generar a las llamafas
 			this._postSAPProcess();
@@ -819,8 +823,9 @@ sap.ui.define([
 							that._transportOrder = sOrder; // Se guarda la orden de transporte
 
 							// Se lanza el proceso de grabación
-							that._viewDataState.onSaveData(that._transportOrder, function (aReturn) {
-								that._postSaveSAPProcess(aReturn);
+							that._viewDataState.onSaveData(that._transportOrder, function (aReturn, sNewOrder) {
+								
+								that._postSaveSAPProcess(aReturn, sNewOrder);
 							});
 
 						},
@@ -833,9 +838,9 @@ sap.ui.define([
 
 				});
 			} else {
-
-				this._viewDataState.onSaveData(this._transportOrder, function (aReturn) {
-					that._postSaveSAPProcess(aReturn);
+				// Se valida que la orden sea correcta
+				this._viewDataState.onSaveData(this._transportOrder, function (aReturn, sNewOrder) {
+					that._postSaveSAPProcess(aReturn, sNewOrder);
 				});
 
 			}

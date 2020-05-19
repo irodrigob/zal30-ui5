@@ -235,7 +235,7 @@ sap.ui.define([
 								that.setLastPathChanged("");
 
 								// Se llama al proceso de la vista una vez se haya ejecutado los pasos de SAP
-								oPostSAPProcess(result.return);
+								oPostSAPProcess(result.return, result.newOrder);
 
 							}, (error) => {
 
@@ -260,7 +260,7 @@ sap.ui.define([
 					// el refresco de datos
 					that._saveDataSAP(sTransportOrder).then((result) => {
 						// Se llama al proceso de la vista una vez se haya ejecutado los pasos de SAP
-						oPostSAPProcess(result.return);
+						oPostSAPProcess(result.return, result.newOrder);
 					}, (error) => {
 
 					});
@@ -319,6 +319,26 @@ sap.ui.define([
 
 			return oPromise;
 
+		},
+		// Chequeo que la orde transporte es correcta
+		checkTransportOrder: function (sOrder) {
+			var that = this;
+			// Se devuelve un promise para simplificar los datos que se devuelven. Así nos ahorramos los paths
+			// "basura" que se devuelve
+			var oPromise = new Promise(function (resolve, reject) {
+				that._oViewDataService.checkTransportOrder().then((result) => {
+
+					resolve({
+						newOrder: result.data.TRANSPORTORDER,
+						message: result.data.MESSAGE
+					});
+				}, (error) => {
+					reject(error);
+				});
+
+			});
+
+			return oPromise;
 		},
 		//////////////////////////////////	
 		//        Private methods       //	
@@ -385,7 +405,8 @@ sap.ui.define([
 						that._oView.processDataAfterSave(result.data.DATA, aReturn);
 
 						resolve({
-							return: aReturn
+							return: aReturn,
+							newOrder: result.data.TRANSPORTORDER
 						});
 					},
 					(error) => {

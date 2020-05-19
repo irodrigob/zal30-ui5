@@ -42,6 +42,12 @@ sap.ui.define([
 			bUseMock: false,
 			mockFile: "/userOrder.json",
 			oDataModel: "masterData"
+		},
+		checkTransportOrder: {
+			serviceName: "/checkTransportOrderSet",
+			bUseMock: false,
+			mockFile: "/checkTransportOrder.json",
+			oDataModel: "masterData"
 		}
 
 	};
@@ -144,7 +150,7 @@ sap.ui.define([
 			return this.callOData(mLocalService).get();
 		},
 		// Grabación de los datos en SAP
-		saveDataSAP: function (sViewName, sData, sOriginalData, sTransportOrder) {			
+		saveDataSAP: function (sViewName, sData, sOriginalData, sTransportOrder) {
 			return this.callOData(_mService.saveData).post({
 				VIEWNAME: sViewName,
 				LANGU: this._sLanguage,
@@ -160,6 +166,28 @@ sap.ui.define([
 			return this.callOData(_mService.userOrder).get({
 				filters: oFilters
 			})
+		},
+		// Verifica la orden de transporte
+		checkTransportOrder: function (sTransportOrder) {
+			// Se recupera el objeto oData al que apunta el servicio
+			var oModel = this.getModel(_mService.checkTransportOrder.oDataModel);
+
+			if (this._bMock) {
+				// Se crea una nueva configuracuón donde se cambia el valor service name para pasarle la clave de la llama al servicio
+				var mLocalService = merge({}, _mService.checkTransportOrder, {});
+
+			} else {
+				// Se crea una nueva configuracuón donde se cambia el valor service name para pasarle la clave de la llama al servicio
+				var mLocalService = merge({}, _mService.checkTransportOrder, {
+					serviceName: oModel.createKey(_mService.lockView.serviceName, {
+						TRANSPORTORDER: sTransportOrder,
+						LANGU: this._sLanguage,
+					})
+				});
+
+			}
+
+			return this.callOData(mLocalService).get();
 		}
 
 	});
