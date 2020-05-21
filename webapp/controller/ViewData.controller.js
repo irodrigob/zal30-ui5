@@ -786,8 +786,8 @@ sap.ui.define([
 
 		},
 		// Procesos posteriores al momento de grabación
-		_postSaveSAPProcess: function (aReturn,sNewOrder) {
-		
+		_postSaveSAPProcess: function (aReturn, sNewOrder) {
+
 			// En SAP la orden puede cambiar en el proceso de grabación, sobretodo la primera que se selecciona. El motivo es que las funciones
 			// de transporte devolverán la tarea donde se ha grabado los datos y no en la orden.
 			this._transportOrder = sNewOrder;
@@ -817,19 +817,19 @@ sap.ui.define([
 					this._oSelectTransportOrderDialog.setValues({
 						aOrders: aOrders,
 						oHandlerCancel: function () {
-							MessageToast.show(this._oI18nResource.getText("ViewData.selectTransportOrder.canceledSelection"));
+							MessageToast.show(that._oI18nResource.getText("ViewData.selectTransportOrder.canceledSelection"));
 						},
 						oHandlerSelected: function (sOrder) {
 							that._transportOrder = sOrder; // Se guarda la orden de transporte
 
 							// Se lanza el proceso de grabación
 							that._viewDataState.onSaveData(that._transportOrder, function (aReturn, sNewOrder) {
-								
+
 								that._postSaveSAPProcess(aReturn, sNewOrder);
 							});
 
 						},
-						title: this._oI18nResource.getText("selectTransportOrderDialog.title")
+						title: that._oI18nResource.getText("selectTransportOrderDialog.title")
 					})
 
 					// Se abre el popup
@@ -839,9 +839,37 @@ sap.ui.define([
 				});
 			} else {
 				// Se valida que la orden sea correcta
-				this._viewDataState.onSaveData(this._transportOrder, function (aReturn, sNewOrder) {
-					that._postSaveSAPProcess(aReturn, sNewOrder);
+				this._viewDataState.checkTransportOrder(this._transportOrder).then((result) => {
+
+					// Si hay mensaje es que hay error
+					if (result.message != '') {
+
+
+						// Se resetea la orden que había antes
+						that._transportOrder = '';
+
+						// Se lanza el proceso para seleccionar una nueva orde
+						that._selectTransportOrder();
+
+						// Se muestra el mensaje
+						MessageToast.show(result.message);
+
+					} else {
+						// Si no hay error actualizo la orde de transporte, el motivo es que puede
+						// cambiar porque se añade una tarea a la orden que pertenecia a la antigua, etc.
+						that._transportOrder = result.newOrder;
+
+						// Se lanza el proceso de grabación
+						that._viewDataState.onSaveData(that._transportOrder, function (aReturn, sNewOrder) {
+							that._postSaveSAPProcess(aReturn, sNewOrder);
+						});
+					}
+				}, (error) => {
+
 				});
+
+
+
 
 			}
 		},

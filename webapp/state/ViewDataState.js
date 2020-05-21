@@ -321,13 +321,12 @@ sap.ui.define([
 
 		},
 		// Chequeo que la orde transporte es correcta
-		checkTransportOrder: function (sOrder) {
+		checkTransportOrder: function (sTransportOrder) {
 			var that = this;
 			// Se devuelve un promise para simplificar los datos que se devuelven. Así nos ahorramos los paths
 			// "basura" que se devuelve
 			var oPromise = new Promise(function (resolve, reject) {
-				that._oViewDataService.checkTransportOrder().then((result) => {
-
+				that._oViewDataService.checkTransportOrder(sTransportOrder).then((result) => {					
 					resolve({
 						newOrder: result.data.TRANSPORTORDER,
 						message: result.data.MESSAGE

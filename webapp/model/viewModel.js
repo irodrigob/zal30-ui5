@@ -660,14 +660,15 @@ sap.ui.define([
 					// actualización duplicaría el código y no sentido, por eso guardar el tipo de actualización en una variable
 					switch (sUpdkz) {
 						case constants.tableData.fieldUpkzValues.insert:
-							// En la inserción se marca el registro como que existe en base de datos
-							//mRow[constants.tableData.internalFields.isDict] = 'X';
 
 							// Se determina los campos que serán editables
 							mRow = this._detEditableCellValue(mRow);
 
+							// Se clona el registro original para evitar pasar la referencia y no por valor
+							var mRowClone = merge({}, mRow, {});
+
 							// Se añaden el registro al array de valores originales
-							aOriginalValues.push(mRow);
+							aOriginalValues.push(mRowClone);
 
 							break;
 						case constants.tableData.fieldUpkzValues.delete:
@@ -676,6 +677,16 @@ sap.ui.define([
 
 							// Lo mismo para la tabla de datos final
 							aValues.splice(iIndex, 1);
+							break;
+						case constants.tableData.fieldUpkzValues.update:
+
+							// Se clona el registro original para evitar pasar la referencia y no por valor
+							var mRowClone = merge({}, mRow, {});
+
+							var iOrigIndex = this._getIndexFromTabix(aOriginalValues, mRowSAP[constants.tableData.internalFields.tabix]);
+							aOriginalValues[iOrigIndex] = mRowClone;
+
+
 							break;
 					}
 				}

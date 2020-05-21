@@ -176,10 +176,10 @@ sap.ui.define([
 				// Se crea una nueva configuracuón donde se cambia el valor service name para pasarle la clave de la llama al servicio
 				var mLocalService = merge({}, _mService.checkTransportOrder, {});
 
-			} else {
+			} else {				
 				// Se crea una nueva configuracuón donde se cambia el valor service name para pasarle la clave de la llama al servicio
 				var mLocalService = merge({}, _mService.checkTransportOrder, {
-					serviceName: oModel.createKey(_mService.lockView.serviceName, {
+					serviceName: oModel.createKey(_mService.checkTransportOrder.serviceName, {
 						TRANSPORTORDER: sTransportOrder,
 						LANGU: this._sLanguage,
 					})
