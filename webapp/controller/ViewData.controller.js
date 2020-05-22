@@ -1,11 +1,10 @@
 sap.ui.define([
 	"com/ivancio/zal30-ui5/controller/Base.controller",
 	"sap/m/MessageToast",
-	"sap/m/MessageBox",
 	"com/ivancio/zal30-ui5/constants/constants",
 	"com/ivancio/zal30-ui5/component/general/logDialog/LogDialog",
 	"sap/ui/table/Column",
-	"sap/m/Text",
+	"sap/ui/core/message/Message",
 	"sap/m/Input",
 	"sap/m/DatePicker",
 	"sap/m/TimePicker",
@@ -15,11 +14,10 @@ sap.ui.define([
 	"sap/ui/table/RowSettings",
 	"sap/ui/core/Icon",
 	"com/ivancio/zal30-ui5/component/general/selectTransportOrder/SelectTransportOrder",
-], function (BaseController, MessageToast, MessageBox, constants, LogDialog, Column, Text, Input, DatePicker, TimePicker, CheckBox, Filter, ConfirmDialog, RowSettings, Icon, SelectTransportOrder) {
+], function (BaseController, MessageToast, constants, LogDialog, Column, Message, Input, DatePicker, TimePicker, CheckBox, Filter, ConfirmDialog, RowSettings, Icon, SelectTransportOrder) {
 	"use strict";
 
 	return BaseController.extend("com.ivancio.zal30-ui5.controller.ViewData", {
-
 
 		//////////////////////////////////
 		//                              //
@@ -55,6 +53,11 @@ sap.ui.define([
 				this._oSelectTransportOrderDialog = new SelectTransportOrder();
 				this.getView().addDependent(this._oSelectTransportOrderDialog);
 			}
+
+			// Se inicaliza el gestor de mensajes 			
+			var oMessageManager = sap.ui.getCore().getMessageManager();
+			this.getView().setModel(oMessageManager.getMessageModel(), "messageApp");
+			oMessageManager.registerObject(this.getView(), true);
 
 		},
 		// Botón de ir hacía atras en la aplicación
@@ -200,6 +203,8 @@ sap.ui.define([
 
 			var that = this;
 
+			sap.ui.getCore().getMessageManager().removeAllMessages(); // Se limpian los mensajes anterior	
+
 			// Si la vista permite transportar entonces se lanza el proceso de selección de la orden de transporte
 			if (this._viewDataState.getAllowedTransport()) {
 				this._selectTransportOrder()
@@ -235,6 +240,10 @@ sap.ui.define([
 			this._oLogDialog.setValues(this._oI18nResource.getText("ViewData.logDialog.RowStatusMsg.Title"), aMsgLogDialog);
 			this._oLogDialog.openDialog();
 
+		},
+		// Evento al pulsar el botón de mostrar los mensajes del message manager
+		onSowMessageApp: function (oEvent) {
+			this._getMessageApp().openBy(oEvent.getSource());
 		},
 
 		//////////////////////////////////
@@ -346,6 +355,8 @@ sap.ui.define([
 
 			// Los botones de edición no se vTransportlizan por defecto
 			this._setVisibleEditButtons(false);
+
+			sap.ui.getCore().getMessageManager().removeAllMessages(); // Se limpian los mensajes del gestor
 
 		},
 		// Proceso en que se leen tanto la configuración de la vista como los datos
@@ -774,10 +785,36 @@ sap.ui.define([
 		},
 		// Se muestran los mensajes de retorno que devuelve SAP
 		_showMessageReturn: function (aReturn) {
+
+			// Se pasan los mensajes devueltos al gestor de mensajes				
+			for (var x = 0; x < aReturn.length; x++) {
+				var messageType;
+				switch (aReturn[x].TYPE) {
+					case constants.messageType.error:
+						messageType = sap.ui.core.MessageType.Error;
+						break;
+					case constants.messageType.success:
+						messageType = sap.ui.core.MessageType.Success;
+						break;
+					case constants.messageType.warning:
+						messageType = sap.ui.core.MessageType.Warning;
+						break;
+				}
+				var oMessage = new Message({
+					message: aReturn[x].MESSAGE,
+					type: messageType,
+					target: "/Dummy",
+					processor: this.getView().getModel()
+				});
+				sap.ui.getCore().getMessageManager().addMessages(oMessage);
+
+
+			};
+
 			var aMsgLogDialog = [];
 			for (var x = 0; x < aReturn.length; x++) {
 				aMsgLogDialog.push({
-					type: aReturn[0].TYPE,
+					type: aReturn[x].TYPE,
 					message: aReturn[x].MESSAGE
 				});
 			};
@@ -796,8 +833,10 @@ sap.ui.define([
 			this._postSAPProcess();
 
 			// Se muestran los mensajes del proceso					
-			if (aReturn && aReturn.length > 0)
+			if (aReturn && aReturn.length > 0) {
 				this._showMessageReturn(aReturn);
+			}
+
 		},
 
 		// Seleccion, o validación ya ha sido escogida, de la orden de transporte
@@ -852,7 +891,9 @@ sap.ui.define([
 						that._selectTransportOrder();
 
 						// Se muestra el mensaje
-						MessageToast.show(result.message);
+						MessageToast.show(result.message, {
+							autoClose: false
+						});
 
 					} else {
 						// Si no hay error actualizo la orde de transporte, el motivo es que puede
@@ -872,6 +913,14 @@ sap.ui.define([
 
 
 			}
+		},
+		// Abre el message manager para visualizar el contenido de los mensajes almacenados
+		_getMessageApp: function (oSource) {
+			if (!this._oMessagePopover) {
+				this._oMessagePopover = sap.ui.xmlfragment(this.getView().getId(), "com.ivancio.zal30-ui5.fragment.messageApp", this);
+				this.getView().addDependent(this._oMessagePopover);
+			}
+			return this._oMessagePopover;
 		},
 
 	});
