@@ -326,7 +326,7 @@ sap.ui.define([
 			// Se devuelve un promise para simplificar los datos que se devuelven. Así nos ahorramos los paths
 			// "basura" que se devuelve
 			var oPromise = new Promise(function (resolve, reject) {
-				that._oViewDataService.checkTransportOrder(sTransportOrder).then((result) => {					
+				that._oViewDataService.checkTransportOrder(sTransportOrder).then((result) => {
 					resolve({
 						newOrder: result.data.TRANSPORTORDER,
 						message: result.data.MESSAGE
@@ -338,6 +338,30 @@ sap.ui.define([
 			});
 
 			return oPromise;
+		},
+		// Verificación de los datos modificados en SAP
+		onCheckDataChangedSAP: function (oPostSAPProcess) {			
+			// Se extraen los path de los datos modificados
+			var aPath = this._oView.getPathModelDataChanged();
+
+			// Lo que se va hacer es aglutinar las llamadas para ejecutar las validaciones una detrás de otra y que la pantalla no se este 
+			// ajustando por detras por cada línea modificada
+			var aServices = [];
+
+			for (var x = 0; x < aPath.length; x++) {
+				aServices.push(this._rowValidationDeterminationSAP(aPath[x]));
+			}
+
+			// Se ejecutan los servicios
+			Promise.all(aServices).then((result) => {
+					oPostSAPProcess();
+				},
+				(error) => {
+
+
+				});
+
+
 		},
 		//////////////////////////////////	
 		//        Private methods       //	
@@ -381,7 +405,7 @@ sap.ui.define([
 			});
 			return oPromise;
 		},
-		// Validación de una fila de datos en SAP
+		// Grabacion de datos en SAP
 		_saveDataSAP: function (sTransportOrder) {
 			var that = this;
 

@@ -209,6 +209,7 @@ sap.ui.define([
 
 			// Se monta el path directo al campo que guarda el campo de actualización
 			var sPathUpdkz = sPath + "/" + constants.tableData.internalFields.updkz;
+			
 			switch (sUpdkz) {
 				case constants.tableData.fieldUpkzValues.update:
 
@@ -218,6 +219,12 @@ sap.ui.define([
 						oViewDataModel.getProperty(sPathUpdkz) == '') {
 						if (this._compareRowDataFromOriginal(sPath)) {
 							oViewDataModel.setProperty(sPathUpdkz, '');
+
+							// Se resetea los campos de control de error porque el registro vuelve a estar como se recupero de base de datos
+							oViewDataModel.setProperty(sPath + "/" + constants.tableData.internalFields.rowStatusMsg, []);
+							oViewDataModel.setProperty(sPath + "/" + constants.tableData.internalFields.rowStatusMsgInternal, []);
+							oViewDataModel.setProperty(sPath + "/" + constants.tableData.internalFields.rowStatus, '');
+							oViewDataModel.setProperty(sPath + "/" + constants.tableData.internalFields.rowStatusInternal, '');
 						} else {
 							oViewDataModel.setProperty(sPathUpdkz, sUpdkz);
 						}
@@ -569,10 +576,15 @@ sap.ui.define([
 			oViewDataModel.setProperty(sPath, aValues[0]);
 
 		},
+		// Devuelve la tabla de datos
+		getModelData: function () {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			return oViewDataModel.getProperty(constants.tableData.path.values);
+		},
 		// Devuelve la tabla datos pero con formato para SAP. Es decir, si los campos añadidos en la propia aplicación
 		getModelData2SAP: function () {
-			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
+			
+			var aValues = this.getModelData()
 			var aValuesSAP = [];
 
 			// Se recorren los datos y se van adaptando fila a fila
@@ -582,13 +594,20 @@ sap.ui.define([
 
 			return aValuesSAP;
 		},
-		// Devuelve los datos modificados en formato SAP
-		getModelDataChanged2SAP: function () {
+		// Devuelve los datos modificados
+		getModelDataChanged: function () {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
 
 			// Solo me quedo con lo que han sido modificados, borrados o insertados
-			var aValuesChanged = aValues.filter(field => field[constants.tableData.internalFields.updkz] != '');
+			return aValues.filter(field => field[constants.tableData.internalFields.updkz] != '');
+
+		},
+		// Devuelve los datos modificados en formato SAP
+		getModelDataChanged2SAP: function () {
+
+			// Solo me quedo con lo que han sido modificados, borrados o insertados
+			var aValuesChanged = this.getModelDataChanged();
 
 			// Se recorren los datos y se adaptan a SAP. 
 			var aValuesSAP = [];
@@ -598,6 +617,25 @@ sap.ui.define([
 
 			return aValuesSAP;
 
+		},
+
+		// Devuelve los path de los datos modificados en SAP
+		getPathModelDataChanged: function () {
+			var aPaths = [];
+
+			// Registros modificados
+			var aValuesChanged = this.getModelDataChanged();
+
+			// Todos los valores de datos
+			var aValues = this.getModelData();
+
+			for (var x = 0; x < aValuesChanged.length; x++) {
+				var mRow = aValuesChanged[x]; // Línea de datos
+				// Se averigua el índice de la tabla global de datos a partir del campos tabix 
+				var iIndex = this._getIndexFromTabix(aValues, mRow[constants.tableData.internalFields.tabix]); 
+				aPaths.push(constants.tableData.path.values + "/" + iIndex); // Path de acceso				
+			}
+			return aPaths;
 		},
 		// Recupera los valores originales de los registros modificados
 		getOriginalDataChanged2SAP: function () {

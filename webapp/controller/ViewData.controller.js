@@ -245,7 +245,15 @@ sap.ui.define([
 		onSowMessageApp: function (oEvent) {
 			this._getMessageApp().openBy(oEvent.getSource());
 		},
+		// Verificación de datos modificados
+		onCheckData: function (oEvent) {
+			var that = this;
 
+			this._viewDataState.onCheckDataChangedSAP(function () {
+				that._postSAPProcess();
+			});
+
+		},
 		//////////////////////////////////
 		//                              //
 		//        Private methods       //
@@ -321,14 +329,21 @@ sap.ui.define([
 		//////////////////////////////////	
 		// Procesos que se lanzan después de llamar a SAP. Están el control de botones, columnas de errores, etc.
 		_postSAPProcess: function () {
-			// Se valida si hay errores en los datos, si no los hay entonces el botón de grabar se habilita
-			if (this._viewDataState.isDataWithInternalErrors())
+			// Si hay errores no se puede grabar pero se habilita el botón de comprobar datos
+			if (this._viewDataState.isDataWithInternalErrors()) {
 				this._setEnabledBtnSaved(false);
-			// Si no hay errores se chequea si hay datos modificados. Si es así, se habilita
-			else if (this._viewDataState.isDataChanged())
+				this._setEnabledBtnCheck(true);
+			}
+			// Si no hay errores se chequea si hay datos modificados. Si es así, se habilita el botón de grabar y verificar
+			else if (this._viewDataState.isDataChanged()) {
 				this._setEnabledBtnSaved(true);
-			else // Si no cumple las condiciones anteriores se desactiva
+				this._setEnabledBtnCheck(true);
+			} else // Si no cumple las condiciones anteriores se desactivan el boton de grabar y comprobar
+			{
 				this._setEnabledBtnSaved(false);
+				this._setEnabledBtnCheck(false);
+			}
+
 
 			// Se lanza el proceso que determina si se mostrarán las columnas de acción del listado
 			this._determineShowFixColumnactions();
@@ -349,6 +364,7 @@ sap.ui.define([
 			oViewDataModel.setProperty("/viewDesc", '');
 			oViewDataModel.setProperty("/btnDeletedEnabled", false);
 			oViewDataModel.setProperty("/btnSaveEnabled", false);
+			oViewDataModel.setProperty("/btnCheckEnabled", false);
 			oViewDataModel.setProperty("/btnTransportEnabled", false);
 
 			this._transportOrder = ""; // Orden de transporte
@@ -775,6 +791,7 @@ sap.ui.define([
 			oViewDataModel.setProperty("/btnDeletedVisible", bVisible);
 			oViewDataModel.setProperty("/btnAddVisible", bVisible);
 			oViewDataModel.setProperty("/btnSaveVisible", bVisible);
+			oViewDataModel.setProperty("/btnCheckVisible", bVisible);
 
 		},
 		// Activa/desactiva el botón de grabar
@@ -782,6 +799,12 @@ sap.ui.define([
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 
 			oViewDataModel.setProperty("/btnSaveEnabled", bEnabled);
+		},
+		// Activa/desactiva el botón de chequear datos
+		_setEnabledBtnCheck: function (bEnabled) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+
+			oViewDataModel.setProperty("/btnCheckEnabled", bEnabled);
 		},
 		// Se muestran los mensajes de retorno que devuelve SAP
 		_showMessageReturn: function (aReturn) {
