@@ -209,7 +209,7 @@ sap.ui.define([
 
 			// Se monta el path directo al campo que guarda el campo de actualización
 			var sPathUpdkz = sPath + "/" + constants.tableData.internalFields.updkz;
-			
+
 			switch (sUpdkz) {
 				case constants.tableData.fieldUpkzValues.update:
 
@@ -583,7 +583,7 @@ sap.ui.define([
 		},
 		// Devuelve la tabla datos pero con formato para SAP. Es decir, si los campos añadidos en la propia aplicación
 		getModelData2SAP: function () {
-			
+
 			var aValues = this.getModelData()
 			var aValuesSAP = [];
 
@@ -632,7 +632,7 @@ sap.ui.define([
 			for (var x = 0; x < aValuesChanged.length; x++) {
 				var mRow = aValuesChanged[x]; // Línea de datos
 				// Se averigua el índice de la tabla global de datos a partir del campos tabix 
-				var iIndex = this._getIndexFromTabix(aValues, mRow[constants.tableData.internalFields.tabix]); 
+				var iIndex = this._getIndexFromTabix(aValues, mRow[constants.tableData.internalFields.tabix]);
 				aPaths.push(constants.tableData.path.values + "/" + iIndex); // Path de acceso				
 			}
 			return aPaths;
@@ -758,6 +758,20 @@ sap.ui.define([
 		// Devuelve si esta bloqueda la vista
 		getLockedByUser: function () {
 			return this._lockedByUser;
+		},
+		//Guarda el catalogo de campos que tienen ayuda para búsqueda
+		setSearchHelpCatalog(aCatalog) {
+
+			this._aSearchHelpCatalog = aCatalog;
+
+		},
+		// Devuelve el catalogo de campos que tiene ayuda para búsqueda
+		getSearchHelpCatalog() {
+			return this._aSearchHelpCatalog;
+		},
+		// Devuelve los datos del catalogo de las ayudas para búsqueda para un determinado campo
+		getSearchHelpCatalogField:function(sFieldName){
+			return this._aSearchHelpCatalog.find(row => row.FIELDNAME == sFieldName);
 		},
 		//////////////////////////////////	
 		//        Private methods       //	

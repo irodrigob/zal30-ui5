@@ -1,0 +1,36 @@
+{
+	"results": [{
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpCatalogSet(VIEWNAME='',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpCatalogSet(VIEWNAME='',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpCatalog"
+		},
+		"VIEWNAME": "",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"LABELFIELDCODE": "Currncy",
+		"LABELFIELDDESCRIPTION": "Description"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpCatalogSet(VIEWNAME='',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpCatalogSet(VIEWNAME='',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpCatalog"
+		},
+		"VIEWNAME": "",
+		"LANGU": "",
+		"FIELDNAME": "FIELDUNIT",
+		"LABELFIELDCODE": "BUn",
+		"LABELFIELDDESCRIPTION": "Description"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpCatalogSet(VIEWNAME='',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpCatalogSet(VIEWNAME='',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpCatalog"
+		},
+		"VIEWNAME": "",
+		"LANGU": "",
+		"FIELDNAME": "FIELDFIXVALUES",
+		"LABELFIELDCODE": "Fix values",
+		"LABELFIELDDESCRIPTION": "Description"
+	}]
+}

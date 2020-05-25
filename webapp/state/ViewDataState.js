@@ -74,8 +74,8 @@ sap.ui.define([
 		// Se devuelve los datos de cabecera de la vista
 		getViewInfo: function () {
 			return {
-				viewName: this._oView.viewInfo.viewName,
-				viewDesc: this._oView.viewInfo.viewDesc,
+				viewName: this._oView.getViewInfo().VIEWNAME,
+				viewDesc: this._oView.getViewInfo().VIEWDESC,
 			};
 		},
 		// Se devuelve las columnas de la tabla a partir del catalogo de campos
@@ -340,7 +340,7 @@ sap.ui.define([
 			return oPromise;
 		},
 		// Verificación de los datos modificados en SAP
-		onCheckDataChangedSAP: function (oPostSAPProcess) {			
+		onCheckDataChangedSAP: function (oPostSAPProcess) {
 			// Se extraen los path de los datos modificados
 			var aPath = this._oView.getPathModelDataChanged();
 
@@ -498,6 +498,9 @@ sap.ui.define([
 					// En el registro 1 esta los datos y el template
 					that._oView.setViewDataFromService(result[1].data);
 
+					// Se inicial la lectura de las ayudas para búsqueda de los campos que lo permitan.
+					that._getSearchHelp();
+
 					// Se ejecuta el código del Success
 					oSuccessHandler();
 
@@ -519,6 +522,40 @@ sap.ui.define([
 			else
 				this._oView.setEditMode(constants.editMode.view);
 		},
+		// Recupera los datos que se usarán para las ayudas para búsquedas de determinados campos
+		_getSearchHelp: function () {
+			var that = this;
+
+			// Primero se recupera el catalogo de cmapos
+			this._getSearchHelpCatalog().then((result) => {
+
+			}, (error) => {
+
+			})
+		},
+		// Recupera el catalogo de campos que van a tener una ayuda para búsqueda
+		// Paso previos a la obtención de sus datos
+		_getSearchHelpCatalog: function () {
+			var that = this;
+
+			var oPromise = new Promise(function (resolve, reject) {
+				that._oViewDataService.getSearchHelpCatalog(that._oView.getViewInfo().VIEWNAME).then((result) => {
+
+						// Se guarda el resultado el el modelo de datos de la vista
+						that._oView.setSearchHelpCatalog(result.data.results);
+
+						// Se devuelve el catalogo de campos. Inicialmente podía haber devuelto los datos del servicio que es lo que realmente se guarda,
+						// pero hago que se devuelve el catalogo del modelo por si más adelante haga ajustes en campo o lo que sea. 
+						resolve(that._oView.getSearchHelpCatalog());
+					},
+					(error) => {
+						reject(error)
+					});
+			});
+			return oPromise;
+
+		},
+
 	});
 	return oViewDataState;
 });

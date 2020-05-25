@@ -393,7 +393,7 @@ sap.ui.define([
 					that._oOwnerComponent.closeBusyDialog(); // Se cierra el dialogo
 
 
-					// Se guarda en el modelo el nombre y descripción de la vista
+					// Se guarda en el modelo el nombre y descripción de la vista					
 					oViewDataModel.setProperty("/viewName", that._viewDataState.getViewInfo().viewName);
 					oViewDataModel.setProperty("/viewDesc", that._viewDataState.getViewInfo().viewDesc);
 

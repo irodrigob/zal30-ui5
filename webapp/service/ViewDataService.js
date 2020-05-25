@@ -48,6 +48,12 @@ sap.ui.define([
 			bUseMock: false,
 			mockFile: "/checkTransportOrder.json",
 			oDataModel: "masterData"
+		},
+		getSearchHelpCatalog: {
+			serviceName: "/getSearchHelpCatalogSet",
+			bUseMock: false,
+			mockFile: "/getSearchHelpCatalog.json",
+			oDataModel: "masterData"
 		}
 
 	};
@@ -188,7 +194,16 @@ sap.ui.define([
 			}
 
 			return this.callOData(mLocalService).get();
-		}
+		},
+		// Recupera en que campos habrá una ayuda para búsqueda
+		getSearchHelpCatalog:function(sViewName){
+			
+			var oFilters = [new Filter(constants.services.filter.langu, sap.ui.model.FilterOperator.EQ, this._sLanguage),
+						    new Filter('VIEWNAME', sap.ui.model.FilterOperator.EQ, sViewName)];
+			return this.callOData(_mService.getSearchHelpCatalog).get({
+				filters: oFilters
+			})
+		},
 
 	});
 
