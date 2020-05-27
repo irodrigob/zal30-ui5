@@ -761,8 +761,18 @@ sap.ui.define([
 		},
 		//Guarda el catalogo de campos que tienen ayuda para búsqueda
 		setSearchHelpCatalog(aCatalog) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var aFieldCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
 
-			this._aSearchHelpCatalog = aCatalog;
+			this._aSearchHelpCatalog = [];
+
+			// Solo se guardán aquellos campos que son editables. Así, no leemos datos de campos que no se van a poder editar
+			for (var x = 0; x < aCatalog.length; x++) {
+				var mField = aFieldCatalog.find(row => row.name == aCatalog[x].FIELDNAME);
+				if (mField && mField.edit)
+					this._aSearchHelpCatalog.push(aCatalog[x]);
+
+			}
 
 		},
 		// Devuelve el catalogo de campos que tiene ayuda para búsqueda
@@ -770,7 +780,7 @@ sap.ui.define([
 			return this._aSearchHelpCatalog;
 		},
 		// Devuelve los datos del catalogo de las ayudas para búsqueda para un determinado campo
-		getSearchHelpCatalogField:function(sFieldName){
+		getSearchHelpCatalogField: function (sFieldName) {
 			return this._aSearchHelpCatalog.find(row => row.FIELDNAME == sFieldName);
 		},
 		//////////////////////////////////	

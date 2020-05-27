@@ -406,6 +406,14 @@ sap.ui.define([
 						MessageToast.show(sMessage);
 					}
 
+					// Obtención de los datos auxiliares. Aunque de momento solo se lee un dato auxiliar(las ayudas para búsqueda), dejo preparado
+					// el código para que cada tipo de datos auxiliar tenga su propia función de post proceso
+					that._viewDataState.getAuxiliaryData({
+						handlerSearchHelp: function (sFieldname) {
+							that._postSearchHelp(sFieldname);
+						}
+					});
+
 					// Se llama al método encargado de construir la tabla a mostrar
 					that._buildTableData();
 				},
@@ -945,6 +953,10 @@ sap.ui.define([
 			}
 			return this._oMessagePopover;
 		},
+		// Se gestiona cuando se termina de leer los datos de un campo que tienen ayuda para búsqueda
+		_postSearchHelp:function(sFieldname){
+
+		}
 
 	});
 });

@@ -361,7 +361,16 @@ sap.ui.define([
 
 				});
 
-
+		},
+		// Proceso que lee los datos auxiliares para el matenimiento de la tabla.  Este método se llamada desde la vista porque
+		// según se vayan leyendo los datos se ira ajustado la vista
+		//Datos que se leen:
+		// 1.- Catalogo de campos que tienen una ayuda para búsqueda
+		// 2.- Asociada al punto 1, datos necesarios para la ayuda para búsqueda. Ambos servicios van encadenados, primero el 1 y luego 2.
+		getAuxiliaryData: function (oPostProcess) {
+			// Se inicia la lectura de las ayudas para búsqueda de los campos que lo permitan. Dentro de este método se hace las llamadas
+			// a los datos de los campos
+			this._getSearchHelp(oPostProcess.handlerSearchHelp);
 		},
 		//////////////////////////////////	
 		//        Private methods       //	
@@ -498,9 +507,6 @@ sap.ui.define([
 					// En el registro 1 esta los datos y el template
 					that._oView.setViewDataFromService(result[1].data);
 
-					// Se inicial la lectura de las ayudas para búsqueda de los campos que lo permitan.
-					that._getSearchHelp();
-
 					// Se ejecuta el código del Success
 					oSuccessHandler();
 
@@ -523,37 +529,42 @@ sap.ui.define([
 				this._oView.setEditMode(constants.editMode.view);
 		},
 		// Recupera los datos que se usarán para las ayudas para búsquedas de determinados campos
-		_getSearchHelp: function () {
+		_getSearchHelp: function (oSuccessHandler) {
 			var that = this;
 
-			// Primero se recupera el catalogo de cmapos
-			this._getSearchHelpCatalog().then((result) => {
+			this._oViewDataService.getSearchHelpCatalog(this._oView.getViewInfo().VIEWNAME).then((result) => {
 
-			}, (error) => {
+					// Se guarda el resultado el el modelo de datos de la vista
+					that._oView.setSearchHelpCatalog(result.data.results);
 
-			})
+					// Si hay datos se llama al proceso de obtención de datos.
+					// No paso los campos del resultado de la busqueda porque los datos del catalogo se ajustaran en el modelo
+					if (result.data.results.length > 0)
+						that._getDataForSearchHelp(oSuccessHandler);
+
+
+				},
+				(error) => {
+					reject(error)
+				});
 		},
-		// Recupera el catalogo de campos que van a tener una ayuda para búsqueda
-		// Paso previos a la obtención de sus datos
-		_getSearchHelpCatalog: function () {
+		// Obtiene los datos para la ayuda para búsqueda a partir del catalogo de campos
+		_getDataForSearchHelp: function (oSuccessHandler) {
 			var that = this;
+			var aCatalog = this._oView.getSearchHelpCatalog();
+			debugger;
+			for (var x = 0; x < aCatalog.length; x++) {
 
-			var oPromise = new Promise(function (resolve, reject) {
-				that._oViewDataService.getSearchHelpCatalog(that._oView.getViewInfo().VIEWNAME).then((result) => {
+				this._oViewDataService.getSearchHelpData(this._oView.getViewInfo().VIEWNAME, aCatalog[x].FIELDNAME).then((result) => {
 
-						// Se guarda el resultado el el modelo de datos de la vista
-						that._oView.setSearchHelpCatalog(result.data.results);
-
-						// Se devuelve el catalogo de campos. Inicialmente podía haber devuelto los datos del servicio que es lo que realmente se guarda,
-						// pero hago que se devuelve el catalogo del modelo por si más adelante haga ajustes en campo o lo que sea. 
-						resolve(that._oView.getSearchHelpCatalog());
+						// Se lanza el proceso de la vista para el campo de la ayuda pará búsqueda
+						oSuccessHandler(aCatalog[x].FIELDNAME);
 					},
 					(error) => {
-						reject(error)
-					});
-			});
-			return oPromise;
 
+					});
+
+			}
 		},
 
 	});

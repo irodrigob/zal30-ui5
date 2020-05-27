@@ -54,6 +54,12 @@ sap.ui.define([
 			bUseMock: false,
 			mockFile: "/getSearchHelpCatalog.json",
 			oDataModel: "masterData"
+		},
+		getSearchHelpData: {
+			serviceName: "/getSearchHelpDataSet",
+			bUseMock: false,
+			mockFile: "/getSearchHelpData.json",
+			oDataModel: "masterData"
 		}
 
 	};
@@ -182,7 +188,7 @@ sap.ui.define([
 				// Se crea una nueva configuracuón donde se cambia el valor service name para pasarle la clave de la llama al servicio
 				var mLocalService = merge({}, _mService.checkTransportOrder, {});
 
-			} else {				
+			} else {
 				// Se crea una nueva configuracuón donde se cambia el valor service name para pasarle la clave de la llama al servicio
 				var mLocalService = merge({}, _mService.checkTransportOrder, {
 					serviceName: oModel.createKey(_mService.checkTransportOrder.serviceName, {
@@ -196,11 +202,23 @@ sap.ui.define([
 			return this.callOData(mLocalService).get();
 		},
 		// Recupera en que campos habrá una ayuda para búsqueda
-		getSearchHelpCatalog:function(sViewName){
-			
+		getSearchHelpCatalog: function (sViewName) {
+
 			var oFilters = [new Filter(constants.services.filter.langu, sap.ui.model.FilterOperator.EQ, this._sLanguage),
-						    new Filter('VIEWNAME', sap.ui.model.FilterOperator.EQ, sViewName)];
+				new Filter('VIEWNAME', sap.ui.model.FilterOperator.EQ, sViewName)
+			];
 			return this.callOData(_mService.getSearchHelpCatalog).get({
+				filters: oFilters
+			})
+		},
+		// Recupera los datos de la ayuda para búsqueda de un determinado campo
+		getSearchHelpData: function (sViewName, sFieldName) {
+
+			var oFilters = [new Filter(constants.services.filter.langu, sap.ui.model.FilterOperator.EQ, this._sLanguage),
+				new Filter('VIEWNAME', sap.ui.model.FilterOperator.EQ, sViewName),
+				new Filter('FIELDNAME', sap.ui.model.FilterOperator.EQ, sFieldName)
+			];
+			return this.callOData(_mService.getSearchHelpData).get({
 				filters: oFilters
 			})
 		},
