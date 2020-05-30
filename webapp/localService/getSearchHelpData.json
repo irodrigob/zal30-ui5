@@ -1,0 +1,2302 @@
+{
+	"results": [{
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ADP",
+		"DESCRIPTION": "Andorran Peseta --> (Old --> EUR)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "AED",
+		"DESCRIPTION": "United Arab Emirates Dirham"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "AFA",
+		"DESCRIPTION": "Afghani (Old)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "AFN",
+		"DESCRIPTION": "Afghani"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ALL",
+		"DESCRIPTION": "Albanian Lek"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "AMD",
+		"DESCRIPTION": "Armenian Dram"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ANG",
+		"DESCRIPTION": "West Indian Guilder"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "AOA",
+		"DESCRIPTION": "Angolanische Kwanza"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "AON",
+		"DESCRIPTION": "Angolan New Kwanza (Old)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "AOR",
+		"DESCRIPTION": "Angolan Kwanza Reajustado (Old)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ARS",
+		"DESCRIPTION": "Argentine Peso"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ATS",
+		"DESCRIPTION": "Austrian Schilling (Old --> EUR)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "AUD",
+		"DESCRIPTION": "Australian Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "AWG",
+		"DESCRIPTION": "Aruban Florin"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "AZM",
+		"DESCRIPTION": "Azerbaijani Manat (Old)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "AZN",
+		"DESCRIPTION": "Azerbaijani Manat"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "BAM",
+		"DESCRIPTION": "Bosnia and Herzegovina Convertible Mark"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "BBD",
+		"DESCRIPTION": "Barbados Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "BDT",
+		"DESCRIPTION": "Bangladesh Taka"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "BEF",
+		"DESCRIPTION": "Belgian Franc (Old --> EUR)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "BGN",
+		"DESCRIPTION": "Bulgarian Lev"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "BHD",
+		"DESCRIPTION": "Bahraini Dinar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "BIF",
+		"DESCRIPTION": "Burundi Franc"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "BMD",
+		"DESCRIPTION": "Bermudan Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "BND",
+		"DESCRIPTION": "Brunei Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "BOB",
+		"DESCRIPTION": "Boliviano"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "BRL",
+		"DESCRIPTION": "Brazilian Real"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "BSD",
+		"DESCRIPTION": "Bahaman Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "BTN",
+		"DESCRIPTION": "Bhutan Ngultrum"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "BWP",
+		"DESCRIPTION": "Botswana Pula"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "BYB",
+		"DESCRIPTION": "Belarusian Ruble (Old)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "BYN",
+		"DESCRIPTION": "Belarusian Ruble (New)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "BYR",
+		"DESCRIPTION": "Belarusian Ruble"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "BZD",
+		"DESCRIPTION": "Belize Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "CAD",
+		"DESCRIPTION": "Canadian Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "CDF",
+		"DESCRIPTION": "Congolese Franc"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "CFP",
+		"DESCRIPTION": "French Franc (Pacific Islands)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "CHF",
+		"DESCRIPTION": "Swiss Franc"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "CLP",
+		"DESCRIPTION": "Chilean Peso"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "CNY",
+		"DESCRIPTION": "Chinese Renminbi"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "COP",
+		"DESCRIPTION": "Colombian Peso"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "CRC",
+		"DESCRIPTION": "Costa Rica Colon"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "CSD",
+		"DESCRIPTION": "Serbian Dinar (Old)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "CUC",
+		"DESCRIPTION": "Peso Convertible"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "CUP",
+		"DESCRIPTION": "Cuban Peso"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "CVE",
+		"DESCRIPTION": "Cape Verde Escudo"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "CYP",
+		"DESCRIPTION": "Cyprus Pound  (Old --> EUR)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "CZK",
+		"DESCRIPTION": "Czech Krona"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "DEM",
+		"DESCRIPTION": "German Mark    (Old --> EUR)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "DEM3",
+		"DESCRIPTION": "(Internal) German Mark (3 dec.places)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "DJF",
+		"DESCRIPTION": "Djibouti Franc"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "DKK",
+		"DESCRIPTION": "Danish Krone"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "DOP",
+		"DESCRIPTION": "Dominican Peso"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "DZD",
+		"DESCRIPTION": "Algerian Dinar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ECS",
+		"DESCRIPTION": "Ecuadorian Sucre (Old --> USD)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "EEK",
+		"DESCRIPTION": "Estonian Krone (Old --> EUR)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "EGP",
+		"DESCRIPTION": "Egyptian Pound"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ERN",
+		"DESCRIPTION": "Eritrean Nafka"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ESP",
+		"DESCRIPTION": "Spanish Peseta (Old --> EUR)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ETB",
+		"DESCRIPTION": "Ethiopian Birr"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "EUR",
+		"DESCRIPTION": "European Euro"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "FIM",
+		"DESCRIPTION": "Finnish Markka (Old --> EUR)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "FJD",
+		"DESCRIPTION": "Fiji Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "FKP",
+		"DESCRIPTION": "Falkland Pound"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "FRF",
+		"DESCRIPTION": "French Franc (Old --> EUR)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "GBP",
+		"DESCRIPTION": "British Pound"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "GEL",
+		"DESCRIPTION": "Georgian Lari"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "GHC",
+		"DESCRIPTION": "Ghanaian Cedi (Old)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "GHS",
+		"DESCRIPTION": "Ghanian Cedi"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "GIP",
+		"DESCRIPTION": "Gibraltar Pound"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "GMD",
+		"DESCRIPTION": "Gambian Dalasi"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "GNF",
+		"DESCRIPTION": "Guinean Franc"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "GRD",
+		"DESCRIPTION": "Greek Drachma (Old --> EUR)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "GTQ",
+		"DESCRIPTION": "Guatemalan Quetzal"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "GWP",
+		"DESCRIPTION": "Guinea Peso (Old --> SHP)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "GYD",
+		"DESCRIPTION": "Guyana Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "HKD",
+		"DESCRIPTION": "Hong Kong Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "HNL",
+		"DESCRIPTION": "Honduran Lempira"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "HRK",
+		"DESCRIPTION": "Croatian Kuna"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "HTG",
+		"DESCRIPTION": "Haitian Gourde"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "HUF",
+		"DESCRIPTION": "Hungarian Forint"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "IDR",
+		"DESCRIPTION": "Indonesian Rupiah"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "IEP",
+		"DESCRIPTION": "Irish Punt (Old --> EUR)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ILS",
+		"DESCRIPTION": "Israeli Scheckel"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "INR",
+		"DESCRIPTION": "Indian Rupee"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "IQD",
+		"DESCRIPTION": "Iraqui Dinar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "IRR",
+		"DESCRIPTION": "Iranian Rial"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ISK",
+		"DESCRIPTION": "Iceland Krona"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ITL",
+		"DESCRIPTION": "Italian Lira (Old --> EUR)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "JMD",
+		"DESCRIPTION": "Jamaican Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "JOD",
+		"DESCRIPTION": "Jordanian Dinar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "JPY",
+		"DESCRIPTION": "Japanese Yen"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "KES",
+		"DESCRIPTION": "Kenyan Shilling"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "KGS",
+		"DESCRIPTION": "Kyrgyzstan Som"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "KHR",
+		"DESCRIPTION": "Cambodian Riel"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "KMF",
+		"DESCRIPTION": "Comoros Franc"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "KPW",
+		"DESCRIPTION": "North Korean Won"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "KRW",
+		"DESCRIPTION": "South Korean Won"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "KWD",
+		"DESCRIPTION": "Kuwaiti Dinar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "KYD",
+		"DESCRIPTION": "Cayman Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "KZT",
+		"DESCRIPTION": "Kazakstanian Tenge"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "LAK",
+		"DESCRIPTION": "Laotian Kip"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "LBP",
+		"DESCRIPTION": "Lebanese Pound"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "LKR",
+		"DESCRIPTION": "Sri Lankan Rupee"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "LRD",
+		"DESCRIPTION": "Liberian Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "LSL",
+		"DESCRIPTION": "Lesotho Loti"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "LTL",
+		"DESCRIPTION": "Lithuanian Lita"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "LUF",
+		"DESCRIPTION": "Luxembourg Franc (Old --> EUR)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "LVL",
+		"DESCRIPTION": "Latvian Lat"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "LYD",
+		"DESCRIPTION": "Libyan Dinar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "MAD",
+		"DESCRIPTION": "Moroccan Dirham"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "MDL",
+		"DESCRIPTION": "Moldavian Leu"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "MGA",
+		"DESCRIPTION": "Madagascan Ariary"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "MGF",
+		"DESCRIPTION": "Madagascan Franc (Old"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "MKD",
+		"DESCRIPTION": "Macedonian Denar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "MMK",
+		"DESCRIPTION": "Myanmar Kyat"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "MNT",
+		"DESCRIPTION": "Mongolian Tugrik"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "MOP",
+		"DESCRIPTION": "Macao Pataca"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "MRO",
+		"DESCRIPTION": "Mauritanian Ouguiya"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "MTL",
+		"DESCRIPTION": "Maltese Lira (Old --> EUR)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "MUR",
+		"DESCRIPTION": "Mauritian Rupee"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "MVR",
+		"DESCRIPTION": "Maldive Rufiyaa"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "MWK",
+		"DESCRIPTION": "Malawi Kwacha"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "MXN",
+		"DESCRIPTION": "Mexican Pesos"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "MYR",
+		"DESCRIPTION": "Malaysian Ringgit"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "MZM",
+		"DESCRIPTION": "Mozambique Metical (Old)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "MZN",
+		"DESCRIPTION": "Mozambique Metical"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "NAD",
+		"DESCRIPTION": "Namibian Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "NGN",
+		"DESCRIPTION": "Nigerian Naira"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "NIO",
+		"DESCRIPTION": "Nicaraguan Cordoba Oro"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "NLG",
+		"DESCRIPTION": "Dutch Guilder (Old --> EUR)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "NOK",
+		"DESCRIPTION": "Norwegian Krone"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "NPR",
+		"DESCRIPTION": "Nepalese Rupee"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "NZD",
+		"DESCRIPTION": "New Zealand Dollars"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "OMR",
+		"DESCRIPTION": "Omani Rial"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "PAB",
+		"DESCRIPTION": "Panamanian Balboa"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "PEN",
+		"DESCRIPTION": "Peruvian New Sol"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "PGK",
+		"DESCRIPTION": "Papua New Guinea Kina"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "PHP",
+		"DESCRIPTION": "Philippine Peso"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "PKR",
+		"DESCRIPTION": "Pakistani Rupee"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "PLN",
+		"DESCRIPTION": "Polish Zloty (new)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "PTE",
+		"DESCRIPTION": "Portuguese Escudo (Old --> EUR)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "PYG",
+		"DESCRIPTION": "Paraguayan Guarani"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "QAR",
+		"DESCRIPTION": "Qatar Rial"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "RMB",
+		"DESCRIPTION": "Chinese Yuan Renminbi"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ROL",
+		"DESCRIPTION": "Romanian Leu (Old)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "RON",
+		"DESCRIPTION": "Romanian Leu"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "RSD",
+		"DESCRIPTION": "Serbian Dinar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "RUB",
+		"DESCRIPTION": "Russian Ruble"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "RWF",
+		"DESCRIPTION": "Rwandan Franc"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "SAR",
+		"DESCRIPTION": "Saudi Riyal"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "SBD",
+		"DESCRIPTION": "Solomon Islands Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "SCR",
+		"DESCRIPTION": "Seychelles Rupee"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "SDD",
+		"DESCRIPTION": "Sudanese Dinar (Old)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "SDG",
+		"DESCRIPTION": "Sudanese Pound"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "SDP",
+		"DESCRIPTION": "Sudanese Pound (until 1992)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "SEK",
+		"DESCRIPTION": "Swedish Krona"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "SGD",
+		"DESCRIPTION": "Singapore Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "SHP",
+		"DESCRIPTION": "St.Helena Pound"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "SIT",
+		"DESCRIPTION": "Slovenian Tolar (Old --> EUR)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "SKK",
+		"DESCRIPTION": "Slovakian Krona (Old --> EUR)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "SLL",
+		"DESCRIPTION": "Sierra Leone Leone"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "SOS",
+		"DESCRIPTION": "Somalian Shilling"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "SRD",
+		"DESCRIPTION": "Surinam Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "SRG",
+		"DESCRIPTION": "Surinam Guilder (Old)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "SSP",
+		"DESCRIPTION": "South Sudanese Pound"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "STD",
+		"DESCRIPTION": "Sao Tome / Principe Dobra"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "SVC",
+		"DESCRIPTION": "El Salvador Colon"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "SYP",
+		"DESCRIPTION": "Syrian Pound"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "SZL",
+		"DESCRIPTION": "Swaziland Lilangeni"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "THB",
+		"DESCRIPTION": "Thailand Baht"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "TJR",
+		"DESCRIPTION": "Tajikistani Ruble (Old)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "TJS",
+		"DESCRIPTION": "Tajikistani Somoni"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "TMM",
+		"DESCRIPTION": "Turkmenistani Manat (Old)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "TMT",
+		"DESCRIPTION": "Turkmenistani Manat"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "TND",
+		"DESCRIPTION": "Tunisian Dinar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "TOP",
+		"DESCRIPTION": "Tongan Pa'anga"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "TPE",
+		"DESCRIPTION": "Timor Escudo --> USD"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "TRL",
+		"DESCRIPTION": "Turkish Lira (Old)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "TRY",
+		"DESCRIPTION": "Turkish Lira"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "TTD",
+		"DESCRIPTION": "Trinidad and Tobago Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "TWD",
+		"DESCRIPTION": "New Taiwan Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "TZS",
+		"DESCRIPTION": "Tanzanian Shilling"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "UAH",
+		"DESCRIPTION": "Ukraine Hryvnia"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "UGX",
+		"DESCRIPTION": "Ugandan Shilling"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "USD",
+		"DESCRIPTION": "United States Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "USDN",
+		"DESCRIPTION": "(Internal) United States Dollar (5 Dec.)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "UYU",
+		"DESCRIPTION": "Uruguayan Peso"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "UZS",
+		"DESCRIPTION": "Uzbekistan Som"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "VEB",
+		"DESCRIPTION": "Venezuelan Bolivar (Old)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "VEF",
+		"DESCRIPTION": "Venezuelan Bolivar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "VND",
+		"DESCRIPTION": "Vietnamese Dong"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "VUV",
+		"DESCRIPTION": "Vanuatu Vatu"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "WST",
+		"DESCRIPTION": "Samoan Tala"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "XAF",
+		"DESCRIPTION": "Gabon CFA Franc BEAC"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "XCD",
+		"DESCRIPTION": "East Carribean Dollar"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "XEU",
+		"DESCRIPTION": "European Currency Unit (E.C.U.)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "XOF",
+		"DESCRIPTION": "Benin CFA Franc BCEAO"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "XPF",
+		"DESCRIPTION": "CFP Franc"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "YER",
+		"DESCRIPTION": "Yemeni Ryal"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "YUM",
+		"DESCRIPTION": "New Yugoslavian Dinar (Old)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ZAR",
+		"DESCRIPTION": "South African Rand"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ZMK",
+		"DESCRIPTION": "Zambian Kwacha (Old)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ZMW",
+		"DESCRIPTION": "Zambian Kwacha (New)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ZRN",
+		"DESCRIPTION": "Zaire (Old)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ZWD",
+		"DESCRIPTION": "Zimbabwean Dollar (Old)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ZWL",
+		"DESCRIPTION": "Zimbabwean Dollar (New)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ZWN",
+		"DESCRIPTION": "Zimbabwean Dollar (Old)"
+	}, {
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getSearchHelpDataSet(VIEWNAME='ZAL30_T_UI5_TEST',LANGU='')",
+			"type": "ZAL30_DATA_SRV.getSearchHelpData"
+		},
+		"VIEWNAME": "ZAL30_T_UI5_TEST",
+		"LANGU": "",
+		"FIELDNAME": "FIELDWAERS",
+		"CODE": "ZWR",
+		"DESCRIPTION": "Zimbabwean Dollar (Old)"
+	}]
+}

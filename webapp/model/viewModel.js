@@ -249,29 +249,6 @@ sap.ui.define([
 			}
 			return nNumber;
 		},
-		// Se modifica si a nivel de celda es posible editar el campo segun los valores y atributos
-		_detEditableCellValue: function (mRow) {
-			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			var mFielCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
-			// Se recorren todos los campos del catalogo para poder acceder a cada campo de manera individual
-			for (var x = 0; x < mFielCatalog.length; x++) {
-
-				// Si el campo de edición existe se continua el proceso. El IF lo hago en dos pasos para que quede más claro su funcionamiento
-				if (mRow[mFielCatalog[x].name + constants.tableData.suffix_edit_field]) {
-					// Cualquier
-					if (this.getEditMode() == constants.editMode.edit) {
-						// Si el valor proviene del diccionario, es decir, que existe en base de datos y es un campo clave el campo se marca como no editable.
-						if (mRow[constants.tableData.internalFields.isDict] == "X" && mFielCatalog[x].keyDDIC) {
-							mRow[mFielCatalog[x].name + constants.tableData.suffix_edit_field] = false;
-						}
-					} else {
-						mRow[mFielCatalog[x].name + constants.tableData.suffix_edit_field] = false;
-					}
-
-				}
-			}
-			return mRow;
-		},
 		// Añade un registro vacia a los datos
 		addEmptyRow: function () {
 
@@ -487,7 +464,7 @@ sap.ui.define([
 				// Se recorren los campos indicador en el array de estilos			
 				for (var x = 0; x < aStyles.length; x++) {
 					// Se monta el campo que indica si es editable
-					var sEditField = aStyles[x].FIELDNAME + constants.tableData.suffix_edit_field;
+					var sEditField = aStyles[x].FIELDNAME + constants.tableData.suffixEditField;
 					if (mRow[sEditField]) { // Si el campo existe se le asigna el valor
 						if (aStyles[x].EDITABLE == "false")
 							mRow[sEditField] = false;
@@ -783,6 +760,32 @@ sap.ui.define([
 		getSearchHelpCatalogField: function (sFieldName) {
 			return this._aSearchHelpCatalog.find(row => row.FIELDNAME == sFieldName);
 		},
+		// Se guardar los datos para las ayudas para búsqueda
+		setSearchHelpData: function (aValues) {
+
+			// Los valores se pasan a una estructura adaptada
+			for (var x = 0; x < aValues.length; x++) {
+				this._searchHelpData.push({
+					fieldName: aValues[x].FIELDNAME,
+					code: aValues[x].CODE,
+					description: aValues[x].DESCRIPTION
+				});
+			}
+
+
+		},
+		// Marca un campo determinado que ya tiene valores para la ayuda para búsqueda
+		setFieldHasSearchHelp: function (sFieldName) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
+
+			for (var x = 0; x < aValues.length; x++) {
+				var mRow = aValues[x];
+				mRow[sFieldName + constants.tableData.suffixSearchHelpField] = true;
+			}
+
+			oViewDataModel.setProperty(constants.tableData.path.values,aValues);
+		},
 		//////////////////////////////////	
 		//        Private methods       //	
 		//////////////////////////////////		  
@@ -797,6 +800,7 @@ sap.ui.define([
 			this._editMode = ''; // Modo de edicion
 			this._alreadyBlocked = false; // Vista bloqueada
 			this._lockedByUser = ''; // Usuario del bloqueo
+			this._searchHelpData = []; // Datos para las ayudas para búsqueda
 
 
 		},
@@ -915,12 +919,18 @@ sap.ui.define([
 				var mRow = aValues[z];
 
 				for (var x = 0; x < aFieldCatalog.length; x++) {
-					// Los campos técnicos no tendrán campo de edición porque nunca se muestran
+					// Los campos técnicos no tendrán campo de edición ni ayuda para búsqueda porque nunca se muestran
 					if (this._isEditableFieldCatalog(aFieldCatalog[x])) {
 
 						// se construye el nombre del nuevo campo que será el nombre del campo + un sufijo						
-						var sPathEditFieldname = aFieldCatalog[x].name + constants.tableData.suffix_edit_field;
+						var sPathEditFieldname = aFieldCatalog[x].name + constants.tableData.suffixEditField;
 						mRow[sPathEditFieldname] = aFieldCatalog[x].edit;
+
+						// Solo en los campos de tipo CHAR podrá haber ayuda para búsqueda
+						if (aFieldCatalog.type == constants.columnTtype.char) {
+							var sPathSearchHelpFieldname = aFieldCatalog[x].name + constants.tableData.suffixSearchHelpField;
+							mRow[sPathSearchHelpFieldname] = false; // Por defecto no tendrá ayuda para búsqueda
+						}
 
 					}
 				}
@@ -1090,7 +1100,7 @@ sap.ui.define([
 		},
 		// Completa los datos de determinados campos al añadir un nuevo registro
 		_completeDataAddEmptyRow: function (mRow) {
-			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+
 
 			// Se informa el campo ZAL30_TABIX con el valor siguiente al último calculado.  Este campo se usa
 			// para control, validaciones, etc.
@@ -1151,7 +1161,30 @@ sap.ui.define([
 			mRowOData[constants.tableData.internalFields.rowStatusMsg] = mRow[constants.tableData.internalFields.rowStatusMsg];
 			mRowOData[constants.tableData.internalFields.style] = mRow[constants.tableData.internalFields.style];
 			return mRowOData;
-		}
+		},
+		// Se modifica si a nivel de celda es posible editar el campo segun los valores y atributos
+		_detEditableCellValue: function (mRow) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var mFielCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
+			// Se recorren todos los campos del catalogo para poder acceder a cada campo de manera individual
+			for (var x = 0; x < mFielCatalog.length; x++) {
+
+				// Si el campo de edición existe se continua el proceso. El IF lo hago en dos pasos para que quede más claro su funcionamiento
+				if (mRow[mFielCatalog[x].name + constants.tableData.suffixEditField]) {
+					// Cualquier
+					if (this.getEditMode() == constants.editMode.edit) {
+						// Si el valor proviene del diccionario, es decir, que existe en base de datos y es un campo clave el campo se marca como no editable.
+						if (mRow[constants.tableData.internalFields.isDict] == "X" && mFielCatalog[x].keyDDIC) {
+							mRow[mFielCatalog[x].name + constants.tableData.suffixEditField] = false;
+						}
+					} else {
+						mRow[mFielCatalog[x].name + constants.tableData.suffixEditField] = false;
+					}
+
+				}
+			}
+			return mRow;
+		},
 
 	});
 });

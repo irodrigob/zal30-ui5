@@ -552,18 +552,29 @@ sap.ui.define([
 		_getDataForSearchHelp: function (oSuccessHandler) {
 			var that = this;
 			var aCatalog = this._oView.getSearchHelpCatalog();
-			debugger;
+
 			for (var x = 0; x < aCatalog.length; x++) {
 
 				this._oViewDataService.getSearchHelpData(this._oView.getViewInfo().VIEWNAME, aCatalog[x].FIELDNAME).then((result) => {
 
-						// Se lanza el proceso de la vista para el campo de la ayuda pará búsqueda
-						oSuccessHandler(aCatalog[x].FIELDNAME);
+						// Si hay datos estos se pasan al modelo de datos y se indicará que el campo ya dispone de ayuda para búsqueda
+						if (result.data.results.length > 0) {
+							// Se guardan los datos en el modelo de datos
+							that._oView.setSearchHelpData(result.data.results);
+
+							// Se indica que el campo ya dispone de ayuda para búsqueda. 
+							// Nota: Se pasa el campo que devuelve el servicio porque no se puede acceder a aCatalog[x] ya que el valor "x" de cuando
+							// Se lanza el servicio puede ser distinto al que se recibe al encadenarse las llamadas. 
+							that._oView.setFieldHasSearchHelp(result.data.results[0].FIELDNAME)
+
+							// Se lanza el proceso de la vista para el campo de la ayuda pará búsqueda
+							//oSuccessHandler(aCatalog[x].FIELDNAME);
+						}
+
 					},
 					(error) => {
 
 					});
-
 			}
 		},
 

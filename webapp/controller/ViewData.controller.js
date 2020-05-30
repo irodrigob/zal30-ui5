@@ -324,6 +324,10 @@ sap.ui.define([
 
 			}
 		},
+		// Evento al pulsar sobre una ayuda para búsqueda
+		onValueHelpRequest:function(oEvent){
+			debugger;
+		},
 		//////////////////////////////////	
 		//        Private methods       //	
 		//////////////////////////////////	
@@ -568,7 +572,7 @@ sap.ui.define([
 									},
 									editable: {
 										model: constants.jsonModel.viewData,
-										path: mColumn.name + constants.tableData.suffix_edit_field,
+										path: mColumn.name + constants.tableData.suffixEditField,
 										formatter: function (bValue) {
 											return bValue;
 										}
@@ -585,7 +589,7 @@ sap.ui.define([
 									},
 									editable: {
 										model: constants.jsonModel.viewData,
-										path: mColumn.name + constants.tableData.suffix_edit_field,
+										path: mColumn.name + constants.tableData.suffixEditField,
 										formatter: function (bValue) {
 											return bValue;
 										}
@@ -593,7 +597,12 @@ sap.ui.define([
 									required: mColumn.mandatory,
 									maxLength: mColumn.len,
 									change: [this.onValueChange, this],
-									customData: mCustomData
+									customData: mCustomData,
+									showValueHelp: {
+										model: constants.jsonModel.viewData,
+										path: mColumn.name + constants.tableData.suffixSearchHelpField
+									},
+									valueHelpRequest:[this.onValueHelpRequest, this]
 								})
 							}
 
@@ -607,7 +616,7 @@ sap.ui.define([
 								},
 								editable: {
 									model: constants.jsonModel.viewData,
-									path: mColumn.name + constants.tableData.suffix_edit_field,
+									path: mColumn.name + constants.tableData.suffixEditField,
 									formatter: function (bValue) {
 										return bValue;
 									}
@@ -629,7 +638,7 @@ sap.ui.define([
 								},
 								editable: {
 									model: constants.jsonModel.viewData,
-									path: mColumn.name + constants.tableData.suffix_edit_field,
+									path: mColumn.name + constants.tableData.suffixEditField,
 									formatter: function (bValue) {
 										return bValue;
 									}
@@ -657,7 +666,7 @@ sap.ui.define([
 								},
 								editable: {
 									model: constants.jsonModel.viewData,
-									path: mColumn.name + constants.tableData.suffix_edit_field,
+									path: mColumn.name + constants.tableData.suffixEditField,
 									formatter: function (bValue) {
 										return bValue;
 									}
@@ -682,7 +691,7 @@ sap.ui.define([
 								},
 								editable: {
 									model: constants.jsonModel.viewData,
-									path: mColumn.name + constants.tableData.suffix_edit_field,
+									path: mColumn.name + constants.tableData.suffixEditField,
 									formatter: function (bValue) {
 										return bValue;
 									}
@@ -954,7 +963,7 @@ sap.ui.define([
 			return this._oMessagePopover;
 		},
 		// Se gestiona cuando se termina de leer los datos de un campo que tienen ayuda para búsqueda
-		_postSearchHelp:function(sFieldname){
+		_postSearchHelp: function (sFieldname) {
 
 		}
 

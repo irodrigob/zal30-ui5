@@ -51,7 +51,8 @@ sap.ui.define([], function () {
 				timePicker: "timepicker",
 				checkbox: "checkbox"
 			},
-			suffix_edit_field: "_ZAL30_EDIT",
+			suffixEditField: "_ZAL30_EDIT",
+			suffixSearchHelpField:"_ZAL30_SEARCH_HELP",
 			internalFields: {
 				isDict: "ZAL30_IS_DICT",
 				tabix: "ZAL30_TABIX",
@@ -60,7 +61,7 @@ sap.ui.define([], function () {
 				rowStatusInternal: "ZAL30_ROW_STATUS_INTERNAL",
 				rowStatusMsg: "ZAL30_ROW_STATUS_MSG",
 				rowStatusMsgInternal: "ZAL30_ROW_STATUS_MSG_INTERNAL",
-				style:"ZAL30_UI5_STYLE"
+				style:"ZAL30_UI5_STYLE",				
 			},
 			fixedColumns: {
 				actions: 'ZAL30_FIX_ACTIONS',
