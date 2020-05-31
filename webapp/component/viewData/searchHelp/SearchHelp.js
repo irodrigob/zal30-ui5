@@ -6,7 +6,7 @@ sap.ui.define([
 	function (Control, Fragment, Filter) {
 		"use strict";
 
-		var oSelectTransportOrder = Control.extend("com.ivancio.zal30-ui5.component.general.selectTransportOrder.SelectTransportOrder", {
+		var oSearchHelp = Control.extend("com.ivancio.zal30-ui5.component.viewData.searchHelp.SearchHelp", {
 
 			metadata: {
 				properties: {
@@ -39,8 +39,8 @@ sap.ui.define([
 				this._oController = oController;
 				if (!this._oDialog) {
 					Fragment.load({
-						id: this.getId() + "--SelectTransportOrderDialog",
-						name: "com.ivancio.zal30-ui5.component.general.selectTransportOrder.SelectTransportOrder",
+						id: this.getId() + "--searchHelpDialog",
+						name: "com.ivancio.zal30-ui5.component.viewData.searchHelp.SearchHelp",
 						controller: that
 					}).then(function (oDialog) {						
 						that._oDialog = oDialog;
@@ -55,13 +55,14 @@ sap.ui.define([
 			},
 			// Pasa los valores y las funciones que se ejecutarán cuando se seleccione o cancele el proceso. Los parámetros serán:
 			/*{
-				oHandlerSelected: funcion que se ejecuta cuando se seleccione una orden
-				oHandlerCancel: función que se ejecuta cuando se cancelar una orden
-				aOrders: un array con las ordenes con la siguientes estructura
-				title: titulo de la ventana
+				oHandlerSelected: funcion que se ejecuta cuando se seleccione una valor
+				oHandlerCancel: función que se ejecuta cuando se cancela la selección
+				aValues: un array con los valores con la siguientes estructura
+				title: titulo de la ventana,
+				labelForCode: titulo de la columna del codigo,
+				labelForDescription: titulo de la columna de descripcion
 				[{				
-				"order": "NPLK900022",
-				"user": "DEVELOPER",							
+				"code": "AAA",				
 				"description": "Pruebas"
 				}]
 			}
@@ -69,12 +70,13 @@ sap.ui.define([
 			setValues: function (mParams) {
 				this._oHandlerSelected = mParams.oHandlerSelected ? mParams.oHandlerSelected : {};
 				this._oHandlerCancel = mParams.oHandlerCancel ? mParams.oHandlerCancel : {};
-				this._oSelectTransportOrderModel.setProperty("/orders", mParams.aOrders ? mParams.aOrders : []);
-				this._oSelectTransportOrderModel.setProperty("/title", mParams.title ? mParams.title : '');
-
+				this._oSearchHelpModel.setProperty("/values", mParams.aValues ? mParams.aValues : []);
+				this._oSearchHelpModel.setProperty("/title", mParams.title ? mParams.title : '');
+				this._oSearchHelpModel.setProperty("/labelForCode", mParams.labelForCode ? mParams.labelForCode : this._oI18nResource.getText("selectTransportOrderDialog.LabelforCodeDefault"));
+				this._oSearchHelpModel.setProperty("/labelForDescription", mParams.labelForDescription ? mParams.labelForDescription : this._oI18nResource.getText("selectTransportOrderDialog.LabelforDescriptionDefault"));
 			},
 			// Evento al seleccionar una orden
-			onSelectedOrder: function (oEvent) {
+			onSelectedData: function (oEvent) {
 				this._resetFilter(oEvent); // Se quita el posible filtro introducido
 
 				// Se ejecuta la función pasada por parámetro
@@ -82,15 +84,15 @@ sap.ui.define([
 				if (aContexts && aContexts.length) {
 
 					// Se recupera la línea seleccionada
-					var mRow = this._oSelectTransportOrderModel.getProperty(aContexts[0].sPath)
+					var mRow = this._oSearchHelpModel.getProperty(aContexts[0].sPath)
 
 					// Se pasa la orden
-					this._oHandlerSelected(mRow.order);
+					this._oHandlerSelected(mRow.code);
 				}
 
 			},
 			// Evento al cancelar la selección
-			onCancelOrder: function (oEvent) {
+			onCancelData: function (oEvent) {
 				this._resetFilter(oEvent); // Se quita el posible filtro introducido
 
 				// Se ejecuta la función pasada por parámetro
@@ -109,7 +111,7 @@ sap.ui.define([
 					var oFilter = new Filter({
 						filters: [
 							new Filter("description", sap.ui.model.FilterOperator.Contains, sValue),
-							new Filter("order", sap.ui.model.FilterOperator.Contains, sValue)
+							new Filter("code", sap.ui.model.FilterOperator.Contains, sValue)
 						],
 						and: false
 					});
@@ -127,8 +129,8 @@ sap.ui.define([
 			//                              //
 			//////////////////////////////////
 			_initModel: function () {
-				this._oSelectTransportOrderModel = new sap.ui.model.json.JSONModel();
-				this.setModel(this._oSelectTransportOrderModel, "selectTransportOrderModel");
+				this._oSearchHelpModel = new sap.ui.model.json.JSONModel();
+				this.setModel(this._oSearchHelpModel, "searchHelpModel");
 			},
 			// Eliminación del filtro en la tabla
 			_resetFilter(oEvent) {
@@ -138,5 +140,5 @@ sap.ui.define([
 			}
 
 		});
-		return oSelectTransportOrder;
+		return oSearchHelp;
 	});

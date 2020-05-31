@@ -1,0 +1,32 @@
+<core:FragmentDefinition xmlns="sap.m" 
+    xmlns:core="sap.ui.core">
+    <TableSelectDialog noDataText="{i18n>searchHelpDialog.noData}" 
+        title="{ model:'searchHelpModel', path:'/title'}" 
+        confirm=".onSelectedData" 
+        cancel=".onCancelData" 
+        search=".onSearch"
+        items="{
+            model:'searchHelpModel',
+			path : '/values'			
+		}">
+        <ColumnListItem>
+            <cells>                
+                <Text text="{ model:'searchHelpModel', path:'code'}" />
+                <Text text="{ model:'searchHelpModel', path:'description'}" />                
+            </cells>
+        </ColumnListItem>
+        <columns>
+            <Column width="12em">
+                <header>
+                    <Text text="{ model:'searchHelpModel', path:'/labelForCode'}" />
+                </header>
+            </Column>
+            <Column minScreenWidth="Desktop" 
+                demandPopin="true">
+                <header>
+                    <Text text="{ model:'searchHelpModel', path:'/labelForDescription'}" />
+                </header>
+            </Column>            
+        </columns>
+    </TableSelectDialog>
+</core:FragmentDefinition>

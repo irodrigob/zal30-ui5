@@ -58,7 +58,7 @@
                         <Button icon="sap-icon://hint" 
                             text="{= ${messageApp>/}.length }" 
                             visible="{= ${messageApp>/}.length > 0 }"                             
-                            press="onSowMessageApp" />
+                            press="onShowMessageApp" />
                         <ToolbarSpacer/>
                         <Button icon="sap-icon://compare-2" 
                             tooltip="{i18n>ViewData.tooltipBtnSave}" 
@@ -78,11 +78,11 @@
                     </OverflowToolbar>
                 </table:footer>
             </table:Table>
-            <Button press="onTesting" 
+           <!-- <Button press="onTesting" 
                 icon="sap-icon://navigation-right-arrow" 
                 text="Testing" 
                 enabled="{model:'ViewSelectModel', path:'/viewSelected'}" 
-                ariaDescribedBy="acceptButtonDescription genericButtonDescription"/>
+                ariaDescribedBy="acceptButtonDescription genericButtonDescription"/> -->
         </content>
     </Page>
 </mvc:View>     

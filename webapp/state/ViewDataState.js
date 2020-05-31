@@ -362,6 +362,18 @@ sap.ui.define([
 				});
 
 		},
+		// Devuelve todos los valores necesarios para construir la ayuda para búsqueda
+		// El Path de momento no se usa pero se deja por si es necesario
+		getValuesForSearchHelp: function (sColumn, sPath) {
+			// Se recupera la información de catalogo
+			var mCatalog = this._oView.getSearchHelpCatalogField(sColumn);
+		
+			return {
+				labelForCode: mCatalog.LABELFIELDCODE,
+				labelForDescription: mCatalog.LABELFIELDDESCRIPTION,
+				values: this._oView.getSearchHelpDataField(sColumn)
+			};
+		},
 		// Proceso que lee los datos auxiliares para el matenimiento de la tabla.  Este método se llamada desde la vista porque
 		// según se vayan leyendo los datos se ira ajustado la vista
 		//Datos que se leen:
@@ -370,7 +382,7 @@ sap.ui.define([
 		getAuxiliaryData: function (oPostProcess) {
 			// Se inicia la lectura de las ayudas para búsqueda de los campos que lo permitan. Dentro de este método se hace las llamadas
 			// a los datos de los campos
-			this._getSearchHelp(oPostProcess.handlerSearchHelp);
+			this._getSearchHelp();
 		},
 		//////////////////////////////////	
 		//        Private methods       //	
@@ -529,7 +541,7 @@ sap.ui.define([
 				this._oView.setEditMode(constants.editMode.view);
 		},
 		// Recupera los datos que se usarán para las ayudas para búsquedas de determinados campos
-		_getSearchHelp: function (oSuccessHandler) {
+		_getSearchHelp: function () {
 			var that = this;
 
 			this._oViewDataService.getSearchHelpCatalog(this._oView.getViewInfo().VIEWNAME).then((result) => {
@@ -540,7 +552,7 @@ sap.ui.define([
 					// Si hay datos se llama al proceso de obtención de datos.
 					// No paso los campos del resultado de la busqueda porque los datos del catalogo se ajustaran en el modelo
 					if (result.data.results.length > 0)
-						that._getDataForSearchHelp(oSuccessHandler);
+						that._getDataForSearchHelp();
 
 
 				},
@@ -549,7 +561,7 @@ sap.ui.define([
 				});
 		},
 		// Obtiene los datos para la ayuda para búsqueda a partir del catalogo de campos
-		_getDataForSearchHelp: function (oSuccessHandler) {
+		_getDataForSearchHelp: function () {
 			var that = this;
 			var aCatalog = this._oView.getSearchHelpCatalog();
 
@@ -566,9 +578,6 @@ sap.ui.define([
 							// Nota: Se pasa el campo que devuelve el servicio porque no se puede acceder a aCatalog[x] ya que el valor "x" de cuando
 							// Se lanza el servicio puede ser distinto al que se recibe al encadenarse las llamadas. 
 							that._oView.setFieldHasSearchHelp(result.data.results[0].FIELDNAME)
-
-							// Se lanza el proceso de la vista para el campo de la ayuda pará búsqueda
-							//oSuccessHandler(aCatalog[x].FIELDNAME);
 						}
 
 					},

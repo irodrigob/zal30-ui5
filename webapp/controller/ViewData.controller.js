@@ -13,8 +13,10 @@ sap.ui.define([
 	"com/ivancio/zal30-ui5/component/general/confirmDialog/ConfirmDialog",
 	"sap/ui/table/RowSettings",
 	"sap/ui/core/Icon",
-	"com/ivancio/zal30-ui5/component/general/selectTransportOrder/SelectTransportOrder",
-], function (BaseController, MessageToast, constants, LogDialog, Column, Message, Input, DatePicker, TimePicker, CheckBox, Filter, ConfirmDialog, RowSettings, Icon, SelectTransportOrder) {
+	"com/ivancio/zal30-ui5/component/viewData/selectTransportOrder/SelectTransportOrder",
+	"com/ivancio/zal30-ui5/component/viewData/searchHelp/SearchHelp"
+], function (BaseController, MessageToast, constants, LogDialog, Column, Message, Input, DatePicker, TimePicker, CheckBox, Filter, ConfirmDialog, RowSettings, Icon, SelectTransportOrder,
+	SearchHelp) {
 	"use strict";
 
 	return BaseController.extend("com.ivancio.zal30-ui5.controller.ViewData", {
@@ -58,6 +60,12 @@ sap.ui.define([
 			var oMessageManager = sap.ui.getCore().getMessageManager();
 			this.getView().setModel(oMessageManager.getMessageModel(), "messageApp");
 			oMessageManager.registerObject(this.getView(), true);
+
+			// Se instancia el control del popup que permite mostrar la ayuda para búsqueda
+			if (!this._oSearcHelpDialog) {
+				this._oSearcHelpDialog = new SearchHelp();
+				this.getView().addDependent(this._oSearcHelpDialog);
+			}
 
 		},
 		// Botón de ir hacía atras en la aplicación
@@ -242,7 +250,7 @@ sap.ui.define([
 
 		},
 		// Evento al pulsar el botón de mostrar los mensajes del message manager
-		onSowMessageApp: function (oEvent) {
+		onShowMessageApp: function (oEvent) {
 			this._getMessageApp().openBy(oEvent.getSource());
 		},
 		// Verificación de datos modificados
@@ -253,6 +261,49 @@ sap.ui.define([
 				that._postSAPProcess();
 			});
 
+		},
+		// Evento al pulsar sobre una ayuda para búsqueda
+		onValueHelpRequest: function (oEvent) {
+			var that = this;
+
+			// Objeto donde se ha cambiado el valor
+			var oSource = oEvent.getSource();
+
+			// Registro de la tabla donde se ha modificado
+			var oRow = oSource.getParent();
+			var sPath = oRow.getBindingContext(constants.jsonModel.viewData).getPath();
+
+			// Columna donde se ha cambiado el valor
+			var sColumn = this._getCustomDataValue(oSource, constants.tableData.customData.columnName);
+
+			// Recupero la información de la ayuda para búsqueda
+			var mInfo = this._viewDataState.getValuesForSearchHelp(sColumn, sPath);
+
+			// Se pasan los valores al dialogo
+			this._oSearcHelpDialog.setValues({
+				aValues: mInfo.values,
+				labelForCode: mInfo.labelForCode,
+				labelForDescription: mInfo.labelForDescription,
+				oHandlerCancel: function () {
+					MessageToast.show(that._oI18nResource.getText("ViewData.searcHelpDialog.canceledSelection"));
+				},
+				oHandlerSelected: function (sValue) {
+
+					oSource.setValue(sValue);
+					/*that._transportOrder = sOrder; // Se guarda la orden de transporte
+
+					// Se lanza el proceso de grabación
+					that._viewDataState.onSaveData(that._transportOrder, function (aReturn, sNewOrder) {
+
+						that._postSaveSAPProcess(aReturn, sNewOrder);
+					});*/
+
+				},
+				title: this._oI18nResource.getText("ViewData.searcHelpDialog.title", [mInfo.labelForCode])
+			});
+
+			// Se abre el popup
+			this._oSearcHelpDialog.openDialog();
 		},
 		//////////////////////////////////
 		//                              //
@@ -323,10 +374,6 @@ sap.ui.define([
 				)
 
 			}
-		},
-		// Evento al pulsar sobre una ayuda para búsqueda
-		onValueHelpRequest:function(oEvent){
-			debugger;
 		},
 		//////////////////////////////////	
 		//        Private methods       //	
@@ -412,11 +459,7 @@ sap.ui.define([
 
 					// Obtención de los datos auxiliares. Aunque de momento solo se lee un dato auxiliar(las ayudas para búsqueda), dejo preparado
 					// el código para que cada tipo de datos auxiliar tenga su propia función de post proceso
-					that._viewDataState.getAuxiliaryData({
-						handlerSearchHelp: function (sFieldname) {
-							that._postSearchHelp(sFieldname);
-						}
-					});
+					that._viewDataState.getAuxiliaryData({});
 
 					// Se llama al método encargado de construir la tabla a mostrar
 					that._buildTableData();
@@ -602,7 +645,7 @@ sap.ui.define([
 										model: constants.jsonModel.viewData,
 										path: mColumn.name + constants.tableData.suffixSearchHelpField
 									},
-									valueHelpRequest:[this.onValueHelpRequest, this]
+									valueHelpRequest: [this.onValueHelpRequest, this]
 								})
 							}
 
@@ -909,7 +952,7 @@ sap.ui.define([
 
 						},
 						title: that._oI18nResource.getText("selectTransportOrderDialog.title")
-					})
+					});
 
 					// Se abre el popup
 					this._oSelectTransportOrderDialog.openDialog();
@@ -961,10 +1004,6 @@ sap.ui.define([
 				this.getView().addDependent(this._oMessagePopover);
 			}
 			return this._oMessagePopover;
-		},
-		// Se gestiona cuando se termina de leer los datos de un campo que tienen ayuda para búsqueda
-		_postSearchHelp: function (sFieldname) {
-
 		}
 
 	});

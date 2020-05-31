@@ -765,14 +765,16 @@ sap.ui.define([
 
 			// Los valores se pasan a una estructura adaptada
 			for (var x = 0; x < aValues.length; x++) {
-				this._searchHelpData.push({
+				this._aSearchHelpData.push({
 					fieldName: aValues[x].FIELDNAME,
 					code: aValues[x].CODE,
 					description: aValues[x].DESCRIPTION
 				});
 			}
-
-
+			//this._aSearchHelpData = this._aSearchHelpData.concat(aValues);
+		},
+		getSearchHelpDataField:function(sFieldName){
+			return this._aSearchHelpData.filter(data => data.fieldName == sFieldName);
 		},
 		// Marca un campo determinado que ya tiene valores para la ayuda para búsqueda
 		setFieldHasSearchHelp: function (sFieldName) {
@@ -800,7 +802,7 @@ sap.ui.define([
 			this._editMode = ''; // Modo de edicion
 			this._alreadyBlocked = false; // Vista bloqueada
 			this._lockedByUser = ''; // Usuario del bloqueo
-			this._searchHelpData = []; // Datos para las ayudas para búsqueda
+			this._aSearchHelpData = []; // Datos para las ayudas para búsqueda
 
 
 		},
