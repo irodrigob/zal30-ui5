@@ -257,13 +257,16 @@ sap.ui.define([
 		onCheckData: function (oEvent) {
 			var that = this;
 
+			// Se muestra el loader del proceso ocupado porque la verificación puede tardar 
+			this._oOwnerComponent.showBusyDialog();
+
 			this._viewDataState.onCheckDataChangedSAP(function () {
 				that._postSAPProcess();
 			});
 
 		},
 		// Evento al pulsar sobre una ayuda para búsqueda
-		onValueHelpRequest: function (oEvent) {
+		onSearchHelpRequest: function (oEvent) {
 			var that = this;
 
 			// Objeto donde se ha cambiado el valor
@@ -290,13 +293,15 @@ sap.ui.define([
 				oHandlerSelected: function (sValue) {
 
 					oSource.setValue(sValue);
-					/*that._transportOrder = sOrder; // Se guarda la orden de transporte
 
-					// Se lanza el proceso de grabación
-					that._viewDataState.onSaveData(that._transportOrder, function (aReturn, sNewOrder) {
-
-						that._postSaveSAPProcess(aReturn, sNewOrder);
-					});*/
+					that._viewDataState.onValueCellChanged({
+						path: sPath,
+						column: sColumn,
+						value: sValue,
+						handlerPostServiceSAP: function () {
+							that._postSAPProcess();
+						}
+					});
 
 				},
 				title: this._oI18nResource.getText("ViewData.searcHelpDialog.title", [mInfo.labelForCode])
@@ -398,6 +403,10 @@ sap.ui.define([
 
 			// Se lanza el proceso que determina si se mostrarán las columnas de acción del listado
 			this._determineShowFixColumnactions();
+
+			// Se oculta el dialogo de proceso ocupado, porque según en que proceso(grabación o validación) se llama para que no parezca que
+			// el sistema esta caído
+			this._oOwnerComponent.closeBusyDialog(); // Se cierra el dialogo
 		},
 		// Inicialización del modelo de datos
 		_initModelData: function () {
@@ -645,7 +654,16 @@ sap.ui.define([
 										model: constants.jsonModel.viewData,
 										path: mColumn.name + constants.tableData.suffixSearchHelpField
 									},
-									valueHelpRequest: [this.onValueHelpRequest, this]
+									valueHelpRequest: [this.onSearchHelpRequest, this],
+									valueState: {
+										model: constants.jsonModel.viewData,
+										path: mColumn.name + constants.tableData.suffixValueState.valueState
+									},
+									valueStateText: {
+										model: constants.jsonModel.viewData,
+										path: mColumn.name + constants.tableData.suffixValueState.valueStateText
+									}
+
 								})
 							}
 
@@ -669,7 +687,15 @@ sap.ui.define([
 								displayFormat: this._oOwnerComponent.getUserConfig().displayDateFormat,
 								change: [this.onValueChange, this],
 								customData: mCustomData,
-								placeholder: "Enter date..."
+								placeholder: "Enter date...",
+								valueState: {
+									model: constants.jsonModel.viewData,
+									path: mColumn.name + constants.tableData.suffixValueState.valueState
+								},
+								valueStateText: {
+									model: constants.jsonModel.viewData,
+									path: mColumn.name + constants.tableData.suffixValueState.valueStateText
+								}
 							})
 							break;
 						case constants.columnTtype.time:
@@ -690,7 +716,15 @@ sap.ui.define([
 								valueFormat: this._oOwnerComponent.getUserConfig().timeFormat,
 								displayFormat: this._oOwnerComponent.getUserConfig().displayTimeFormat,
 								customData: mCustomData,
-								change: [this.onValueChange, this]
+								change: [this.onValueChange, this],
+								valueState: {
+									model: constants.jsonModel.viewData,
+									path: mColumn.name + constants.tableData.suffixValueState.valueState
+								},
+								valueStateText: {
+									model: constants.jsonModel.viewData,
+									path: mColumn.name + constants.tableData.suffixValueState.valueStateText
+								}
 							})
 							break;
 						case constants.columnTtype.packed:
@@ -717,7 +751,15 @@ sap.ui.define([
 								required: mColumn.mandatory,
 								maxLength: mColumn.len,
 								change: [this.onValueChange, this],
-								customData: mCustomData
+								customData: mCustomData,
+								valueState: {
+									model: constants.jsonModel.viewData,
+									path: mColumn.name + constants.tableData.suffixValueState.valueState
+								},
+								valueStateText: {
+									model: constants.jsonModel.viewData,
+									path: mColumn.name + constants.tableData.suffixValueState.valueStateText
+								}
 							});
 							break;
 						case constants.columnTtype.integer:
@@ -742,7 +784,15 @@ sap.ui.define([
 								required: mColumn.mandatory,
 								maxLength: mColumn.len,
 								change: [this.onValueChange, this],
-								customData: mCustomData
+								customData: mCustomData,
+								valueState: {
+									model: constants.jsonModel.viewData,
+									path: mColumn.name + constants.tableData.suffixValueState.valueState
+								},
+								valueStateText: {
+									model: constants.jsonModel.viewData,
+									path: mColumn.name + constants.tableData.suffixValueState.valueStateText
+								}
 							});
 							break;
 					}
@@ -942,6 +992,9 @@ sap.ui.define([
 							MessageToast.show(that._oI18nResource.getText("ViewData.selectTransportOrder.canceledSelection"));
 						},
 						oHandlerSelected: function (sOrder) {
+							// Se muestra el loader del proceso ocupado porque la grabación puede tardar 
+							that._oOwnerComponent.showBusyDialog();
+
 							that._transportOrder = sOrder; // Se guarda la orden de transporte
 
 							// Se lanza el proceso de grabación
@@ -979,6 +1032,9 @@ sap.ui.define([
 						});
 
 					} else {
+						// Se muestra el loader del proceso ocupado porque la grabación puede tardar 
+						that._oOwnerComponent.showBusyDialog();
+
 						// Si no hay error actualizo la orde de transporte, el motivo es que puede
 						// cambiar porque se añade una tarea a la orden que pertenecia a la antigua, etc.
 						that._transportOrder = result.newOrder;

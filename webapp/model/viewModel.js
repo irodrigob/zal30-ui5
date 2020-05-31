@@ -330,6 +330,9 @@ sap.ui.define([
 			mRow[constants.tableData.internalFields.rowStatusInternal] = '';
 			mRow[constants.tableData.internalFields.rowStatusMsgInternal] = [];
 
+			// Se resetea los values state de los campos
+			this._resetValueState(mRow);
+
 			// Campos obligatorios
 			if (mOptions.mandatory)
 				this.rowValidateMandatoryFields(mRow);
@@ -337,6 +340,9 @@ sap.ui.define([
 			// Duplicidad de campos clave
 			if (mOptions.duplicateKeyFields)
 				this.validateDuplicateKeyFields(mRow);
+
+			// se informa el valueState de los campos en base a los valores del rowStatusMsg
+			this._setValueStateFromRowStatusMsg(mRow);
 		},
 		// Validación de campos obligatorios
 		rowValidateMandatoryFields: function (mRow) {
@@ -388,7 +394,8 @@ sap.ui.define([
 						if (mRow[aFieldCatalog[z].name] == mRowValue[aFieldCatalog[z].name]) {
 
 							var text = this._oI18nResource.getText("ViewData.rowValidate.rowDuplicate");
-							this.addMsgRowStatusMsgInternal(mRow, constants.messageType.error, this._oI18nResource.getText("ViewData.rowValidate.rowDuplicate"));
+							this.addMsgRowStatusMsgInternal(mRow, constants.messageType.error, text);
+
 							break; // se sale del proceso porque ya se ha encontrado una coincidencia
 
 						}
@@ -539,15 +546,16 @@ sap.ui.define([
 			// Se pasan los valores de los campos que vienen en el catalogo de campos de SAP al registro que hay en el modelo
 			var mRow = this._transfODataValues2ModelDatafromPath(sPath, mRowOData);
 
+			// Los posibles 
+
 			// Se pasa el JSON a una array para poder llamar al método que formatea los valores que vienen de SAP
 			var aValues = [mRow];
 
 			// Se aplican los formatos y estilos
 			aValues = this._processAdapModelDataFromGW(aValues, false);
 
-			// Se determina el valor del RowStatus, porque puede cambiar en base los mensajes que vengan de SAP + los
-			// internos de la propia aplicación
-			//this.setRowStatusInternal(aValues[0]);
+			// se informa el valueState de los campos en base a los valores del rowStatusMsg
+			this._setValueStateFromRowStatusMsg(aValues[0]);
 
 			// Se guardado los datos en la fila seleccionada
 			oViewDataModel.setProperty(sPath, aValues[0]);
@@ -661,10 +669,9 @@ sap.ui.define([
 				aValuesTmp = this._processAdapModelDataFromGW(aValuesTmp, false);
 				mRow = aValuesTmp[0];
 
-				// Se determina el valor del RowStatus, porque puede cambiar en base los mensajes que vengan de SAP + los
-				// internos de la propia aplicación
-				//this.setRowStatusInternal(mRow);
-
+				// se informa el valueState de los campos en base a los valores del rowStatusMsg
+				this._setValueStateFromRowStatusMsg(mRow);
+				
 				// Si la fila no tiene errores y tampoco los hay a nivel global: 				
 				// - Se ajusta el modelo según la operación de actualización
 
@@ -761,7 +768,7 @@ sap.ui.define([
 			return this._aSearchHelpCatalog.find(row => row.FIELDNAME == sFieldName);
 		},
 		// Se guardar los datos para las ayudas para búsqueda
-		setSearchHelpData: function (aValues) {
+		setSearchHelpData: function (sFieldname, aValues) {
 
 			// Los valores se pasan a una estructura adaptada
 			for (var x = 0; x < aValues.length; x++) {
@@ -771,22 +778,13 @@ sap.ui.define([
 					description: aValues[x].DESCRIPTION
 				});
 			}
-			//this._aSearchHelpData = this._aSearchHelpData.concat(aValues);
+			// Se marca que el campo tiene ayuda para búsqueda.
+			// aunque a esta función se llama solo si hay datos, pongo el control por si se cambia la funcionalidad			
+			if (aValues.length)
+				this._setFieldHasSearchHelp(sFieldname);
 		},
-		getSearchHelpDataField:function(sFieldName){
+		getSearchHelpDataField: function (sFieldName) {
 			return this._aSearchHelpData.filter(data => data.fieldName == sFieldName);
-		},
-		// Marca un campo determinado que ya tiene valores para la ayuda para búsqueda
-		setFieldHasSearchHelp: function (sFieldName) {
-			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
-
-			for (var x = 0; x < aValues.length; x++) {
-				var mRow = aValues[x];
-				mRow[sFieldName + constants.tableData.suffixSearchHelpField] = true;
-			}
-
-			oViewDataModel.setProperty(constants.tableData.path.values,aValues);
 		},
 		//////////////////////////////////	
 		//        Private methods       //	
@@ -809,8 +807,8 @@ sap.ui.define([
 		// Devuelve los campos obligatorios
 		_getMandatoryFields: function () {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			var aFielCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
-			return aFielCatalog.filter(field => field.mandatory == true)
+			var aFieldCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
+			return aFieldCatalog.filter(field => field.mandatory == true)
 		},
 		// Se convierte el catalogo del servicio en el formato propio de la aplicación
 		_convertServiceFieldCatalog2Intern: function (mFieldCatalog) {
@@ -933,6 +931,10 @@ sap.ui.define([
 							var sPathSearchHelpFieldname = aFieldCatalog[x].name + constants.tableData.suffixSearchHelpField;
 							mRow[sPathSearchHelpFieldname] = false; // Por defecto no tendrá ayuda para búsqueda
 						}
+
+						// Se añaden dos campos que servirán para los valueState. Es decir, poder marcar determinados campos como erroneos
+						mRow[aFieldCatalog[x].name + constants.tableData.suffixValueState.valueState] = constants.tableData.valueStates.ok;
+						mRow[aFieldCatalog[x].name + constants.tableData.suffixValueState.valueStateText] = "";
 
 					}
 				}
@@ -1109,6 +1111,9 @@ sap.ui.define([
 			this._lastTabix = this._lastTabix + 1;
 			mRow[constants.tableData.internalFields.tabix] = this._lastTabix;
 
+			// Se marcan los campos que han de tener ayuda para búsqueda
+			this._setFieldsHasSearchHelpinRow(mRow);
+
 		},
 		// Transfiere los datos del modelo Odata al modelo interno a partir de un path
 		_transfODataValues2ModelDatafromPath: function (sPath, mRowOData) {
@@ -1167,26 +1172,102 @@ sap.ui.define([
 		// Se modifica si a nivel de celda es posible editar el campo segun los valores y atributos
 		_detEditableCellValue: function (mRow) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			var mFielCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
+			var aFieldCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
 			// Se recorren todos los campos del catalogo para poder acceder a cada campo de manera individual
-			for (var x = 0; x < mFielCatalog.length; x++) {
+			for (var x = 0; x < aFieldCatalog.length; x++) {
 
 				// Si el campo de edición existe se continua el proceso. El IF lo hago en dos pasos para que quede más claro su funcionamiento
-				if (mRow[mFielCatalog[x].name + constants.tableData.suffixEditField]) {
+				if (mRow[aFieldCatalog[x].name + constants.tableData.suffixEditField]) {
 					// Cualquier
 					if (this.getEditMode() == constants.editMode.edit) {
 						// Si el valor proviene del diccionario, es decir, que existe en base de datos y es un campo clave el campo se marca como no editable.
-						if (mRow[constants.tableData.internalFields.isDict] == "X" && mFielCatalog[x].keyDDIC) {
-							mRow[mFielCatalog[x].name + constants.tableData.suffixEditField] = false;
+						if (mRow[constants.tableData.internalFields.isDict] == "X" && aFieldCatalog[x].keyDDIC) {
+							mRow[aFieldCatalog[x].name + constants.tableData.suffixEditField] = false;
 						}
 					} else {
-						mRow[mFielCatalog[x].name + constants.tableData.suffixEditField] = false;
+						mRow[aFieldCatalog[x].name + constants.tableData.suffixEditField] = false;
 					}
 
 				}
 			}
 			return mRow;
 		},
+		// Informa el valor del value State a un determinado campo
+		_setValueStateField(mRow, sFieldname, sState, sStateText) {
+			mRow[sFieldname + constants.tableData.suffixValueState.valueState] = sState;
+			mRow[sFieldname + constants.tableData.suffixValueState.valueStateText] = sStateText;
+		},
+		// Limpia los values state de una fila
+		_resetValueState: function (mRow) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var aFieldCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
+
+			for (var x = 0; x < aFieldCatalog.length; x++) {
+				// Solo si el campo es editable se resetea el valor. Es la misma comprobación que se hace cuando
+				// se añade el campo
+				if (this._isEditableFieldCatalog(aFieldCatalog[x]))
+					this._setValueStateField(mRow, aFieldCatalog[x].name, constants.tableData.valueStates.ok, "");
+			}
+
+		},
+		// Marca un campo determinado que ya tiene valores para la ayuda para búsqueda
+		_setFieldHasSearchHelp: function (sFieldName) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var aValues = oViewDataModel.getProperty(constants.tableData.path.values);
+
+			for (var x = 0; x < aValues.length; x++) {
+				var mRow = aValues[x];
+				mRow[sFieldName + constants.tableData.suffixSearchHelpField] = true;
+			}
+
+			oViewDataModel.setProperty(constants.tableData.path.values, aValues);
+		},
+		// Devuelve si un campo tiene ayuda para búsqueda
+		_setFieldsHasSearchHelpinRow(mRow) {
+
+			for (var x = 0; x < this._aSearchHelpCatalog.length; x++) {
+				// Si existe al menos un registros de datos del campo se marca como que tiene, en caso contrario se marca que no tiene
+				if (this._aSearchHelpData.find(data => data.fieldName == this._aSearchHelpCatalog[x].FIELDNAME))
+					mRow[this._aSearchHelpCatalog[x].FIELDNAME + constants.tableData.suffixSearchHelpField] = true;
+				else
+					mRow[this._aSearchHelpCatalog[x].FIELDNAME + constants.tableData.suffixSearchHelpField] = false;
+
+			}
+
+		},
+		// Informa los campos valueState en base a los campos de los rowStatusMsg tanto de SAP como interno
+		_setValueStateFromRowStatusMsg(mRow) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var aFieldCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
+
+			// Se resetea los campos
+			this._resetValueState(mRow);
+
+			var aMsg = mRow[constants.tableData.internalFields.rowStatusMsg];
+			var aMsgInternal = mRow[constants.tableData.internalFields.rowStatusMsgInternal];
+
+			for (var x = 0; x < aFieldCatalog.length; x++) {
+				// Solo los editables tienen value state
+				if (this._isEditableFieldCatalog(aFieldCatalog[x])) {
+
+					// Localizo si el campo tiene algun eror tanto en los mensajes de SAP como internos para el campo que se esta procesando
+					var mMsg = aMsg.find(row => row.TYPE == constants.messageType.error && row.FIELDNAME == aFieldCatalog[x].name);
+					var mMsgInternal = aMsgInternal.find(row => row.TYPE == constants.messageType.error && row.FIELDNAME == aFieldCatalog[x].name);
+					if (mMsg || mMsgInternal) {
+						// Pongo por defecto el error de SAP
+						if (mMsg)
+							this._setValueStateField(mRow, aFieldCatalog[x].name, constants.tableData.valueStates.error, mMsg.MESSAGE);
+						else if (mMsgInternal)
+							this._setValueStateField(mRow, aFieldCatalog[x].name, constants.tableData.valueStates.error, mMsgInternal.MESSAGE);
+					}
+				}
+
+
+			}
+
+
+		}
+
 
 	});
 });

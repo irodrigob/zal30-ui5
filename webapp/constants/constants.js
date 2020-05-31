@@ -53,6 +53,10 @@ sap.ui.define([], function () {
 			},
 			suffixEditField: "_ZAL30_EDIT",
 			suffixSearchHelpField:"_ZAL30_SEARCH_HELP",
+			suffixValueState:{
+				valueState:"_ZAL30_VALUE_STATE",
+				valueStateText:"_ZAL30_VALUE_STATE_TEXT"
+			},
 			internalFields: {
 				isDict: "ZAL30_IS_DICT",
 				tabix: "ZAL30_TABIX",
@@ -88,6 +92,10 @@ sap.ui.define([], function () {
 			},
 			dataType: {
 				mandt: "CLNT"
+			},
+			valueStates:{
+				ok:"None",
+				error:"Error"
 			}
 
 		}

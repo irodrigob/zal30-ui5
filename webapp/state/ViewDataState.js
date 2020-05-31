@@ -148,6 +148,32 @@ sap.ui.define([
 
 			return mParamsOutput;
 		},
+		// Evento que se llama cuando se selecciona un valor a través de la ayuda para búsqueda
+		// Este evento es muy parecido al onValueCellChanged, pero haciendo menos procesos, ya que la ayuda para búsqueda
+		// es para campos char con lo cual muchos pasos, formateos, no son necesarios
+		onValueHelpRequest: function (mParams) {
+
+			// Se informa en que línea se ha hecho el cambio
+			this._oView.setRowUpdateIndicator(mParams.path, constants.tableData.fieldUpkzValues.update);
+
+			// Se lanza el proceso de validación de fila por si se ha seleccionado algun valor después de haber modificado otra fila.			
+			if (this._lastPathChanged != '' & this._lastPathChanged != mParams.path) {
+
+				// Proceso de validación a nivel de fila					
+				this._rowValidationDeterminationSAP(this._lastPathChanged).then((result) => {
+						// Procesos en vista una vez ha finalizado la llamada en SAP
+						mParams.handlerPostServiceSAP();
+					},
+					(error) => {
+
+					});
+			} else {
+				// Procesos en vista una vez ha finalizado la llamada en SAP
+				mParams.handlerPostServiceSAP();
+			}
+
+
+		},
 		// Evento que se lanza cuando se marcan líneas para borrar
 		onDeleteEntries: function (aRows, oPostSAPProcess) {
 			var that = this;
@@ -367,7 +393,7 @@ sap.ui.define([
 		getValuesForSearchHelp: function (sColumn, sPath) {
 			// Se recupera la información de catalogo
 			var mCatalog = this._oView.getSearchHelpCatalogField(sColumn);
-		
+
 			return {
 				labelForCode: mCatalog.LABELFIELDCODE,
 				labelForDescription: mCatalog.LABELFIELDDESCRIPTION,
@@ -460,6 +486,8 @@ sap.ui.define([
 			});
 			return oPromise;
 		},
+		// Verificación de datos a nivel de campos. ESTE SERVICIO NO SE USA YA QUE EL EVENTO
+		// EN SAP SE HA QUITADO
 		_verifyFieldData: function (sPath, sValue, sColumn) {
 			var that = this;
 			// El servicio lo asocio a un promise para que este servicio pueda ser encadenado con otros
@@ -571,19 +599,17 @@ sap.ui.define([
 
 						// Si hay datos estos se pasan al modelo de datos y se indicará que el campo ya dispone de ayuda para búsqueda
 						if (result.data.results.length > 0) {
-							// Se guardan los datos en el modelo de datos
-							that._oView.setSearchHelpData(result.data.results);
-
-							// Se indica que el campo ya dispone de ayuda para búsqueda. 
+							// Se guardan los datos en el modelo de datos y se indicará que el campo tiene dato en el modelo.
 							// Nota: Se pasa el campo que devuelve el servicio porque no se puede acceder a aCatalog[x] ya que el valor "x" de cuando
 							// Se lanza el servicio puede ser distinto al que se recibe al encadenarse las llamadas. 
-							that._oView.setFieldHasSearchHelp(result.data.results[0].FIELDNAME)
+							that._oView.setSearchHelpData(result.data.results[0].FIELDNAME, result.data.results);
 						}
 
 					},
 					(error) => {
 
 					});
+					
 			}
 		},
 
