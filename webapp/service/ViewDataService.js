@@ -60,7 +60,13 @@ sap.ui.define([
 			bUseMock: false,
 			mockFile: "/getSearchHelpData.json",
 			oDataModel: "masterData"
-		}
+		},
+		transportData: {
+			serviceName: "/transportDataSet",
+			bUseMock: false,
+			mockFile: "/transportData.json",
+			oDataModel: "masterData"
+		},
 
 	};
 
@@ -221,6 +227,15 @@ sap.ui.define([
 			return this.callOData(_mService.getSearchHelpData).get({
 				filters: oFilters
 			})
+		},
+		// Grabación de los datos en SAP
+		transportData: function (sViewName, sData, sTransportOrder) {
+			return this.callOData(_mService.transportData).post({
+				VIEWNAME: sViewName,
+				LANGU: this._sLanguage,
+				DATA: sData,
+				TRANSPORTORDER: sTransportOrder
+			}, {});
 		},
 
 	});

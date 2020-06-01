@@ -410,6 +410,44 @@ sap.ui.define([
 			// a los datos de los campos
 			this._getSearchHelp();
 		},
+		// Devuelve la información de una columna
+		getColumnInfo: function (sColumn) {
+			return this._oView.getColumnInfo(sColumn);
+		},
+		// Devuelve los número de línea que existen en SAP a partir de los índice pasados existen en SAP
+		getRowIndexExistinSAPFromIndices(aIndices) {
+
+			var aIndicesInSAP = [];
+			var aValues = this._oView.getModelDatafromIndex(aIndices);
+
+			for (var x = 0; x < aValues.length; x++) {
+				var mRow = aValues[x];
+				if (mRow[constants.tableData.internalFields.isDict] == 'X')
+					aIndicesInSAP.push(aIndices[x]);
+			}
+
+			return aIndicesInSAP;
+		},
+		// Proceso de transporte de los registros seleccionados
+		onTransportData: function (sTransportOrder, aIndices, oPostSAPProcess) {
+			var that = this;
+
+			var aValuesSAP = this._oView.getModelDatafromIndex2SAP(aIndices);
+			
+			that._oViewDataService.transportData(that._oView.getViewInfo().VIEWNAME, JSON.stringify(aValuesSAP), sTransportOrder).then((result) => {
+
+					//Se recupera el parámetro de retorno que tendrá los mensajes generales
+					var aReturn = [];
+					if (result.data.RETURN != '')
+						aReturn = JSON.parse(result.data.RETURN);
+
+					// Se lanzan el proceso una finalizado la llamada a SAP	
+					oPostSAPProcess(aReturn, result.data.TRANSPORTORDER);
+				},
+				(error) => {
+
+				});
+		},
 		//////////////////////////////////	
 		//        Private methods       //	
 		//////////////////////////////////	
@@ -609,7 +647,7 @@ sap.ui.define([
 					(error) => {
 
 					});
-					
+
 			}
 		},
 

@@ -202,9 +202,17 @@ sap.ui.define([
 			// Filas selecciondas	
 			oEvent.getParameter("rowIndices");
 
-			var bEnabled = this.byId(constants.objectsId.viewData.tableData).getSelectedIndices().length ? true : false;
+			var aIndices = this.byId(constants.objectsId.viewData.tableData).getSelectedIndices();
+
+			var bEnabled = aIndices.length ? true : false;
 			oViewDataModel.setProperty("/btnDeletedEnabled", bEnabled);
-			oViewDataModel.setProperty("/btnTransportEnabled", bEnabled);
+
+			// Para poder transportar las líneas seleccionadas tienen que existir en SAP. Los registros nuevos
+			// no se pueden transportar si no se graban
+			if (this._viewDataState.getRowIndexExistinSAPFromIndices(aIndices).length && bEnabled)
+				oViewDataModel.setProperty("/btnTransportEnabled", true);
+			else
+				oViewDataModel.setProperty("/btnTransportEnabled", false);
 
 		},
 		onSaveData: function (oEvent) {
@@ -215,7 +223,22 @@ sap.ui.define([
 
 			// Si la vista permite transportar entonces se lanza el proceso de selección de la orden de transporte
 			if (this._viewDataState.getAllowedTransport()) {
-				this._selectTransportOrder()
+
+				// Se pasa el código que se ejecutará cuando se seleccione la orden
+				this._selectTransportOrder({
+					handlerOrderSelected: function () {
+
+						// Se muestra el loader del proceso ocupado porque la grabación puede tardar 
+						that._oOwnerComponent.showBusyDialog();
+
+						// Se lanza el proceso de grabación
+						that._viewDataState.onSaveData(that._transportOrder, function (aReturn, sNewOrder) {
+
+							// Procesos que se lanzan una vez grabados los datos
+							that._postSaveSAPProcess(aReturn, sNewOrder);
+						});
+					}
+				});
 			} else {
 				// Si no lo permite entonces se graba lo datos
 				this._viewDataState.onSaveData('', function (aReturn) {
@@ -242,7 +265,8 @@ sap.ui.define([
 			for (var x = 0; x < aMsg.length; x++) {
 				aMsgLogDialog.push({
 					type: aMsg[0].TYPE,
-					message: aMsg[x].MESSAGE
+					message: aMsg[x].MESSAGE,
+					subtitle: aMsg[x].FIELDNAME ? this._viewDataState.getColumnInfo(aMsg[x].FIELDNAME).headerText : ""
 				});
 			};
 			this._oLogDialog.setValues(this._oI18nResource.getText("ViewData.logDialog.RowStatusMsg.Title"), aMsgLogDialog);
@@ -309,6 +333,34 @@ sap.ui.define([
 
 			// Se abre el popup
 			this._oSearcHelpDialog.openDialog();
+		},
+		// Se transportan las líneas seleccionadas
+		onTransportData: function (oEvent) {
+			var that = this;
+
+			sap.ui.getCore().getMessageManager().removeAllMessages(); // Se limpian los mensajes anterior	
+
+			// Cuando se recupera los indices para transportar ha quedado claro que algunos de los indices son de datos
+			// que provienen de SAP. Ya que en caso contrario el botón de transporte no se habilita. Entonces como puede haber índices
+			// mezclados(válidos y no), filtros los válidos
+
+			var aIndices = this._viewDataState.getRowIndexExistinSAPFromIndices(this.byId(constants.objectsId.viewData.tableData).getSelectedIndices())
+
+			// Se pasa el código que se ejecutará cuando se seleccione la orden
+			this._selectTransportOrder({
+				handlerOrderSelected: function () {
+
+					// Se muestra el loader del proceso ocupado porque la grabación puede tardar 
+					that._oOwnerComponent.showBusyDialog();
+
+					// Se lanza el proceso de grabación
+					that._viewDataState.onTransportData(that._transportOrder, aIndices, function (aReturn, sNewOrder) {
+
+						that._postTransportSAPProcess(aReturn, sNewOrder);
+					});
+				}
+			});
+
 		},
 		//////////////////////////////////
 		//                              //
@@ -385,10 +437,12 @@ sap.ui.define([
 		//////////////////////////////////	
 		// Procesos que se lanzan después de llamar a SAP. Están el control de botones, columnas de errores, etc.
 		_postSAPProcess: function () {
-			// Si hay errores no se puede grabar pero se habilita el botón de comprobar datos
+			// Si hay errores internos, no provenientes de SAP, no se puede realizar ningún acción contra SAP. El motivo
+			// que se han de arreglar los registros internos antes de poder hacer nada en SAP
 			if (this._viewDataState.isDataWithInternalErrors()) {
 				this._setEnabledBtnSaved(false);
-				this._setEnabledBtnCheck(true);
+				this._setEnabledBtnCheck(false);
+				this._setEnabledBtnTransport(false);
 			}
 			// Si no hay errores se chequea si hay datos modificados. Si es así, se habilita el botón de grabar y verificar
 			else if (this._viewDataState.isDataChanged()) {
@@ -916,6 +970,12 @@ sap.ui.define([
 
 			oViewDataModel.setProperty("/btnCheckEnabled", bEnabled);
 		},
+		// Activa/desactiva el botón de transportar
+		_setEnabledBtnTransport: function (bEnabled) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+
+			oViewDataModel.setProperty("/btnTransportEnabled", bEnabled);
+		},
 		// Se muestran los mensajes de retorno que devuelve SAP
 		_showMessageReturn: function (aReturn) {
 
@@ -962,7 +1022,23 @@ sap.ui.define([
 			// de transporte devolverán la tarea donde se ha grabado los datos y no en la orden.
 			this._transportOrder = sNewOrder;
 
-			// Procesos posterioris generar a las llamafas
+			// Procesos posterioris generar a las llamadas
+			this._postSAPProcess();
+
+			// Se muestran los mensajes del proceso					
+			if (aReturn && aReturn.length > 0) {
+				this._showMessageReturn(aReturn);
+			}
+
+		},
+		// Procesos posteriores al transportar los datos
+		_postTransportSAPProcess: function (aReturn, sNewOrder) {
+
+			// En SAP la orden puede cambiar en el proceso de grabación, sobretodo la primera que se selecciona. El motivo es que las funciones
+			// de transporte devolverán la tarea donde se ha grabado los datos y no en la orden.
+			this._transportOrder = sNewOrder;
+
+			// Procesos posterioris generar a las llamadas
 			this._postSAPProcess();
 
 			// Se muestran los mensajes del proceso					
@@ -973,7 +1049,7 @@ sap.ui.define([
 		},
 
 		// Seleccion, o validación ya ha sido escogida, de la orden de transporte
-		_selectTransportOrder: function () {
+		_selectTransportOrder: function (mParams) {
 			var that = this;
 
 			// Si no hay orden de transporte se llama al servicio para obtenerlo
@@ -992,16 +1068,11 @@ sap.ui.define([
 							MessageToast.show(that._oI18nResource.getText("ViewData.selectTransportOrder.canceledSelection"));
 						},
 						oHandlerSelected: function (sOrder) {
-							// Se muestra el loader del proceso ocupado porque la grabación puede tardar 
-							that._oOwnerComponent.showBusyDialog();
 
 							that._transportOrder = sOrder; // Se guarda la orden de transporte
 
-							// Se lanza el proceso de grabación
-							that._viewDataState.onSaveData(that._transportOrder, function (aReturn, sNewOrder) {
-
-								that._postSaveSAPProcess(aReturn, sNewOrder);
-							});
+							// Se lanza el proceso pasada por parámetor una vez se ha seleccionado la orden
+							mParams.handlerOrderSelected();
 
 						},
 						title: that._oI18nResource.getText("selectTransportOrderDialog.title")
@@ -1039,10 +1110,8 @@ sap.ui.define([
 						// cambiar porque se añade una tarea a la orden que pertenecia a la antigua, etc.
 						that._transportOrder = result.newOrder;
 
-						// Se lanza el proceso de grabación
-						that._viewDataState.onSaveData(that._transportOrder, function (aReturn, sNewOrder) {
-							that._postSaveSAPProcess(aReturn, sNewOrder);
-						});
+						// Se lanza el proceso pasada por parámetor una vez se ha seleccionado la orden
+						mParams.handlerOrderSelected();
 					}
 				}, (error) => {
 

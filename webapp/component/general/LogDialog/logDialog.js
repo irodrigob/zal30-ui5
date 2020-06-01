@@ -53,15 +53,16 @@ sap.ui.define([
 		},
 		// Establece el titulo de la ventana
 		setTitle: function (sTitle) {
-			this._title = sTitle;			
+			this._title = sTitle;
 		},
 		// Añade un mensaje de manera individual
-		addMessage: function (sType, sMessage) {
+		addMessage: function (sType, sMessage, subtitle) {
 			var aMessages = this._oLogDialogModel.getProperty("/messages");
 
 			aMessages.push({
 				type: this.formatterMessageType(sType),
-				message: sMessage
+				message: sMessage,
+				subtitle: subtitle ? subtitle : ""
 			});
 			this._oLogDialogModel.setProperty("/messages", aMessages);
 		},
@@ -79,6 +80,11 @@ sap.ui.define([
 		},
 		// Función que permite pasar todos los valores de golpe. Este método 
 		// siempre hará un reset de los valores precios
+		// El formato del array de mensajes será el siguiente:
+		/* type: Indicando si 'E' error, 'S' success o 'W' warning
+		   message:texto del mensaje
+		   subtitule:subtitulo
+		*/
 		setValues: function (sTitle, aMessages) {
 
 			this.setTitle(sTitle); // Título
@@ -112,7 +118,8 @@ sap.ui.define([
 
 			var oMessageTemplate = new MessageItem({
 				type: "{type}",
-				title: "{message}"
+				title: "{message}",
+				subtitle: "{subtitle}"
 			});
 
 			this.oMessageView = new MessageView({

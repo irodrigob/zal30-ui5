@@ -351,7 +351,7 @@ sap.ui.define([
 			for (var x = 0; x < aFieldsMandatory.length; x++) {
 				switch (aFieldsMandatory[x].type) {
 					case constants.columnTtype.char:
-						var text = this._oI18nResource.getText("ViewData.rowValidate.fieldMandatory", [aFieldsMandatory[x].headerText]);
+						var text = this._oI18nResource.getText("ViewData.rowValidate.fieldMandatory");
 						if (mRow[aFieldsMandatory[x].name] == '') {
 							this.addMsgRowStatusMsgInternal(mRow, constants.messageType.error, text, aFieldsMandatory[x].name);
 						}
@@ -495,7 +495,7 @@ sap.ui.define([
 		// Devuelve el contenido de una fila para SAP. Esto se hace para enviar solo los campos que SAP necesita y no todos los
 		// campos adicionales que se añaden intermanente. Esto reduce el tamaño y por lo tanto el volumen de datos a enviar
 		getRowFromPathtoSAP: function (sPath) {
-			return this._transfOModelDataValues2OData(this.getRowFromPath(sPath))
+			return this.transfOModelDataValues2OData(this.getRowFromPath(sPath))
 		},
 		// devuelve el indicador de actualización de un path
 		getUpdkzFromPath: function (sPath) {
@@ -568,16 +568,7 @@ sap.ui.define([
 		},
 		// Devuelve la tabla datos pero con formato para SAP. Es decir, si los campos añadidos en la propia aplicación
 		getModelData2SAP: function () {
-
-			var aValues = this.getModelData()
-			var aValuesSAP = [];
-
-			// Se recorren los datos y se van adaptando fila a fila
-			for (var x = 0; x < aValues.length; x++) {
-				aValuesSAP.push(this._transfOModelDataValues2OData(aValues[x]));
-			}
-
-			return aValuesSAP;
+			return this._convertValuesModel2ValuesSAP(this.getModelData());
 		},
 		// Devuelve los datos modificados
 		getModelDataChanged: function () {
@@ -590,20 +581,23 @@ sap.ui.define([
 		},
 		// Devuelve los datos modificados en formato SAP
 		getModelDataChanged2SAP: function () {
+			return  this._convertValuesModel2ValuesSAP(this.getModelDataChanged());
+		},
+		// Devuelve los datos a partir de su índice
+		getModelDatafromIndex: function (aIndices) {
+			var aValues = this.getModelData();
+			var aValuesReturn = [];
 
-			// Solo me quedo con lo que han sido modificados, borrados o insertados
-			var aValuesChanged = this.getModelDataChanged();
+			for (var x = 0; x < aIndices.length; x++)
+				aValuesReturn.push(aValues[aIndices[x]]);
 
-			// Se recorren los datos y se adaptan a SAP. 
-			var aValuesSAP = [];
-			for (var x = 0; x < aValuesChanged.length; x++) {
-				aValuesSAP.push(this._transfOModelDataValues2OData(aValuesChanged[x]));
-			}
-
-			return aValuesSAP;
+			return aValuesReturn;
 
 		},
-
+		// Devuelve los datos a partir de su índice en formato SAP
+		getModelDatafromIndex2SAP: function (aIndices) {
+			return this._convertValuesModel2ValuesSAP(this.getModelDatafromIndex(aIndices));
+		},
 		// Devuelve los path de los datos modificados en SAP
 		getPathModelDataChanged: function () {
 			var aPaths = [];
@@ -671,7 +665,7 @@ sap.ui.define([
 
 				// se informa el valueState de los campos en base a los valores del rowStatusMsg
 				this._setValueStateFromRowStatusMsg(mRow);
-				
+
 				// Si la fila no tiene errores y tampoco los hay a nivel global: 				
 				// - Se ajusta el modelo según la operación de actualización
 
@@ -785,6 +779,27 @@ sap.ui.define([
 		},
 		getSearchHelpDataField: function (sFieldName) {
 			return this._aSearchHelpData.filter(data => data.fieldName == sFieldName);
+		},
+		// Transfiere los datos del modelo interno al modelo Odata al modelo interno a partir de un path
+		transfOModelDataValues2OData: function (mRow) {
+			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
+			var aFieldCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
+			var mRowOData = {};
+
+			// Se pasan los datos que vienen del catalogo de campos
+			for (var x = 0; x < aFieldCatalog.length; x++) {
+				if (!aFieldCatalog[x].fixColumn) // Las columnas fijas son añadidos por la aplicación y no están en SAP
+					mRowOData[aFieldCatalog[x].name] = mRow[aFieldCatalog[x].name];
+			}
+
+			// Se pasan los campos internos que vienen de SAP pero no están en el catalogo.
+			mRowOData[constants.tableData.internalFields.isDict] = mRow[constants.tableData.internalFields.isDict];
+			mRowOData[constants.tableData.internalFields.tabix] = mRow[constants.tableData.internalFields.tabix];
+			mRowOData[constants.tableData.internalFields.updkz] = mRow[constants.tableData.internalFields.updkz];
+			mRowOData[constants.tableData.internalFields.rowStatus] = mRow[constants.tableData.internalFields.rowStatus];
+			mRowOData[constants.tableData.internalFields.rowStatusMsg] = mRow[constants.tableData.internalFields.rowStatusMsg];
+			mRowOData[constants.tableData.internalFields.style] = mRow[constants.tableData.internalFields.style];
+			return mRowOData;
 		},
 		//////////////////////////////////	
 		//        Private methods       //	
@@ -1148,27 +1163,6 @@ sap.ui.define([
 
 			return mRow;
 		},
-		// Transfiere los datos del modelo interno al modelo Odata al modelo interno a partir de un path
-		_transfOModelDataValues2OData: function (mRow) {
-			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
-			var aFieldCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
-			var mRowOData = {};
-
-			// Se pasan los datos que vienen del catalogo de campos
-			for (var x = 0; x < aFieldCatalog.length; x++) {
-				if (!aFieldCatalog[x].fixColumn) // Las columnas fijas son añadidos por la aplicación y no están en SAP
-					mRowOData[aFieldCatalog[x].name] = mRow[aFieldCatalog[x].name];
-			}
-
-			// Se pasan los campos internos que vienen de SAP pero no están en el catalogo.
-			mRowOData[constants.tableData.internalFields.isDict] = mRow[constants.tableData.internalFields.isDict];
-			mRowOData[constants.tableData.internalFields.tabix] = mRow[constants.tableData.internalFields.tabix];
-			mRowOData[constants.tableData.internalFields.updkz] = mRow[constants.tableData.internalFields.updkz];
-			mRowOData[constants.tableData.internalFields.rowStatus] = mRow[constants.tableData.internalFields.rowStatus];
-			mRowOData[constants.tableData.internalFields.rowStatusMsg] = mRow[constants.tableData.internalFields.rowStatusMsg];
-			mRowOData[constants.tableData.internalFields.style] = mRow[constants.tableData.internalFields.style];
-			return mRowOData;
-		},
 		// Se modifica si a nivel de celda es posible editar el campo segun los valores y atributos
 		_detEditableCellValue: function (mRow) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
@@ -1266,7 +1260,16 @@ sap.ui.define([
 			}
 
 
-		}
+		},
+		_convertValuesModel2ValuesSAP: function (aValues) {
+			// Se recorren los datos y se adaptan a SAP. 
+			var aValuesSAP = [];
+			for (var x = 0; x < aValues.length; x++) {
+				aValuesSAP.push(this.transfOModelDataValues2OData(aValues[x]));
+			}
+
+			return aValuesSAP;
+		},
 
 
 	});
