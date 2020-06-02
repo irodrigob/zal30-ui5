@@ -282,7 +282,7 @@ sap.ui.define([
 			var that = this;
 
 			// Se muestra el loader del proceso ocupado porque la verificación puede tardar 
-			this._oOwnerComponent.showBusyDialog();
+			//this._oOwnerComponent.showBusyDialog();
 
 			this._viewDataState.onCheckDataChangedSAP(function () {
 				that._postSAPProcess();

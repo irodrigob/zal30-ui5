@@ -128,9 +128,24 @@ sap.ui.define([
 									response: response
 								});
 							};
-							params.error = function (error) {								
-								MessageToast.show(that._oI18nResource.getText("CoreService.generalError", error));
-								reject(error);
+							params.error = function (error) {
+								// Se monta una estructura de error generica para homogenizar los posibles tipos de error
+								var mError = {
+									statusCode: error.statusCode,
+									statusText: error.statusText,
+									message: ''
+								};
+								// Segun el status de error el proceso como se trata el mensaje puede variar
+								switch (error.statusCode) {
+									// El 500 es un error de sintaxis, dump o algo que no se ha podido controlar. En este caso el responseText
+									case 500:
+										// El texto completo esta en el tag message dentro del XML generado.									
+										mError.message = $(error.responseText).find("message").text();
+										break;
+
+								};								
+								MessageToast.show(that._oI18nResource.getText("CoreService.generalError", [mError.statusCode + ' ' + mError.statusText]));
+								reject(mError);
 							};
 							args.push(params);
 							model[type].apply(model, args);
