@@ -281,11 +281,15 @@ sap.ui.define([
 		onCheckData: function (oEvent) {
 			var that = this;
 
+			sap.ui.getCore().getMessageManager().removeAllMessages(); // Se limpian los mensajes anterior	
+
 			// Se muestra el loader del proceso ocupado porque la verificación puede tardar 
-			//this._oOwnerComponent.showBusyDialog();
+			this._oOwnerComponent.showBusyDialog();
 
 			this._viewDataState.onCheckDataChangedSAP(function () {
 				that._postSAPProcess();
+			}, function (mError) {
+				that._handlerErrorSAPServices(mError)
 			});
 
 		},
@@ -338,7 +342,7 @@ sap.ui.define([
 		onTransportData: function (oEvent) {
 			var that = this;
 
-			sap.ui.getCore().getMessageManager().removeAllMessages(); // Se limpian los mensajes anterior	
+			sap.ui.getCore().getMessageManager().removeAllMessages(); // Se limpian los mensajes	
 
 			// Cuando se recupera los indices para transportar ha quedado claro que algunos de los indices son de datos
 			// que provienen de SAP. Ya que en caso contrario el botón de transporte no se habilita. Entonces como puede haber índices
@@ -1129,6 +1133,9 @@ sap.ui.define([
 				this.getView().addDependent(this._oMessagePopover);
 			}
 			return this._oMessagePopover;
+		},
+		_handlerErrorSAPServices:function(){
+			this._oOwnerComponent.closeBusyDialog(); // Se cierra el dialogo
 		}
 
 	});

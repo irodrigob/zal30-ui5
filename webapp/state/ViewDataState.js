@@ -275,9 +275,7 @@ sap.ui.define([
 
 
 					},
-					(error) => {
-						debugger;
-					});
+					(error) => {});
 			} else {
 				// Si no hay errores en los datos entonces lanzamos la grabación
 				if (!that.isDataWithSAPErrors()) {
@@ -366,7 +364,7 @@ sap.ui.define([
 			return oPromise;
 		},
 		// Verificación de los datos modificados en SAP
-		onCheckDataChangedSAP: function (oPostSAPProcess) {
+		onCheckDataChangedSAP: function (oPostSAPProcess, oHandlerSAPError) {
 			// Se extraen los path de los datos modificados
 			var aPath = this._oView.getPathModelDataChanged();
 
@@ -383,8 +381,7 @@ sap.ui.define([
 					oPostSAPProcess();
 				},
 				(error) => {
-
-
+					oHandlerSAPError();
 				});
 
 		},
@@ -433,7 +430,7 @@ sap.ui.define([
 			var that = this;
 
 			var aValuesSAP = this._oView.getModelDatafromIndex2SAP(aIndices);
-			
+
 			that._oViewDataService.transportData(that._oView.getViewInfo().VIEWNAME, JSON.stringify(aValuesSAP), sTransportOrder).then((result) => {
 
 					//Se recupera el parámetro de retorno que tendrá los mensajes generales
@@ -484,7 +481,6 @@ sap.ui.define([
 						resolve();
 					},
 					(error) => {
-						debugger;
 						reject(error)
 					});
 			});
@@ -518,7 +514,6 @@ sap.ui.define([
 						});
 					},
 					(error) => {
-						debugger;
 						reject(error)
 					});
 			});

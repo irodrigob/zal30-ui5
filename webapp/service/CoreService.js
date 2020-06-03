@@ -143,7 +143,7 @@ sap.ui.define([
 										mError.message = $(error.responseText).find("message").text();
 										break;
 
-								};								
+								};																
 								MessageToast.show(that._oI18nResource.getText("CoreService.generalError", [mError.statusCode + ' ' + mError.statusText]));
 								reject(mError);
 							};
