@@ -35,7 +35,7 @@ sap.ui.define([
 		},
 
 		// Lectura de la configuración y datos
-		processReadConfDataView(mParams, oSuccessHandler, oErrorHandler) {
+		processReadConfDataView(mParams, oSuccessHandler, oHandlerSAPError) {
 			var that = this;
 
 			// Se instancia el objeto que gestionara datos y catlaogo de campos
@@ -53,14 +53,14 @@ sap.ui.define([
 						that._determineEdtModelAccordingLockView(result.data);
 
 						// Y ahora la funcion que lee la configuración y datos
-						that._readConfDataView(mParams, oSuccessHandler, oErrorHandler);
+						that._readConfDataView(mParams, oSuccessHandler, oHandlerSAPError);
 					},
-					(error) => {
-
+					(mError) => {
+						oHandlerSAPError(mError);
 					});
 			} else {
 				// Si se esta en modo lectura se leen los datos directamente
-				this._readConfDataView(mParams, oSuccessHandler, oErrorHandler);
+				this._readConfDataView(mParams, oSuccessHandler, oHandlerSAPError);
 			}
 
 		},
@@ -175,7 +175,7 @@ sap.ui.define([
 
 		},
 		// Evento que se lanza cuando se marcan líneas para borrar
-		onDeleteEntries: function (aRows, oPostSAPProcess) {
+		onDeleteEntries: function (aRows, oPostSAPProcess, oHandlerSAPError) {
 			var that = this;
 
 			// Como se controla que el botón de borrar se habilite solo cuando se seleccionan registros, cuando llega a este método
@@ -196,8 +196,8 @@ sap.ui.define([
 						that.setLastPathChanged(""); // Se marca que no hay fila pendiente de validar
 						oPostSAPProcess();
 					},
-					(error) => {
-
+					(mError) => {
+						oHandlerSAPError(mError);
 					});
 			} else {
 				// Si no se llama al servicio de SAP hay que lanzar la función pasada para el refresco de datos en la tabla
@@ -210,7 +210,7 @@ sap.ui.define([
 			return this._oView.getNumberKeyFields();
 		},
 		// Evento que se produce al añadir una entrada
-		onAddEntry: function (oPostSAPProcess) {
+		onAddEntry: function (oPostSAPProcess, oHandlerSAPError) {
 			var that = this;
 			var aServices = [];
 
@@ -232,14 +232,14 @@ sap.ui.define([
 			Promise.all(aServices).then((result) => {
 					oPostSAPProcess();
 				},
-				(error) => {
-					MessageToast.show(this._oI18nResource.getText("GeneralError"));
+				(mError) => {
+					oHandlerSAPError(mError);
 				});
 
 
 
 		},
-		onSaveData: function (sTransportOrder, oPostSAPProcess) {
+		onSaveData: function (sTransportOrder, oPostSAPProcess, oHandlerSAPError) {
 			var that = this;
 
 			// antes de grabar se evalua si alguna fila pendiente de validar datos en SAP, si es así hay que lanzar el servicio 
@@ -263,8 +263,8 @@ sap.ui.define([
 								// Se llama al proceso de la vista una vez se haya ejecutado los pasos de SAP
 								oPostSAPProcess(result.return, result.newOrder);
 
-							}, (error) => {
-
+							}, (mError) => {
+								oHandlerSAPError(mError);
 							});
 						} else {
 							MessageToast.show(this._oI18nResource.getText("ViewData.processSave.tableWithError"));
@@ -275,7 +275,9 @@ sap.ui.define([
 
 
 					},
-					(error) => {});
+					(mError) => {
+						oHandlerSAPError(mError);
+					});
 			} else {
 				// Si no hay errores en los datos entonces lanzamos la grabación
 				if (!that.isDataWithSAPErrors()) {
@@ -285,8 +287,8 @@ sap.ui.define([
 					that._saveDataSAP(sTransportOrder).then((result) => {
 						// Se llama al proceso de la vista una vez se haya ejecutado los pasos de SAP
 						oPostSAPProcess(result.return, result.newOrder);
-					}, (error) => {
-
+					}, (mError) => {
+						oHandlerSAPError(mError);
 					});
 				} else {
 					MessageToast.show(this._oI18nResource.getText("ViewData.processSave.tableWithError"));
@@ -380,8 +382,8 @@ sap.ui.define([
 			Promise.all(aServices).then((result) => {
 					oPostSAPProcess();
 				},
-				(error) => {
-					oHandlerSAPError();
+				(mError) => {
+					oHandlerSAPError(mError);
 				});
 
 		},
@@ -426,7 +428,7 @@ sap.ui.define([
 			return aIndicesInSAP;
 		},
 		// Proceso de transporte de los registros seleccionados
-		onTransportData: function (sTransportOrder, aIndices, oPostSAPProcess) {
+		onTransportData: function (sTransportOrder, aIndices, oPostSAPProcess, oHandlerSAPError) {
 			var that = this;
 
 			var aValuesSAP = this._oView.getModelDatafromIndex2SAP(aIndices);
@@ -441,8 +443,8 @@ sap.ui.define([
 					// Se lanzan el proceso una finalizado la llamada a SAP	
 					oPostSAPProcess(aReturn, result.data.TRANSPORTORDER);
 				},
-				(error) => {
-
+				(mError) => {
+					oHandlerSAPError(mError);
 				});
 		},
 		//////////////////////////////////	
@@ -557,7 +559,7 @@ sap.ui.define([
 
 		},
 		// Lectura de configurados y datos
-		_readConfDataView: function (mParams, oSuccessHandler, oErrorHandler) {
+		_readConfDataView: function (mParams, oSuccessHandler, oHandlerSAPError) {
 
 			var that = this;
 
@@ -584,8 +586,8 @@ sap.ui.define([
 					oSuccessHandler();
 
 				},
-				(error) => {
-					oErrorHandler(error);
+				(mError) => {
+					oHandlerSAPError(mError);
 
 				});
 		},

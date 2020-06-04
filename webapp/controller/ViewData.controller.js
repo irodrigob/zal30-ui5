@@ -180,6 +180,8 @@ sap.ui.define([
 						oTable.updateRows(); // Se actualizan los datos de las filas para que se refresque la tabla	
 						// Fuerzo la deseleccion de los registros porque quedan marcados internamente. 
 						oTable.setSelectedIndex(-1);
+					}, function (mError) {
+						that._handlerErrorSAPServices(mError)
 					});
 
 				},
@@ -192,6 +194,11 @@ sap.ui.define([
 		onAddEntry: function (oEvent) {
 			var that = this;
 			this._viewDataState.onAddEntry(function () {
+				that._postSAPProcess();
+			}, function (mError) {
+				that._handlerErrorSAPServices(mError);
+				// En este proceso es el único, inicialmente es así, que se llama al proceso como si fuera bien. El motivo
+				// Es que la línea que se añade se tiene que validar porque como no llama a SAP se procesará siempre.
 				that._postSAPProcess();
 			});
 
@@ -236,8 +243,10 @@ sap.ui.define([
 
 							// Procesos que se lanzan una vez grabados los datos
 							that._postSaveSAPProcess(aReturn, sNewOrder);
+						}, function (mError) {
+							that._handlerErrorSAPServices(mError)
 						});
-					}
+					},
 				});
 			} else {
 				// Si no lo permite entonces se graba lo datos
@@ -361,6 +370,8 @@ sap.ui.define([
 					that._viewDataState.onTransportData(that._transportOrder, aIndices, function (aReturn, sNewOrder) {
 
 						that._postTransportSAPProcess(aReturn, sNewOrder);
+					}, function (mError) {
+						that._handlerErrorSAPServices(mError)
 					});
 				}
 			});
@@ -431,7 +442,9 @@ sap.ui.define([
 						}
 
 					},
-					function () {}
+					function (mError) {
+						that._handlerErrorSAPServices(mError)
+					}
 				)
 
 			}
@@ -531,8 +544,8 @@ sap.ui.define([
 					// Se llama al método encargado de construir la tabla a mostrar
 					that._buildTableData();
 				},
-				function (oError) {
-					that._oOwnerComponent.closeBusyDialog();
+				function (mError) {
+					that._handlerErrorSAPServices(mError)
 				});
 
 		},
@@ -1134,8 +1147,11 @@ sap.ui.define([
 			}
 			return this._oMessagePopover;
 		},
-		_handlerErrorSAPServices:function(){
+		// Gestiona los errores en las llamadas a los servicios de SAP
+		_handlerErrorSAPServices: function (mError) {
 			this._oOwnerComponent.closeBusyDialog(); // Se cierra el dialogo
+
+			MessageToast.show(this._oI18nResource.getText("CoreService.generalError", [mError.statusCode + ' ' + mError.statusText]));
 		}
 
 	});

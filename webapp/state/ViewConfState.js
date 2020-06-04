@@ -19,26 +19,42 @@ sap.ui.define([
 
 		},
 		// Obtiene la lista de vistas 
-		getViewList: function (oParams, oSuccessHandler, oErrorHandler) {
+		getViewList: function (oParams, oSuccessHandler, oHandlerSAPError) {
+			var that = this;
+
 			var oViewConfModel = this._oOwnerComponent.getModel(constants.jsonModel.viewConf);
 
-			// El modelo tiene tres parametros: parC!metros del servicio, funcion cuando el servicio va bien, funcion cuando el servicio no va bien
-			this._oViewConfService.getViews(oParams,
-				function (oViews) {
-					// El nodo result que siempre devuelve el Gateway no lo queremos en este caso							
-					oViewConfModel.setProperty("/viewList", oViews.results);
 
-					// Si se le pasado parámetros para el success se ejecuta
-					if (oSuccessHandler) {
-						oSuccessHandler(oViews.results);
-					}
+			// Hasta que no termina la carga del metadata no se pueden lanzar el primer servicio
+			this._oViewConfService.loadMetadata().then((result) => {
+
+					this._oViewConfService.getViews(oParams, true).then((result) => {
+							// El nodo result que siempre devuelve el Gateway no lo queremos en este caso							
+							oViewConfModel.setProperty("/viewList", result.data.results);
+
+							// Si se le pasado parámetros para el success se ejecuta
+							if (oSuccessHandler) {
+								oSuccessHandler(result.data.results);
+							}
+						},
+						(mError) => {
+							oHandlerSAPError(mError);
+						});
 				},
-				// funcion sin nombre se llama a si misma sin necesidad de hacerlo manualmente
-				function () {
-					// Si se le pasado parámetros para el error se ejecuta
-					if (oErrorHandler) {
-						oErrorHandler();
-					}
+				(error) => {
+					// Si hay error es que no hay GW y se llama al servicio con en modo mockData
+					this._oViewConfService.getViews(oParams, false).then((result) => {
+							// El nodo result que siempre devuelve el Gateway no lo queremos en este caso							
+							oViewConfModel.setProperty("/viewList", result.data.results);
+
+							// Si se le pasado parámetros para el success se ejecuta
+							if (oSuccessHandler) {
+								oSuccessHandler(result.data.results);
+							}
+						},
+						(mError) => {
+							oHandlerSAPError(mError);
+						});
 				});
 
 		},

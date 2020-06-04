@@ -129,22 +129,27 @@ sap.ui.define([
 								});
 							};
 							params.error = function (error) {
+
 								// Se monta una estructura de error generica para homogenizar los posibles tipos de error
 								var mError = {
 									statusCode: error.statusCode,
 									statusText: error.statusText,
-									message: ''
+									message: ""
 								};
 								// Segun el status de error el proceso como se trata el mensaje puede variar
-								switch (error.statusCode) {
-									// El 500 es un error de sintaxis, dump o algo que no se ha podido controlar. En este caso el responseText
-									case 500:
-										// El texto completo esta en el tag message dentro del XML generado.									
-										mError.message = $(error.responseText).find("message").text();
-										break;
-
-								};																
-								MessageToast.show(that._oI18nResource.getText("CoreService.generalError", [mError.statusCode + ' ' + mError.statusText]));
+								if (error.statusCode == 500) {
+									// El texto completo esta en el tag message dentro del XML generado.									
+									mError.message = $(error.responseText).find("message").text();
+								} else if (error.statusCode >= 400 && error.statusCode <= 500) {		
+									// Nota: En los bad request aunque desde SAP se devuelvan dos excepciones solo recoge la última. Pero lo gracioso es que el message manager
+									// recoge las dos.							
+									var oErrorData = JSON.parse(error.responseText); // Se pasa la respuesta a un JSON para sacar el mensaje
+									mError.message = oErrorData.error.message.value;
+								}	
+								else{
+									// Cualquier otro error devuelve el mensaje devuelto
+									mError.message = error.responseText;
+								}							
 								reject(mError);
 							};
 							args.push(params);

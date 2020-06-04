@@ -52,59 +52,37 @@ sap.ui.define([
 		},
 		//////////////////////////////////	
 		//        Services              //	
-		//////////////////////////////////		  
-		getViews: function (oParameters, oSuccessHandler, oErrorHandler) {
-
-			// Variable local que indica si el Gateway esta disponible
-			var bgwAvailable = false;
-
+		//////////////////////////////////	
+		// Lo primera que se lanza es la lectura del metada de los servicios. Puede ocurrir que el metada se este leyendo y los servicios
+		// se ejecute con lo que empezarán a fallar. Por ello se encapsula en una función para que cuando termine se empiece a ejecutar el resto de
+		// de servicio.
+		// Hacerlo de esta manera simplifica la llamada a otros servicios y su control de errores. Ya que si pusiera el servicio dentro del then 
+		// no funciona el then en el servicio que llama a este. Ya que un return de un promise dentro de un then no funciona. Hay que hacerlo en funciones
+		// separadas
+		loadMetadata: function () {
 			// Se recupera el objeto oData para poder hacer las llamadas
 			var oModel = this.getModel(_mService.getViews.oDataModel);
+			return oModel.metadataLoaded();
 
-			/* Cuando se llama a un servicio en el gateway lo habitual es lanzar el $metadata del servicio para que se refresque
-			 internamente el modelo de datos. Con el "attachMetadataLoaded" lo que se hace es añadir una función para que cuando se termine de cargar
-			 el metadatos se ejecute el codigo pasado. De esta manera queda garantizado la carga del metadata antes de llamar al servicio.
-			 Este servicio se usan dos parametros: el primer es la funcion que se ejecuta cuando se produzca el evento, en este caso, es
-			 llamar al sericio. El segundo es el "listener" que en este caso se pasa el propio contexto
-			 NOTA: Con el cambio al modelo avanzado de programación en UI5 el método "attachMetadataLoaded" no funciona porque, creo, que
-			 esta fuera del contexto de los objetos de UI5 como el component.js. Por eso, se cambia por otro método para garantizar que
-			 cuando este cargado el metadata es cuando se leeran las vistas. El codigo antiguo sea deja por conocimientos internos y que no pierda
-			*/
-			/*oModel.attachMetadataLoaded(function () {
-		    //},
-			this);*/
-			oModel.metadataLoaded().then(() => {
-				// Si entra aqui es que hay gateway por lo tanto cambio a true la variable local desde donde se llama
-				bgwAvailable = true;
+		},
+		getViews: function (oParams, bGWAvailable) {
+			var that = this;
 
+			if (bGWAvailable) {
 				// Se le pasa el filtro de idioma
 				var oFilters = [new Filter(constants.services.filter.langu, sap.ui.model.FilterOperator.EQ, this._sLanguage)];
 				// Si el parámetro existe entonces se añade un segundo filtro
-				if (oParameters && oParameters.viewName)
-					oFilters.push(new Filter(constants.services.filter.viewName, sap.ui.model.FilterOperator.EQ, oParameters.viewName));
+				if (oParams && oParams.viewName)
+					oFilters.push(new Filter(constants.services.filter.viewName, sap.ui.model.FilterOperator.EQ, oParams.viewName));
 
 				// Debido a que el servicio oData se llama dentro de un promise no se puede hacer un return porque quien lo llama no recuperan bien el return y falla
-				// en el then. Por eso, se ejecuta el código de los handler
+				// en el then. Por eso, se ejecuta el código de los handler				
 				return this.callOData(_mService.getViews).get({
 					filters: oFilters
-				}).then((result) => {
-						oSuccessHandler(result.data);
-					},
-					(error) => {
-						oErrorHandler(error);
-					});
-				/*return this.callOData(_mService.getViews, {
-					filters: oFilters
-				}).then((result) => {
-						oSuccessHandler(result);
-					},
-					(error) => {
-						oErrorHandler(error);
-					});*/
-			});
+				});
+			} else {
 
-			// Se llama al servicio para obtener los datos del mock si no hay Gateway
-			/*if (!bgwAvailable) {				
+				// Se llama al servicio para obtener los datos del mock si no hay Gateway
 				this._bMock = true; // Sin gateway todo tiene que por mock
 
 				return this.callOData(_mService.getViews).get({}).then((result) => {
@@ -113,8 +91,7 @@ sap.ui.define([
 					(error) => {
 						oErrorHandler(error);
 					});
-			
-			}*/
+			}
 
 		},
 		// Obtiene la autorización para la vista
@@ -153,17 +130,20 @@ sap.ui.define([
 			var oFilters = [new Filter(constants.services.filter.langu, sap.ui.model.FilterOperator.EQ, this._sLanguage),
 				new Filter(constants.services.filter.viewName, sap.ui.model.FilterOperator.EQ, oParameters.viewName),
 				new Filter(constants.services.filter.mode, sap.ui.model.FilterOperator.EQ, oParameters.mode)
-			];	
+			];
 			return this.callOData(_mService.readView).get({
 				filters: oFilters
 			})
 
-		}
+		},
 		//////////////////////////////////
 		//                              //
 		//        Private methods       //
 		//                              //
 		//////////////////////////////////
+		_getViews: function (oParams) {
+
+		},
 
 
 	});

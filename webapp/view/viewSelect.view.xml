@@ -46,7 +46,7 @@
 					<Button press="onGoViewData" 
 						icon="sap-icon://navigation-right-arrow" 
 						text="{i18n>ViewSelect.GoView}"
-						enabled="{model:'ViewSelectModel', path:'/viewSelected'}">
+						enabled="{= ${ViewSelectModel>/viewName}.length > 0 }">
 						<layoutData>
 							<FlexItemData growFactor="3" />
 						</layoutData>

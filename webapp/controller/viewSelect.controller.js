@@ -180,7 +180,7 @@ sap.ui.define([
 			this._resetModel(); // Reset del modelo de datos
 
 			this.getView().setModel(this._oViewSelectModel, constants.jsonModel.viewSelect);
-
+			
 			// Se recupera la clase que gestiona los estado de la configuración de las vistas			
 			this._viewConfState = this._oOwnerComponent.getState(this._oOwnerComponent.state.confView);
 
@@ -190,6 +190,8 @@ sap.ui.define([
 		},
 		// Lectura de las vistas que se pueden seleccionar
 		_getViewList: function () {
+			var that = this;
+
 			// Se pone el loader en el campo antes de hacer la lectura de las vistas						
 			var oViewInput = this.byId(constants.objectsId.viewSelect.viewInput);
 			oViewInput.setBusy(true);
@@ -198,12 +200,14 @@ sap.ui.define([
 				function (mList) {
 					oViewInput.setBusy(false); // Se quita el indicador de ocupado
 				},
-				function () {
-					oViewInput.setBusy(false); // Se quita el indicador de ocupado
+				function (mError) {
+					oViewInput.setBusy(false); // Se quita el indicador de ocupado					
+					MessageToast.show(that._oI18nResource.getText("CoreService.generalError", [mError.statusCode + ' ' + mError.statusText]));
+
 				}
 			);
 
-		}
+		},
 
 	});
 });
