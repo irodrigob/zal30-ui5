@@ -4,8 +4,9 @@ sap.ui.define([
 	"sap/m/BusyDialog",
 	"com/ivancio/zal30-ui5/state/ViewConfState",
 	"com/ivancio/zal30-ui5/state/ViewDataState",
-	"sap/ui/core/format/NumberFormat"
-], function (UIComponent, Device, BusyDialog, ViewConfState, ViewDataState, NumberFormat) {
+	"sap/ui/core/format/NumberFormat",
+	"com/ivancio/zal30-ui5/service/genericService",
+], function (UIComponent, Device, BusyDialog, ViewConfState, ViewDataState, NumberFormat, genericService) {
 	"use strict";
 
 	return UIComponent.extend("com.ivancio.zal30-ui5.Component", {
@@ -34,9 +35,6 @@ sap.ui.define([
 			// enable routing
 			this.getRouter().initialize();
 
-			// Configuracion iniciales del usuario	
-			this._initUserConfiguration();
-
 			// Se inicializa el modelo de datos
 			this._initModelData();
 
@@ -45,6 +43,9 @@ sap.ui.define([
 
 			// Se inicializa la variable que controla si se esta mostrando el BusyDialog
 			this._showBusyDialog = false;
+
+			// Lectura de la configuración inicial del usuario
+			this._getUserConfiguration();
 
 		},
 		// Muestra el indicador de procesando..
@@ -100,14 +101,31 @@ sap.ui.define([
 
 			// A nivel interno de UI5 se fuerza el uso del ingles
 			sap.ui.getCore().getConfiguration().setLanguage("en");
+
+			// Se instancia el servicio general de datos pasandole: contexto del component necesario para poder acceder
+			// al modelo de la aplicacion definido en el manifest
+			this._oGenericService = new genericService(this);
+
+		},
+		_getUserConfiguration: function () {
+			var that = this;
+
+			// Si establece una configuración por defecto que será modificada según el resultado del servicio
+			this._initUserConfiguration();
+
+			this._oGenericService.getUserConfiguration().then((result) => {
+
+			}, (error) => {
+
+			})
 		},
 		// Inicializacion de la configuración del usuario
-		_initUserConfiguration: function () {			
+		_initUserConfiguration: function () {
 			this._oUserConfig = {
-				timeFormat: "HHmmss", 
-				displayTimeFormat:"HH:mm:ss",
+				timeFormat: "HHmmss",
+				displayTimeFormat: "HH:mm:ss",
 				dateFormat: "yyyyMMdd", //sap.ui.core.format.DateFormat.getInstance().oFormatOptions.pattern,
-				displayDateFormat:"dd/MM/yyyy",
+				displayDateFormat: "dd/MM/yyyy",
 				decimalSeparator: sap.ui.core.format.NumberFormat.getFloatInstance().oFormatOptions.decimalSeparator,
 				thousandSeparator: sap.ui.core.format.NumberFormat.getFloatInstance().oFormatOptions.decimalSeparator === "." ? "," : "."
 			};

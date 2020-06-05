@@ -54,8 +54,11 @@ sap.ui.define([
 		onGoViewData: function (oEvent) {
 			var that = this;
 
+			var oViewConfModel = this._oOwnerComponent.getModel(constants.jsonModel.viewConf);
+
 			// Se recupera la vista seleccionada
-			var viewName = this._oViewSelectModel.getProperty("/viewName");
+			var viewName = oViewConfModel.getProperty("/viewName");
+
 
 			var oViewInput = this.byId("viewInput"); // Objeto input donde se introduce la vista
 
@@ -89,22 +92,23 @@ sap.ui.define([
 
 		// Método que entra cuando el input de la vista cambia. Se usará para verificar que exis
 		onChangeView: function (oEvent) {
+			var oViewConfModel = this._oOwnerComponent.getModel(constants.jsonModel.viewConf);
 
 			// Se recupera el objeto input de la vista para poder cambiar su estado
 			var oViewInput = this.byId(oEvent.getSource().getId());
 
 			// Si no hay vista se marca en el modelo que no hay vista y se indica que el campo es erróneo  
 			if (oEvent.getParameter("value") === "") {
-				this._oViewSelectModel.setProperty("/viewSelected", false);
+				oViewConfModel.setProperty("/btnGoView", false);
 				oViewInput.setValueState(sap.ui.core.ValueState.Error);
 				oViewInput.setValueStateText(this._oI18nResource.getText("ViewSelect.viewMandatory"));
 				MessageToast.show(this._oI18nResource.getText("ViewSelect.viewMandatory"));
 			} else {
 				// Si hay vista(que no significa que sea valida) se indica que se ha seleccionado y se quita
 				// que el campo es erróneo
-				this._oViewSelectModel.setProperty("/viewSelected", true);
+				oViewConfModel.setProperty("/btnGoView", true);
 				oViewInput.setValueState(sap.ui.core.ValueState.None);
-				this._oViewSelectModel.setProperty("/viewName", oEvent.getParameter("value"))
+				//this._oViewSelectModel.setProperty("/viewName", oEvent.getParameter("value"))
 
 			}
 		},
@@ -169,18 +173,17 @@ sap.ui.define([
 		},
 		// Reset del modelo de datos
 		_resetModel: function () {
-			this._oViewSelectModel.setData({
-				viewSelected: false,
-				viewName: ''
-			});
+			var oViewConfModel = this._oOwnerComponent.getModel(constants.jsonModel.viewConf);
+
+			oViewConfModel.setProperty("/btnGoView", false);
+			oViewConfModel.setProperty("/viewName", '');
+
 		},
 		// Inicialización del modelo de datos y carga inicial de datos
 		_initModelData: function () {
-			this._oViewSelectModel = new sap.ui.model.json.JSONModel();
+
 			this._resetModel(); // Reset del modelo de datos
 
-			this.getView().setModel(this._oViewSelectModel, constants.jsonModel.viewSelect);
-			
 			// Se recupera la clase que gestiona los estado de la configuración de las vistas			
 			this._viewConfState = this._oOwnerComponent.getState(this._oOwnerComponent.state.confView);
 
@@ -191,6 +194,7 @@ sap.ui.define([
 		// Lectura de las vistas que se pueden seleccionar
 		_getViewList: function () {
 			var that = this;
+			var oViewConfModel = this._oOwnerComponent.getModel(constants.jsonModel.viewConf);
 
 			// Se pone el loader en el campo antes de hacer la lectura de las vistas						
 			var oViewInput = this.byId(constants.objectsId.viewSelect.viewInput);
@@ -198,6 +202,9 @@ sap.ui.define([
 
 			this._viewConfState.getViewList(null,
 				function (mList) {
+					// Se guarda en el modelo el resulto
+					oViewConfModel.setProperty("/viewList", mList);
+
 					oViewInput.setBusy(false); // Se quita el indicador de ocupado
 				},
 				function (mError) {

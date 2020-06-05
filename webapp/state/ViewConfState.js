@@ -29,13 +29,7 @@ sap.ui.define([
 			this._oViewConfService.loadMetadata().then((result) => {
 
 					this._oViewConfService.getViews(oParams, true).then((result) => {
-							// El nodo result que siempre devuelve el Gateway no lo queremos en este caso							
-							oViewConfModel.setProperty("/viewList", result.data.results);
-
-							// Si se le pasado parámetros para el success se ejecuta
-							if (oSuccessHandler) {
-								oSuccessHandler(result.data.results);
-							}
+							oSuccessHandler(result.data.results);
 						},
 						(mError) => {
 							oHandlerSAPError(mError);
@@ -44,13 +38,7 @@ sap.ui.define([
 				(error) => {
 					// Si hay error es que no hay GW y se llama al servicio con en modo mockData
 					this._oViewConfService.getViews(oParams, false).then((result) => {
-							// El nodo result que siempre devuelve el Gateway no lo queremos en este caso							
-							oViewConfModel.setProperty("/viewList", result.data.results);
-
-							// Si se le pasado parámetros para el success se ejecuta
-							if (oSuccessHandler) {
-								oSuccessHandler(result.data.results);
-							}
+							oSuccessHandler(result.data.results);
 						},
 						(mError) => {
 							oHandlerSAPError(mError);

@@ -23,12 +23,12 @@
 								required="true" 
 								showValueHelp="true" 
 								valueHelpRequest="onHandleViewHelp" 
-								change="onChangeView"
+								change="onChangeView" 
 								showSuggestion="true" 
 								suggestionItems="{model: 'ViewConf', path: '/viewList'}" 
 								suggestionItemSelected="suggestionViewSelected" 
-								width="60%"
-								value="{model:'ViewSelectModel', path:'/viewName'}">
+								width="60%" 
+								value="{model:'ViewConf', path:'/viewName'}">
 								<suggestionItems>
 									<!-- Es lo mismo poner: {model: 'appData', path: 'VIEWDESC'}
 										 que: {appData>VIEWDESC} -->
@@ -45,8 +45,8 @@
 					</FlexBox>
 					<Button press="onGoViewData" 
 						icon="sap-icon://navigation-right-arrow" 
-						text="{i18n>ViewSelect.GoView}"
-						enabled="{= ${ViewSelectModel>/viewName}.length > 0 }">
+						text="{i18n>ViewSelect.GoView}" 
+						enabled="{model: 'ViewConf', path:'/btnGoView'}">
 						<layoutData>
 							<FlexItemData growFactor="3" />
 						</layoutData>
