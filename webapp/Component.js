@@ -6,7 +6,9 @@ sap.ui.define([
 	"com/ivancio/zal30-ui5/state/ViewDataState",
 	"sap/ui/core/format/NumberFormat",
 	"com/ivancio/zal30-ui5/service/genericService",
-], function (UIComponent, Device, BusyDialog, ViewConfState, ViewDataState, NumberFormat, genericService) {
+	"com/ivancio/zal30-ui5/constants/constants",
+	"com/ivancio/zal30-ui5/component/helper/formatters"
+], function (UIComponent, Device, BusyDialog, ViewConfState, ViewDataState, NumberFormat, genericService, constants, formatters) {
 	"use strict";
 
 	return UIComponent.extend("com.ivancio.zal30-ui5.Component", {
@@ -68,9 +70,9 @@ sap.ui.define([
 		getState: function (sState) {
 			return this["_o" + sState + "State"];
 		},
-		// Devuelve la configuración del usuario
-		getUserConfig: function () {
-			return this._oUserConfig;
+		// Devuelve la clase que gesstiona los formatos
+		getFormmatter: function () {
+			return this._oFormatters;
 		},
 		//////////////////////////////////
 		//                              //
@@ -110,27 +112,31 @@ sap.ui.define([
 		_getUserConfiguration: function () {
 			var that = this;
 
-			// Si establece una configuración por defecto que será modificada según el resultado del servicio
-			this._initUserConfiguration();
+			// Se instancia la clase que gestiona los formatos pasandole una configuración por defecto
+			this._oFormatters = new formatters();
 
-			this._oGenericService.getUserConfiguration().then((result) => {
+			// Una vez el metadata ha se haya cargado, se lee llama ala configuración del usuario
+			this._oGenericService.loadMetadata(constants.oDataModel.masterData).then((result) => {
+					this._oGenericService.getUserConfiguration().then((result) => {
 
-			}, (error) => {
+						// Se cambian los valor de configuración en base a los valores devueltos en SAP
+						if (result.data.DECIMALSEPARATOR != '')
+							this._oFormatters.setDecimalSeparator(result.data.DECIMALSEPARATOR);
+						if (result.data.THOUSANDSEPARATOR != '')
+							this._oFormatters.setThousandSeparator(result.data.THOUSANDSEPARATOR);
 
-			})
+						this._oFormatters.setDisplayDateFormat(this._oFormatters.convertDisplayDateFormatSAP2UI5(result.data.DATEFORMAT));
+
+					}, (error) => {
+
+					});
+				},
+				(error) => {
+
+				}
+			);
+
 		},
-		// Inicializacion de la configuración del usuario
-		_initUserConfiguration: function () {
-			this._oUserConfig = {
-				timeFormat: "HHmmss",
-				displayTimeFormat: "HH:mm:ss",
-				dateFormat: "yyyyMMdd", //sap.ui.core.format.DateFormat.getInstance().oFormatOptions.pattern,
-				displayDateFormat: "dd/MM/yyyy",
-				decimalSeparator: sap.ui.core.format.NumberFormat.getFloatInstance().oFormatOptions.decimalSeparator,
-				thousandSeparator: sap.ui.core.format.NumberFormat.getFloatInstance().oFormatOptions.decimalSeparator === "." ? "," : "."
-			};
-		}
-
 
 	});
 });

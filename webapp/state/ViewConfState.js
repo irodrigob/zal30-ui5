@@ -26,9 +26,15 @@ sap.ui.define([
 
 
 			// Hasta que no termina la carga del metadata no se pueden lanzar el primer servicio
-			this._oViewConfService.loadMetadata().then((result) => {
+			this._oViewConfService.loadMetadata(constants.oDataModel.masterData).then((result) => {
 
 					this._oViewConfService.getViews(oParams, true).then((result) => {
+
+							// Hago una excepción y guardo el resultado en el modelo directamente en esta clase. El motivo
+							// es que este servicio se puede llamar desde dos sitios distintos y ambos necesitan este valor en 
+							// el modelo. Y para no duplicar código lo hago desde un sitio centralizado
+							oViewConfModel.setProperty("/viewList", result.data.results);
+
 							oSuccessHandler(result.data.results);
 						},
 						(mError) => {

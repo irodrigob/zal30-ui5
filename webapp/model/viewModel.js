@@ -3,9 +3,8 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/base/util/merge",
 	"sap/ui/model/Filter",
-	"com/ivancio/zal30-ui5/constants/constants",
-	"com/ivancio/zal30-ui5/component/helper/formatters"
-], function (BaseModel, JSONModel, merge, Filter, constants, formatters) {
+	"com/ivancio/zal30-ui5/constants/constants",	
+], function (BaseModel, JSONModel, merge, Filter, constants) {
 	"use strict";
 
 	return BaseModel.extend("com.ivancio.zal30-ui5.model.viewModel", {
@@ -24,13 +23,8 @@ sap.ui.define([
 			// Inicialización del modelo interno
 			this._initModel();
 
-			// Se instancia la clase que gestiona los formatos, pasandole los formatos por defecto establecidos
-			this._oFormatters = new formatters({
-				timeFormat: this._oOwnerComponent.getUserConfig().timeFormat,
-				dateFormat: this._oOwnerComponent.getUserConfig().dateFormat,
-				decimalSeparator: this._oOwnerComponent.getUserConfig().decimalSeparator,
-				thousandSeparator: this._oOwnerComponent.getUserConfig().thousandSeparator
-			});
+			// Se recupera la clase que gestiona los formatos
+			this._oFormatters = this._oOwnerComponent.getFormmatter();
 
 			// Contador internos de registros
 			this._lastTabix = 0;
@@ -281,8 +275,7 @@ sap.ui.define([
 
 			// Se devuelve en que posición se ha añadido el registro
 			return sPath;
-
-
+			
 		},
 		// Borrr una entrada del modelo de datos
 		deleteEntry: function (nRow) {

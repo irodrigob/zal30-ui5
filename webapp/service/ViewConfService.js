@@ -50,21 +50,6 @@ sap.ui.define([
 			// Se informa el directorio donde están los datos del mock
 			this.setMockBaseDir("com.ivancio.zal30-ui5.localService");
 		},
-		//////////////////////////////////	
-		//        Services              //	
-		//////////////////////////////////	
-		// Lo primera que se lanza es la lectura del metada de los servicios. Puede ocurrir que el metada se este leyendo y los servicios
-		// se ejecute con lo que empezarán a fallar. Por ello se encapsula en una función para que cuando termine se empiece a ejecutar el resto de
-		// de servicio.
-		// Hacerlo de esta manera simplifica la llamada a otros servicios y su control de errores. Ya que si pusiera el servicio dentro del then 
-		// no funciona el then en el servicio que llama a este. Ya que un return de un promise dentro de un then no funciona. Hay que hacerlo en funciones
-		// separadas
-		loadMetadata: function () {
-			// Se recupera el objeto oData para poder hacer las llamadas
-			var oModel = this.getModel(_mService.getViews.oDataModel);
-			return oModel.metadataLoaded();
-
-		},
 		getViews: function (oParams, bGWAvailable) {
 			var that = this;
 

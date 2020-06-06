@@ -29,7 +29,8 @@ sap.ui.define([
 		onInit: function () {
 			this._oOwnerComponent = this.getOwnerComponent();
 			this._oAppDataModel = this._oOwnerComponent.getModel("appData");
-			this._oI18nResource = this._oOwnerComponent.getModel("i18n").getResourceBundle();
+			this._oI18nResource = this._oOwnerComponent.getModel("i18n").getResourceBundle();			
+			this._oFormatters = this._oOwnerComponent.getFormmatter(); // Clase que gestiona los formatos
 
 			// Inicialización del modelo de datos	
 			this._initModelData();
@@ -754,8 +755,8 @@ sap.ui.define([
 									}
 								},
 								required: mColumn.mandatory,
-								valueFormat: this._oOwnerComponent.getUserConfig().dateFormat,
-								displayFormat: this._oOwnerComponent.getUserConfig().displayDateFormat,
+								valueFormat: this._oFormatters.getDateFormat(),
+								displayFormat: this._oFormatters.getDisplayDateFormat(),
 								change: [this.onValueChange, this],
 								customData: mCustomData,
 								placeholder: "Enter date...",
@@ -784,8 +785,8 @@ sap.ui.define([
 									}
 								},
 								required: mColumn.mandatory,
-								valueFormat: this._oOwnerComponent.getUserConfig().timeFormat,
-								displayFormat: this._oOwnerComponent.getUserConfig().displayTimeFormat,
+								valueFormat: this._oFormatters.getTimeFormat(),
+								displayFormat: this._oFormatters.getDisplayTimeFormat(),
 								customData: mCustomData,
 								change: [this.onValueChange, this],
 								valueState: {
@@ -807,9 +808,9 @@ sap.ui.define([
 									type: 'sap.ui.model.type.Float',
 									formatOptions: {
 										decimals: mColumn.decimals,
-										groupingSeparator: this._oOwnerComponent.getUserConfig().thousandSeparator,
-										decimalSeparator: this._oOwnerComponent.getUserConfig().decimalSeparator,
-										maxFractionDigits: this._oOwnerComponent.getUserConfig().decimalSeparator
+										groupingSeparator:this._oFormatters.getThousandSeparator(),
+										decimalSeparator: this._oFormatters.getDecimalSeparator(),
+										maxFractionDigits: this._oFormatters.getDecimalSeparator()
 									}
 								},
 								editable: {
@@ -842,7 +843,7 @@ sap.ui.define([
 									type: 'sap.ui.model.type.Integer',
 									formatOptions: {
 										decimals: mColumn.decimals,
-										groupingSeparator: this._oOwnerComponent.getUserConfig().thousandSeparator
+										groupingSeparator: this._oFormatters.getThousandSeparator()
 									}
 								},
 								editable: {

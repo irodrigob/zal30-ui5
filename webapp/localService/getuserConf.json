@@ -1,0 +1,11 @@
+{
+		"__metadata": {
+			"id": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getUserConfSet('DEVELOPER')",
+			"uri": "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap/ZAL30_DATA_SRV/getUserConfSet('DEVELOPER')",
+			"type": "ZAL30_DATA_SRV.getUserConf"
+		},
+		"USERNAME": "DEVELOPER",
+		"DATEFORMAT": "1",
+		"DECIMALSEPARATOR": ",",
+		"THOUSANDSEPARATOR": "."
+}

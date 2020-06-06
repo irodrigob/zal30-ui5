@@ -14,7 +14,7 @@ sap.ui.define([
 			serviceName: "/getUserConfSet",
 			bUseMock: false,
 			mockFile: "/getUserConf.json",
-			oDataModel: "masterData"
+			oDataModel: constants.oDataModel.masterData
 		}
 	};
 
@@ -26,8 +26,8 @@ sap.ui.define([
 
 			// Se informan los modelos oData donde se obtendrán los datos	
 			this.setModelOdata([{
-				name: "masterData",
-				model: this._oOwnerComponent.getModel("masterData")
+				name: constants.oDataModel.masterData,
+				model: this._oOwnerComponent.getModel(constants.oDataModel.masterData)
 			}]);
 
 			// Se informa el directorio donde están los datos del mock
@@ -36,13 +36,6 @@ sap.ui.define([
 		//////////////////////////////////	
 		//        Services              //	
 		//////////////////////////////////	
-		// Servicio que permite saber si se ha cargado el metadata de los servicios
-		loadMetadata: function () {
-			// Se recupera el objeto oData para poder hacer las llamadas
-			var oModel = this.getModel(_mService.getUserConf.oDataModel);
-			return oModel.metadataLoaded();
-
-		},
 		// Obtención de la configuración del usuarios
 		getUserConfiguration: function () {
 			var oModel = this.getModel(_mService.getUserConf.oDataModel);

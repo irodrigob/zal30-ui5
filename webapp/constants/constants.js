@@ -42,7 +42,7 @@ sap.ui.define([], function () {
 			date: "D",
 			time: "T",
 			packed: "P",
-			integer:"I"
+			integer: "I"
 		},
 		tableData: {
 			columnObjectType: {
@@ -52,10 +52,10 @@ sap.ui.define([], function () {
 				checkbox: "checkbox"
 			},
 			suffixEditField: "_ZAL30_EDIT",
-			suffixSearchHelpField:"_ZAL30_SEARCH_HELP",
-			suffixValueState:{
-				valueState:"_ZAL30_VALUE_STATE",
-				valueStateText:"_ZAL30_VALUE_STATE_TEXT"
+			suffixSearchHelpField: "_ZAL30_SEARCH_HELP",
+			suffixValueState: {
+				valueState: "_ZAL30_VALUE_STATE",
+				valueStateText: "_ZAL30_VALUE_STATE_TEXT"
 			},
 			internalFields: {
 				isDict: "ZAL30_IS_DICT",
@@ -65,7 +65,7 @@ sap.ui.define([], function () {
 				rowStatusInternal: "ZAL30_ROW_STATUS_INTERNAL",
 				rowStatusMsg: "ZAL30_ROW_STATUS_MSG",
 				rowStatusMsgInternal: "ZAL30_ROW_STATUS_MSG_INTERNAL",
-				style:"ZAL30_UI5_STYLE",				
+				style: "ZAL30_UI5_STYLE",
 			},
 			fixedColumns: {
 				actions: 'ZAL30_FIX_ACTIONS',
@@ -93,11 +93,14 @@ sap.ui.define([], function () {
 			dataType: {
 				mandt: "CLNT"
 			},
-			valueStates:{
-				ok:"None",
-				error:"Error"
+			valueStates: {
+				ok: "None",
+				error: "Error"
 			}
 
+		},
+		oDataModel: {
+			masterData: "masterData"
 		}
 	};
 	return oConstants

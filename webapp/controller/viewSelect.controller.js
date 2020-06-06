@@ -201,10 +201,7 @@ sap.ui.define([
 			oViewInput.setBusy(true);
 
 			this._viewConfState.getViewList(null,
-				function (mList) {
-					// Se guarda en el modelo el resulto
-					oViewConfModel.setProperty("/viewList", mList);
-
+				function (mList) {					
 					oViewInput.setBusy(false); // Se quita el indicador de ocupado
 				},
 				function (mError) {
