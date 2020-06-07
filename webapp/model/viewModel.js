@@ -852,10 +852,7 @@ sap.ui.define([
 			// Se añade la columna de acciones, que contendra acciones individuales. Inicialmente solo tiene un icono, pero la idea
 			// es tener una columna que pueda tener distintos iconos con acciones
 			aNewFieldCatalog.push({
-				name: constants.tableData.fixedColumns.actions,
-				shortText: this._oI18nResource.getText('ViewData.fix.Column.state'),
-				mediumText: this._oI18nResource.getText('ViewData.fix.Column.state'),
-				longText: this._oI18nResource.getText('ViewData.fix.Column.state'),
+				name: constants.tableData.fixedColumns.actions,				
 				headerText: this._oI18nResource.getText('ViewData.fix.Column.state'),
 				mandatory: false,
 				noOutput: false,
