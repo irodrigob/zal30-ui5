@@ -824,10 +824,7 @@ sap.ui.define([
 			var aColumns = [];
 			for (var x = 0; x < mFieldCatalog.length; x++) {
 				var mColumn = {
-					name: mFieldCatalog[x].FIELDNAME,
-					shortText: mFieldCatalog[x].SHORTEXT,
-					mediumText: mFieldCatalog[x].MEDIUMTEXT,
-					longText: mFieldCatalog[x].LONGTEXT,
+					name: mFieldCatalog[x].FIELDNAME,					
 					headerText: mFieldCatalog[x].HEADERTEXT,
 					mandatory: mFieldCatalog[x].MANDATORY,
 					noOutput: mFieldCatalog[x].NOOUTPUT,

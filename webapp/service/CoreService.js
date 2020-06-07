@@ -288,7 +288,7 @@ sap.ui.define([
 		loadMetadata: function (sModelName) {
 			// Se recupera el objeto oData para poder hacer las llamadas
 			var oModel = this.getModel(sModelName);
-			return oModel.metadataLoaded();
+			return oModel.metadataLoaded(true);
 
 		},
 		//////////////////////////////////
