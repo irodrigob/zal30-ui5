@@ -578,8 +578,7 @@ sap.ui.define([
 
 			} else {
 				this._setVisibleEditButtons(false);
-			}
-
+			}					
 		},
 		// Se define los row setting de la tabla
 		_setRowSettings: function () {
@@ -697,8 +696,8 @@ sap.ui.define([
 									editable: {
 										model: constants.jsonModel.viewData,
 										path: mColumn.name + constants.tableData.suffixEditField,
-										formatter: function (bValue) {
-											return bValue;
+										formatter: function (bValue) {				
+											return bValue;											
 										}
 									},
 									select: [this.onValueChange, this],
@@ -906,6 +905,14 @@ sap.ui.define([
 			// los campos clave incluyendo los que nunca se mostrarán, como el mandante, el motivo es que la tabla los tiene en cuenta
 			// aunque no se pinte. Creo que es debido a que si que esta en el modelo de columnas.			
 			oTable.setFixedColumnCount(this._viewDataState.getNumberKeyFields());
+
+	
+			// Se establece como visualizan las filas. La opción "Interactive" es la más adecuada, ya que el contenido se ve entero en la página
+			// y si no cabe hay scroll. Tengo que poner este cambio aquí y no en la vista XML, porque en la vista XML no funciona. Creo que es 
+			// debido al ser una tabla donde las columnas son dinámicas no es capaz de hacer el calculo inicial. En este mismo momento la tabla ya
+			// tiene las filas y columnas y entonces es cuando funciona.
+			oTable.setVisibleRowCountMode("Interactive");
+
 		},
 		// Devuelve el valor de una propieda customData de un objeto
 		_getCustomDataValue: function (oObject, skey) {

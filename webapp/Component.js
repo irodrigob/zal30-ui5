@@ -102,7 +102,7 @@ sap.ui.define([
 			this._oViewDataState = new ViewDataState(this);
 
 			// A nivel interno de UI5 se fuerza el uso del ingles
-			sap.ui.getCore().getConfiguration().setLanguage("en");
+			sap.ui.getCore().getConfiguration().setLanguage("es");
 
 			// Se instancia el servicio general de datos pasandole: contexto del component necesario para poder acceder
 			// al modelo de la aplicacion definido en el manifest

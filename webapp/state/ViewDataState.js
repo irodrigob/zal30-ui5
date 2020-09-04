@@ -119,7 +119,7 @@ sap.ui.define([
 			// Se informa en que línea se ha hecho el cambio
 			this._oView.setRowUpdateIndicator(mParams.path, constants.tableData.fieldUpkzValues.update);
 
-			// Se lanza la validación a nivel de fila
+			// Se lanza la validación a nivel de fila.
 			this._oView.rowValidatePath(mParams.path);
 
 
@@ -609,7 +609,7 @@ sap.ui.define([
 
 			this._oViewDataService.getSearchHelpCatalog(this._oView.getViewInfo().VIEWNAME).then((result) => {
 
-					// Se guarda el resultado el el modelo de datos de la vista
+					// Se guarda el resultado en el modelo de datos de la vista
 					that._oView.setSearchHelpCatalog(result.data.results);
 
 					// Si hay datos se llama al proceso de obtención de datos.

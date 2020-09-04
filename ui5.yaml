@@ -8,4 +8,23 @@ server:
     afterMiddleware: compression
     mountPath: /sap/opu/odata/sap
     configuration:
-      baseUri: "http://vhcalnplci.dummy.nodomain:8000/sap/opu/odata/sap"
+      baseUri: "http://cobquacfh01.cobega.local:8001/sap/opu/odata/sap"
+builder:
+  customTasks:
+  - name: ui5-task-nwabap-deployer
+    afterTask: generateVersionInfo
+    configuration: 
+      resources:
+        pattern: "**/*.*"
+      connection:
+        server: http://cobdescfh01.cobega.local:8001 
+      authentication:
+        user: eeirodrigo
+        password: manolete1
+      ui5:
+        language: EN
+        package: ZCA_AL30_UI5
+        bspContainer: ZCA_AL30_UI5
+        bspContainerText: AL30 - Mantenedor tablas
+        transportNo: HQDK907564
+        calculateApplicationIndex: true        

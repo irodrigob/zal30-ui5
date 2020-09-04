@@ -207,8 +207,8 @@ sap.ui.define([
 			switch (sUpdkz) {
 				case constants.tableData.fieldUpkzValues.update:
 
-					// Si el resgistro esta en blanco o tiene una actualización es cuando se hace la comparativa. Cualquier otro valor
-					// no se hace porque valor lo que tenga
+					// Si el registro esta en blanco o tiene una actualización es cuando se hace la comparativa. Cualquier otro valor
+					// no se hace porque se deja el valor que tenga
 					if (oViewDataModel.getProperty(sPathUpdkz) == constants.tableData.fieldUpkzValues.update ||
 						oViewDataModel.getProperty(sPathUpdkz) == '') {
 						if (this._compareRowDataFromOriginal(sPath)) {
@@ -293,9 +293,18 @@ sap.ui.define([
 			}
 		},
 		// Validación de fila a partir de un path. Esta función actualizará el modelo con el resultado del proceso.
-		rowValidatePath: function (sPath, mOptions) {
+		rowValidatePath: function (sPath) {
 			var oViewDataModel = this._oOwnerComponent.getModel(constants.jsonModel.viewData);
 			var mRow = oViewDataModel.getProperty(sPath);
+			
+			// Se inicializa las opcioes de validación
+			var mOptions = {};
+
+			// Si el registro proviene del diccionario no se validará duplicados porque los campos clave no son editables
+			if(mRow.ZAL30_IS_DICT == 'X')
+				mOptions.duplicateKeyFields = false
+			else
+				mOptions.duplicateKeyFields = true
 
 			this.rowValidate(mRow, mOptions);
 
@@ -383,15 +392,18 @@ sap.ui.define([
 					var bDuplicate = true;
 					// Se recorren los campos editables y que no seán tecnicos, ya que los campos técnicos no se visualizan						
 					for (var z = 0; z < aFieldCatalog.length; z++) {
-						// Si el valor coincide se añade en que campos hay duplicados
-						if (mRow[aFieldCatalog[z].name] == mRowValue[aFieldCatalog[z].name]) {
-
-							var text = this._oI18nResource.getText("ViewData.rowValidate.rowDuplicate");
-							this.addMsgRowStatusMsgInternal(mRow, constants.messageType.error, text);
-
+						// Si el valor no coincide se marca que no hay duplicados y se sale del proceso
+						if (mRow[aFieldCatalog[z].name] != mRowValue[aFieldCatalog[z].name]) {
+							bDuplicate = false;
 							break; // se sale del proceso porque ya se ha encontrado una coincidencia
 
 						}
+					}
+					// Si hay duplicado se añade el mensaje de error y se sale, porque con un registro es suficiente.
+					if (bDuplicate){
+						var text = this._oI18nResource.getText("ViewData.rowValidate.rowDuplicate");
+						this.addMsgRowStatusMsgInternal(mRow, constants.messageType.error, text);
+						break;
 					}
 
 				}
@@ -922,22 +934,30 @@ sap.ui.define([
 
 				for (var x = 0; x < aFieldCatalog.length; x++) {
 					// Los campos técnicos no tendrán campo de edición ni ayuda para búsqueda porque nunca se muestran
-					if (this._isEditableFieldCatalog(aFieldCatalog[x])) {
+					if (!aFieldCatalog[x].tech) {
 
 						// se construye el nombre del nuevo campo que será el nombre del campo + un sufijo						
 						var sPathEditFieldname = aFieldCatalog[x].name + constants.tableData.suffixEditField;
 						mRow[sPathEditFieldname] = aFieldCatalog[x].edit;
 
-						// Solo en los campos de tipo CHAR podrá haber ayuda para búsqueda
-						if (aFieldCatalog.type == constants.columnTtype.char) {
-							var sPathSearchHelpFieldname = aFieldCatalog[x].name + constants.tableData.suffixSearchHelpField;
-							mRow[sPathSearchHelpFieldname] = false; // Por defecto no tendrá ayuda para búsqueda
+						// Ahora se mirá si el campo es editable. Si lo és se añade el resto de campo. Si no lo és,
+						// se inidica que no será editable. El motivo es que si no esta el campo este será editable. Porque
+						// cuando se construye la tabla la propiedad editable apunta a dicho campo.
+						if (this._isEditableFieldCatalog(aFieldCatalog[x]))
+						{
+							// Solo en los campos de tipo CHAR podrá haber ayuda para búsqueda
+							if (aFieldCatalog[x].type == constants.columnTtype.char) {
+								var sPathSearchHelpFieldname = aFieldCatalog[x].name + constants.tableData.suffixSearchHelpField;
+								mRow[sPathSearchHelpFieldname] = false; // Por defecto no tendrá ayuda para búsqueda
+							}
+
+							// Se añaden dos campos que servirán para los valueState. Es decir, poder marcar determinados campos como erroneos
+							mRow[aFieldCatalog[x].name + constants.tableData.suffixValueState.valueState] = constants.tableData.valueStates.ok;
+							mRow[aFieldCatalog[x].name + constants.tableData.suffixValueState.valueStateText] = "";
 						}
-
-						// Se añaden dos campos que servirán para los valueState. Es decir, poder marcar determinados campos como erroneos
-						mRow[aFieldCatalog[x].name + constants.tableData.suffixValueState.valueState] = constants.tableData.valueStates.ok;
-						mRow[aFieldCatalog[x].name + constants.tableData.suffixValueState.valueStateText] = "";
-
+						else{
+							mRow[sPathEditFieldname] = false;
+						}			
 					}
 				}
 
@@ -1156,17 +1176,17 @@ sap.ui.define([
 			var aFieldCatalog = oViewDataModel.getProperty(constants.tableData.path.columns);
 			// Se recorren todos los campos del catalogo para poder acceder a cada campo de manera individual
 			for (var x = 0; x < aFieldCatalog.length; x++) {
-
-				// Si el campo de edición existe se continua el proceso. El IF lo hago en dos pasos para que quede más claro su funcionamiento
-				if (mRow[aFieldCatalog[x].name + constants.tableData.suffixEditField]) {
-					// Cualquier
+				var sPathEditFieldname = aFieldCatalog[x].name + constants.tableData.suffixEditField;
+				// Si el campo de edición existe se continua el proceso y es vale true.
+				if (mRow[sPathEditFieldname]) {					
+					// Si a nivel global no se pueda editar entonces a nivel de campo tampoco
 					if (this.getEditMode() == constants.editMode.edit) {
 						// Si el valor proviene del diccionario, es decir, que existe en base de datos y es un campo clave el campo se marca como no editable.
 						if (mRow[constants.tableData.internalFields.isDict] == "X" && aFieldCatalog[x].keyDDIC) {
-							mRow[aFieldCatalog[x].name + constants.tableData.suffixEditField] = false;
+							mRow[sPathEditFieldname] = false;
 						}
 					} else {
-						mRow[aFieldCatalog[x].name + constants.tableData.suffixEditField] = false;
+						mRow[sPathEditFieldname] = false;
 					}
 
 				}
