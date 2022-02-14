@@ -17,10 +17,10 @@ builder:
       resources:
         pattern: "**/*.*"
       connection:
-        server: http://cobdescfh01.cobega.local:8001 
+        server: http://cobdescfh01.xxxx.local:8001 
       authentication:
-        user: eeirodrigo
-        password: manolete1
+        user: eexxxx
+        password: xxxx
       ui5:
         language: EN
         package: ZCA_AL30_UI5
